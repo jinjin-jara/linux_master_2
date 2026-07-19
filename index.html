@@ -1,0 +1,2670 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리눅스마스터 오답노트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0c11;
+    --panel:#12151d;
+    --panel-alt:#181c27;
+    --rule:#252b3a;
+    --text:#d9dee8;
+    --muted:#7c8496;
+    --accent:#ffb454;
+    --accent-dim:#8a6a35;
+    --correct:#5fd97a;
+    --correct-dim:#1e3324;
+    --wrong:#ff6b6b;
+    --wrong-dim:#3a2020;
+    --shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #10192a 0%, transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, #1a1310 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans KR', sans-serif;
+    line-height:1.7;
+    min-height:100vh;
+    padding:0 0 120px;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:920px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+  .hero-prompt{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .hero-prompt .dollar{color:var(--correct);}
+  .hero-prompt .path{color:var(--accent);}
+  .cursor{
+    display:inline-block;
+    width:8px;height:16px;
+    background:var(--accent);
+    animation:blink 1.1s steps(1) infinite;
+    vertical-align:-3px;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero h1{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(28px, 5vw, 44px);
+    font-weight:800;
+    letter-spacing:-0.5px;
+    margin:0 0 14px;
+    color:#f2f4f8;
+  }
+  .hero h1 .hash{color:var(--accent); font-weight:600;}
+  .hero p.sub{
+    color:var(--muted);
+    font-size:15.5px;
+    max-width:640px;
+    margin:0 0 28px;
+  }
+  .stat-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .stat-chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:var(--text);
+    background:var(--panel-alt);
+    border:1px solid var(--rule);
+    padding:7px 12px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .stat-chip b{color:var(--accent); font-weight:700;}
+
+  /* ---------- LIST ---------- */
+  .wrap{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    scroll-margin-top:24px;
+  }
+  .card-titlebar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 18px;
+    background:var(--panel-alt);
+    border-bottom:1px solid var(--rule);
+  }
+  .dots{display:flex; gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#ff5f57;}
+  .dot.y{background:#febc2e;}
+  .dot.g{background:#28c840;}
+  .card-titlebar .filename{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-left:6px;
+  }
+  .card-titlebar .rate{
+    margin-left:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    background:rgba(255,180,84,0.08);
+    border:1px solid var(--accent-dim);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+
+  .card-body{padding:26px 26px 24px;}
+
+  .qnum{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:800;
+    font-size:13px;
+    color:#0a0c11;
+    background:var(--accent);
+    padding:2px 10px;
+    border-radius:5px;
+    letter-spacing:0.5px;
+  }
+
+  .question-text{
+    margin:16px 0 20px;
+    font-size:16.5px;
+    color:#eef1f6;
+    font-weight:500;
+  }
+  .question-text .quote{
+    display:block;
+    margin-top:10px;
+    padding:14px 16px;
+    background:var(--panel-alt);
+    border-left:3px solid var(--accent-dim);
+    border-radius:6px;
+    color:var(--muted);
+    font-size:14.5px;
+    white-space:pre-wrap;
+  }
+  .question-text .quote.code{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .option{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 14px;
+    border-radius:8px;
+    border:1px solid var(--rule);
+    background:#0e111888;
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    color:var(--text);
+  }
+  .option .num{
+    color:var(--muted);
+    font-weight:600;
+    min-width:16px;
+  }
+  .option.correct{
+    border-color:var(--correct);
+    background:var(--correct-dim);
+    color:#eafff0;
+  }
+  .option.correct .num{color:var(--correct);}
+  .option .mark{
+    margin-left:auto;
+    font-size:11px;
+    color:var(--correct);
+    font-weight:700;
+  }
+
+  .toggle-btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    font-weight:600;
+    color:#0a0c11;
+    background:var(--accent);
+    border:none;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+  }
+  .toggle-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 8px 20px -8px rgba(255,180,84,0.5);
+  }
+  .toggle-btn:active{transform:translateY(0);}
+  .toggle-btn .chevron{
+    transition:transform .2s ease;
+    display:inline-block;
+  }
+  .toggle-btn.open .chevron{transform:rotate(90deg);}
+
+  .explain-inner{
+    padding-top:22px;
+    margin-top:20px;
+    border-top:1px dashed var(--rule);
+  }
+  .section-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:2px;
+  }
+  .section-label .chevron{color:var(--accent);}
+
+  .explain h4{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    margin:22px 0 10px;
+  }
+  .explain h4:first-child{margin-top:0;}
+  .explain p{
+    margin:0 0 10px;
+    font-size:14.5px;
+    color:#c7cddb;
+  }
+  .explain .key{
+    color:#fff;
+    background:rgba(255,180,84,0.14);
+    padding:1px 6px;
+    border-radius:4px;
+    font-weight:600;
+  }
+  .explain code{
+    font-family:'JetBrains Mono', monospace;
+    background:var(--panel-alt);
+    border:1px solid var(--rule);
+    padding:2px 7px;
+    border-radius:5px;
+    color:#ffd8a3;
+    font-size:13px;
+  }
+  .explain pre{
+    font-family:'JetBrains Mono', monospace;
+    background:#0a0d13;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:13px;
+    color:#9fe6b0;
+    overflow-x:auto;
+    margin:10px 0 16px;
+    line-height:1.6;
+  }
+
+  .breakdown{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .bd-item{
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:12px 14px;
+    background:#0e111888;
+  }
+  .bd-item.right{border-color:var(--correct); background:var(--correct-dim);}
+  .bd-item.wrong{opacity:0.9;}
+  .bd-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13.5px;
+    font-weight:700;
+    margin-bottom:5px;
+  }
+  .bd-head .tag{
+    font-size:11px;
+    padding:1px 7px;
+    border-radius:4px;
+    font-weight:700;
+  }
+  .bd-item.right .tag{background:var(--correct); color:#08160c;}
+  .bd-item.wrong .tag{background:var(--wrong-dim); color:var(--wrong); border:1px solid #4a2a2a;}
+  .bd-item p{margin:0; font-size:13.8px; color:var(--muted);}
+
+  table.ref{
+    width:100%;
+    border-collapse:collapse;
+    margin:8px 0 18px;
+    font-size:13.5px;
+    overflow:hidden;
+    border-radius:8px;
+  }
+  table.ref th, table.ref td{
+    border:1px solid var(--rule);
+    padding:9px 12px;
+    text-align:left;
+  }
+  table.ref th{
+    background:var(--panel-alt);
+    color:var(--accent);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  table.ref td{background:#0e111888; color:var(--text);}
+  table.ref td.mono, table.ref th.mono{font-family:'JetBrains Mono', monospace;}
+
+  .tip-box{
+    margin-top:6px;
+    padding:14px 16px;
+    background:linear-gradient(135deg, rgba(255,180,84,0.08), rgba(255,180,84,0.02));
+    border:1px solid var(--accent-dim);
+    border-radius:10px;
+    font-size:14px;
+    color:#f1e3c8;
+  }
+  .tip-box b{color:var(--accent);}
+
+  footer{
+    max-width:920px;
+    margin:40px auto 0;
+    padding:0 24px;
+    color:var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    text-align:center;
+  }
+
+  @media (max-width:600px){
+    .hero{padding:44px 18px 28px;}
+    .card-body{padding:20px 18px;}
+  }
+
+  /* ---------- SIDE NAV ---------- */
+  .nav-trigger{
+    position:fixed;
+    top:0; left:0;
+    width:18px;
+    height:100vh;
+    z-index:40;
+  }
+  .side-nav{
+    position:fixed;
+    top:0; left:0;
+    height:100vh;
+    width:270px;
+    background:linear-gradient(180deg, #10131a, #0c0e14);
+    border-right:1px solid var(--rule);
+    box-shadow:20px 0 50px -20px rgba(0,0,0,0.7);
+    transform:translateX(-100%);
+    transition:transform .28s cubic-bezier(.4,0,.2,1);
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    padding:22px 0;
+  }
+  .nav-trigger:hover + .side-nav,
+  .side-nav:hover{
+    transform:translateX(0);
+  }
+  .side-nav-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    color:var(--muted);
+    padding:0 20px 14px;
+    border-bottom:1px solid var(--rule);
+    margin-bottom:8px;
+    letter-spacing:0.06em;
+  }
+  .side-nav-head .dollar{color:var(--correct);}
+  .nav-list{
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+  }
+  .nav-item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:12px 20px;
+    cursor:pointer;
+    border-left:2px solid transparent;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .nav-item:hover{
+    background:rgba(255,180,84,0.08);
+    border-left-color:var(--accent);
+  }
+  .nav-item .nav-num{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:800;
+    font-size:12px;
+    color:var(--accent);
+    background:rgba(255,180,84,0.1);
+    padding:2px 7px;
+    border-radius:4px;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .nav-item .nav-kw{
+    font-size:13px;
+    color:#d3d9e5;
+    line-height:1.45;
+  }
+  .side-nav-foot{
+    margin-top:auto;
+    padding:14px 20px 0;
+    border-top:1px solid var(--rule);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-trigger"></div>
+<nav class="side-nav" id="sideNav">
+  <div class="side-nav-head"><span class="dollar">$</span> ls questions/</div>
+  <div class="nav-list" id="navList"></div>
+  <div class="side-nav-foot">hover to open · click to jump</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-prompt">
+    <span class="dollar">root@examprep</span><span>:~$</span>
+    <span class="path">cat 오답노트.txt</span><span class="cursor"></span>
+  </div>
+  <h1><span class="hash">#</span> 리눅스마스터 오답노트</h1>
+  <p class="sub">틀린 문제만 골라 핵심 키워드 → 보기 해설 → 암기 포인트 순으로 정리했습니다. 각 문제의 버튼을 눌러 해설을 펼쳐보세요.</p>
+  <div class="stat-bar">
+    <span class="stat-chip">📄 총 <b>36</b>문제</span>
+    <span class="stat-chip">🔊 사운드/프린터/스캐너 인터페이스</span>
+    <span class="stat-chip">📦 패키지 관리 (apt / rpm / dnf / zypper)</span>
+    <span class="stat-chip">✏️ vi 편집기 검색·치환</span>
+    <span class="stat-chip">🧑‍💻 편집기 개발자 인물</span>
+    <span class="stat-chip">⚙️ 프로세스 · Job · 시그널</span>
+    <span class="stat-chip">💽 fstab · UUID · Quota · 권한</span>
+    <span class="stat-chip">☁️ 클라우드 · 가상화 · 클러스터</span>
+    <span class="stat-chip">🌐 네트워크 · DNS · 서브넷 · OSI</span>
+    <span class="stat-chip">🖥️ X Window · 데스크톱 환경</span>
+  </div>
+</div>
+
+<div class="wrap" id="cards"></div>
+
+<footer>-- END OF FILE --</footer>
+
+<script>
+const questions = [
+{
+  num: "05",
+  keyword: "사운드 인터페이스 — OSS vs ALSA",
+  rate: "정답률 68%",
+  title: "sound_interface.q",
+  question: "다음 설명에 해당하는 명칭으로 알맞은 것은?",
+  quote: "리눅스 및 유닉스 계열 운영체제에서 사운드를 만들고 캡처하는 인터페이스로, 표준 유닉스 시스템 콜(POSIX)에 기반을 두고 있다. 프로젝트 초기에는 Free Software였으나 사유화되기도 했다.",
+  options: [
+    {label:"ALSA", correct:false},
+    {label:"CUPS", correct:false},
+    {label:"SANE", correct:false},
+    {label:"OSS", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>문제 지문에서 잡아야 할 두 가지 키워드는 <span class="key">사운드를 만들고 캡처하는 인터페이스</span>와 <span class="key">초기엔 Free Software였으나 나중에 사유화됨</span>이다. 두 번째 문장이 바로 정답을 가리키는 결정적 단서다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① ALSA</div>
+        <p>Advanced Linux Sound Architecture의 약자로, OSS를 대체하며 등장한 <b>현재 리눅스 표준 사운드 시스템</b>이다. 소리 출력, 녹음, 믹서 제어, MIDI 지원 기능을 담당한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② CUPS</div>
+        <p>Common UNIX Printing System. 이름 그대로 <b>프린터 관리 시스템</b>이며, lp / lpstat / cancel 같은 명령어를 사용한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ SANE</div>
+        <p>Scanner Access Now Easy. 문서·이미지 스캔 등 <b>스캐너 관리</b>를 담당하는 시스템이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ④ OSS</div>
+        <p>Open Sound System. 예전 UNIX/Linux가 쓰던 사운드 시스템으로, 초기엔 오픈소스였다가 이후 상용화되었다. 그 결과 Linux 진영은 이를 대체할 ALSA를 새로 개발했다.</p>
+      </div>
+    </div>
+
+    <h4>OSS → ALSA로 이어지는 흐름</h4>
+    <pre>OSS(무료) → 상용화 → Linux 진영의 대체 시스템 개발 → ALSA → 현재 리눅스 표준</pre>
+
+    <h4>구분 정리</h4>
+    <table class="ref">
+      <tr><th>약자</th><th>풀네임</th><th>역할</th></tr>
+      <tr><td class="mono">ALSA</td><td>Advanced Linux Sound Architecture</td><td>현재 사운드 시스템</td></tr>
+      <tr><td class="mono">OSS</td><td>Open Sound System</td><td>예전 사운드 시스템</td></tr>
+      <tr><td class="mono">CUPS</td><td>Common UNIX Printing System</td><td>프린터</td></tr>
+      <tr><td class="mono">SANE</td><td>Scanner Access Now Easy</td><td>스캐너</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 소리는 ALSA·OSS, 프린터는 CUPS, 스캐너는 SANE. 그리고 "예전 사운드=OSS, 현재 표준=ALSA"는 반드시 구분해서 기억하기.</div>
+  `
+},
+{
+  num: "07",
+  keyword: "apt-get purge — 설정파일까지 삭제",
+  rate: "정답률 61%",
+  title: "apt_purge.q",
+  question: "다음 중 데비안 계열 리눅스에서 환경 설정 파일도 포함해서 vsftpd 패키지를 제거하는 명령으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"apt-get purge vsftpd", correct:true},
+    {label:"apt-get remove vsftpd", correct:false},
+    {label:"apt-get erase vsftpd", correct:false},
+    {label:"apt-get delete vsftpd", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">환경 설정 파일도 포함해서 제거</span> — apt-get에는 삭제 명령이 두 가지 있고, 둘의 차이를 정확히 아는지를 묻는 문제다.</p>
+    <table class="ref">
+      <tr><th>명령어</th><th>삭제 대상</th></tr>
+      <tr><td class="mono">remove</td><td>프로그램만 삭제</td></tr>
+      <tr><td class="mono">purge</td><td>프로그램 + 설정 파일까지 삭제</td></tr>
+    </table>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① apt-get purge vsftpd</div>
+        <p>프로그램은 물론 <code>/etc</code> 아래 설정 파일까지 함께 삭제해 완전히 깨끗한 삭제를 수행한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② apt-get remove vsftpd</div>
+        <p>프로그램만 삭제되고 <code>/etc/vsftpd.conf</code> 같은 설정 파일은 남는다. 재설치 시 기존 설정을 그대로 쓰기 위해 남겨두는 것이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ apt-get erase</div>
+        <p>apt-get에는 존재하지 않는 명령. <code>erase</code>는 RPM 계열에서 쓰는 표현이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ apt-get delete</div>
+        <p>apt-get에는 존재하지 않는 명령이다.</p>
+      </div>
+    </div>
+
+    <h4>참고: vsftpd란?</h4>
+    <p>Very Secure FTP Daemon의 줄임말로, 파일 업/다운로드를 담당하는 <b>FTP 서버 프로그램</b>이다.</p>
+
+    <h4>시험에 같이 나오는 apt 명령어</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>기능</th></tr>
+      <tr><td class="mono">apt install</td><td>설치</td></tr>
+      <tr><td class="mono">apt remove</td><td>프로그램만 삭제</td></tr>
+      <tr><td class="mono">apt purge</td><td>프로그램 + 설정파일 삭제</td></tr>
+      <tr><td class="mono">apt update</td><td>저장소 목록 갱신</td></tr>
+      <tr><td class="mono">apt upgrade</td><td>설치된 패키지 업그레이드</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> remove = 프로그램만 제거, purge = 프로그램+설정파일까지 완전 제거. purge는 Debian 계열에서만 쓰는 개념이며, "환경 설정 파일까지 삭제"라는 문구가 나오면 곧바로 purge를 떠올리기.</div>
+  `
+},
+{
+  num: "08",
+  keyword: "rpm -e --nodeps — 의존성 무시 강제삭제",
+  rate: "정답률 62%",
+  title: "rpm_nodeps.q",
+  question: "다음 중 rpm 명령으로 의존성이 있는 패키지를 제거하는 명령으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"rpm -d nmap --nodeps", correct:false},
+    {label:"rpm -e nmap --nodeps", correct:true},
+    {label:"rpm erase nmap --nodeps", correct:false},
+    {label:"rpm delete nmap -nodeps", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>배경: RPM이란</h4>
+    <p>Ubuntu(Debian) 계열이 <code>apt</code> → <code>.deb</code> 패키지를 쓰듯, CentOS(Red Hat) 계열은 <code>yum</code>/<code>dnf</code> 내부에서 실제로 <b>RPM 패키지</b>를 설치한다. RPM은 Red Hat 계열의 패키지 형식이다.</p>
+
+    <h4>핵심 키워드: 의존성(Dependency)</h4>
+    <p>프로그램 A가 B를 필요로 하면 "A는 B에 의존한다"고 한다. 어떤 프로그램이 <code>nmap</code>을 사용 중일 때 <code>rpm -e nmap</code>을 실행하면 다른 프로그램이 깨질 수 있어 삭제가 거부된다. 이때 <code>--nodeps</code>를 붙이면 <span class="key">의존성 검사를 하지 말고 그냥 삭제</span>하라는 뜻이 되어 강제 삭제가 이루어진다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① rpm -d</div>
+        <p><code>-d</code>는 삭제(Delete) 옵션이 아니다. RPM의 삭제 옵션은 <code>-e</code>뿐이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② rpm -e nmap --nodeps</div>
+        <p><code>-e</code> = Erase(삭제), <code>--nodeps</code> = No Dependencies(의존성 검사 안 함). 둘을 합치면 의존성 무시하고 강제 삭제.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ rpm erase</div>
+        <p>RPM은 <code>erase</code>라는 단어를 그대로 쓰지 않는다. 반드시 <code>-e</code> 옵션 형태를 사용한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ rpm delete</div>
+        <p>존재하지 않는 옵션이다.</p>
+      </div>
+    </div>
+
+    <h4>자주 나오는 RPM 옵션</h4>
+    <table class="ref">
+      <tr><th>옵션</th><th>의미</th></tr>
+      <tr><td class="mono">-i</td><td>Install (설치)</td></tr>
+      <tr><td class="mono">-U</td><td>Upgrade (업그레이드)</td></tr>
+      <tr><td class="mono">-F</td><td>Freshen (설치된 것만 업데이트)</td></tr>
+      <tr><td class="mono">-e</td><td>Erase (삭제)</td></tr>
+      <tr><td class="mono">-q</td><td>Query (조회)</td></tr>
+      <tr><td class="mono">-V</td><td>Verify (검증)</td></tr>
+    </table>
+
+    <h4>Debian vs Red Hat 명령 비교</h4>
+    <table class="ref">
+      <tr><th>Debian(Ubuntu)</th><th>Red Hat(CentOS)</th></tr>
+      <tr><td class="mono">apt install</td><td class="mono">rpm -i / yum install</td></tr>
+      <tr><td class="mono">apt remove</td><td class="mono">rpm -e</td></tr>
+      <tr><td class="mono">apt purge</td><td>없음</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 삭제 옵션은 -e(Erase), --nodeps는 의존성 검사 없이 강제 삭제. <code>rpm -e 패키지명 --nodeps</code> 형태를 통째로 기억해두기.</div>
+  `
+},
+{
+  num: "13",
+  keyword: "온라인 패키지 도구 — rpm은 예외",
+  rate: "정답률 53%",
+  title: "online_pkg_mgr.q",
+  question: "다음 중 리눅스에서 사용되는 온라인 패키지 관리 도구로 거리가 먼 것은?",
+  quote: null,
+  options: [
+    {label:"dnf", correct:false},
+    {label:"rpm", correct:true},
+    {label:"zypper", correct:false},
+    {label:"apt-get", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드: "온라인"</h4>
+    <p>온라인 패키지 관리 도구란 <span class="key">인터넷 저장소(Repository)에 접속해 패키지를 다운로드·설치하는 도구</span>를 뜻한다. 예를 들어 <code>apt install nginx</code>를 실행하면 APT가 인터넷의 Ubuntu 저장소에 접속해 nginx를 내려받아 설치한다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ① dnf</div>
+        <p>Dandified YUM. Fedora/Rocky/AlmaLinux 등에서 쓰는 온라인 패키지 관리 도구다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② rpm</div>
+        <p>RPM Package Manager는 <code>rpm -ivh nginx.rpm</code>처럼 <b>이미 가지고 있는 패키지 파일을 직접 설치</b>하는 도구다. 인터넷 저장소에 접속하지 않으므로 온라인 도구가 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ③ zypper</div>
+        <p>SUSE Linux에서 사용하는 온라인 패키지 관리 도구다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ④ apt-get</div>
+        <p>Ubuntu(Debian)에서 사용하는 온라인 패키지 관리 도구다.</p>
+      </div>
+    </div>
+
+    <h4>rpm과 yum/dnf의 차이</h4>
+    <pre>rpm         : 이미 가진 .rpm 파일 → 설치 (rpm -ivh nginx.rpm)
+yum / dnf   : 인터넷 저장소 → 다운로드 → 설치</pre>
+    <p>Ubuntu도 구조는 동일하다. <code>dpkg</code>는 이미 있는 .deb 파일을 설치하는 저수준 도구이고, <code>apt</code>는 인터넷 저장소에서 내려받아 설치하는 온라인 도구다.</p>
+
+    <h4>온라인 도구 vs 저수준(로컬) 도구</h4>
+    <table class="ref">
+      <tr><th>온라인 패키지 관리자</th><th>직접 설치(로컬) 도구</th></tr>
+      <tr><td class="mono">apt / apt-get</td><td class="mono">dpkg</td></tr>
+      <tr><td class="mono">yum / dnf</td><td class="mono">rpm</td></tr>
+      <tr><td class="mono">zypper</td><td class="mono">rpm</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 한 줄 —</b> apt, yum, dnf, zypper는 인터넷(저장소)과 통신한다. rpm과 dpkg는 이미 가진 파일을 직접 다룰 뿐, 저장소에 접속하지 않는다.</div>
+  `
+},
+{
+  num: "14",
+  keyword: "레드햇 계열 도구 — zypper는 SUSE",
+  rate: "정답률 70%",
+  title: "redhat_family.q",
+  question: "다음 중 레드햇 계열 리눅스에서 사용되는 패키지 관리 도구로 거리가 먼 것은?",
+  quote: null,
+  options: [
+    {label:"dnf", correct:false},
+    {label:"rpm", correct:false},
+    {label:"zypper", correct:true},
+    {label:"yum", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>13번 문제와 달리 이번엔 "온라인이냐 아니냐"가 아니라 <span class="key">Red Hat 계열에서 사용하는가</span>를 묻는다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ① dnf</div>
+        <p>Fedora, Rocky Linux, AlmaLinux, 최근 CentOS 등 Red Hat 계열에서 사용한다. (<code>dnf install nginx</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ② rpm</div>
+        <p>Red Hat 계열의 기본 패키지 관리 프로그램이다. (<code>rpm -ivh nginx.rpm</code>, <code>rpm -e nginx</code>)</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ zypper</div>
+        <p><b>SUSE Linux 전용</b> 패키지 관리자로, Red Hat 계열과는 무관하다. (<code>zypper install nginx</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">해당</span> ④ yum</div>
+        <p>예전 CentOS에서 가장 많이 쓰던 패키지 관리자다. 지금은 dnf가 주로 쓰이지만 시험에서는 둘 다 Red Hat 계열로 기억하면 된다.</p>
+      </div>
+    </div>
+
+    <h4>헷갈리는 포인트: SUSE도 .rpm을 쓴다</h4>
+    <pre>Ubuntu : apt    → dpkg   → .deb
+Red Hat: yum/dnf → rpm    → .rpm
+SUSE   : zypper  → rpm    → .rpm</pre>
+    <p>즉 SUSE도 rpm <b>패키지 형식</b>은 그대로 사용하지만, 패키지를 관리하는 도구는 zypper라는 점이 핵심이다. rpm은 Red Hat만의 전유물이 아니라 RPM 계열 전체가 함께 쓰는 저수준 형식·도구다.</p>
+
+    <h4>배포판별 정리</h4>
+    <table class="ref">
+      <tr><th>배포판</th><th>패키지 관리자</th><th>패키지 형식</th></tr>
+      <tr><td>Ubuntu / Debian</td><td class="mono">apt</td><td class="mono">.deb</td></tr>
+      <tr><td>CentOS</td><td class="mono">yum, dnf</td><td class="mono">.rpm</td></tr>
+      <tr><td>Fedora / Rocky</td><td class="mono">dnf</td><td class="mono">.rpm</td></tr>
+      <tr><td>SUSE</td><td class="mono">zypper</td><td class="mono">.rpm</td></tr>
+    </table>
+
+    <div class="tip-box"><b>13번 vs 14번 비교 —</b> 13번은 "온라인 도구가 아닌 것"→rpm (로컬 도구라서). 14번은 "Red Hat 계열이 아닌 것"→zypper (SUSE 전용이라서). 한 줄 암기: Debian 계열→apt / Red Hat 계열→yum·dnf·rpm / SUSE 계열→zypper.</div>
+  `
+},
+{
+  num: "16",
+  keyword: "vi 검색 — / ? n N",
+  rate: "정답률 72%",
+  title: "vi_search.q",
+  question: "다음 (괄호) 안에 들어갈 내용으로 알맞은 것은?",
+  quote: "vi 편집기의 명령 모드 상태에서 특정 문자열을 아래 방향으로 검색하기 위해서는 (㉠) 기호를 선언한 뒤에 찾으려는 문자열 패턴을 덧붙여서 기재한다. 만약 다음 문자열을 찾으려면 (㉡) 키를 누르면 이동된다.",
+  options: [
+    {label:"㉠ / , ㉡ n", correct:true},
+    {label:"㉠ ? , ㉡ n", correct:false},
+    {label:"㉠ / , ㉡ N", correct:false},
+    {label:"㉠ ? , ㉡ N", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>외울 것은 딱 4개</h4>
+    <table class="ref">
+      <tr><th>기능</th><th>명령</th></tr>
+      <tr><td>아래 방향 검색</td><td class="mono">/</td></tr>
+      <tr><td>위 방향 검색</td><td class="mono">?</td></tr>
+      <tr><td>같은 방향으로 다음 검색</td><td class="mono">n</td></tr>
+      <tr><td>반대 방향으로 검색</td><td class="mono">N</td></tr>
+    </table>
+
+    <h4>/ 와 ? 의 차이</h4>
+    <pre>1 apple
+2 banana
+3 orange
+4 banana
+5 grape</pre>
+    <p>커서가 1번 줄에 있을 때 <code>/banana</code>를 입력하면 <b>아래로</b> 내려가 2번 줄에서 멈춘다. 반대로 커서가 5번 줄에 있을 때 <code>?banana</code>를 입력하면 <b>위로</b> 올라가 4번 줄에서 멈춘다.</p>
+
+    <h4>n 과 N 의 차이 (가장 헷갈리는 부분)</h4>
+    <p><code>/banana</code>로 검색해 2번 줄 banana를 찾은 상태에서 <code>n</code>을 누르면 같은 방향(아래)으로 계속 검색해 4번 줄로 이동한다. 반대로 <code>N</code>을 누르면 반대 방향(위)으로 검색해 다시 2번 줄로 돌아간다.</p>
+    <p><span class="key">n = 방금 검색한 방향을 그대로 유지</span> / <span class="key">N = 방금 검색한 방향의 반대로 이동</span> 이 정확한 원리이며, "n=아래, N=위"로 외우는 것은 틀린 암기법이다. 예를 들어 <code>?apple</code>로 검색했다면 n은 위로, N은 아래로 이동한다.</p>
+
+    <h4>문제 풀이</h4>
+    <p>"아래 방향으로 검색"이므로 ㉠은 <code>/</code>. "다음 문자열"이므로 같은 방향 유지 → ㉡은 <code>n</code>. 따라서 정답은 <b>1번</b>이다.</p>
+
+    <div class="tip-box"><b>암기 한 줄 —</b> / ↓ (아래), ? ↑ (위), n = 같은 방향 유지, N = 반대 방향.</div>
+  `
+},
+{
+  num: "17",
+  keyword: "vi 치환 — $ 정규식 줄끝",
+  rate: "정답률 78%",
+  title: "vi_substitute.q",
+  question: "다음 중 vi 편집기에서 linux로 끝나는 줄의 마지막에 마침표(.)를 덧붙이도록 치환하는 명령으로 알맞은 것은?",
+  quote: "예: I like linux → I like linux.",
+  options: [
+    {label:":% s/linux./linux$/", correct:false},
+    {label:":% s/linux$/linux./", correct:true},
+    {label:":% s/linux/linux./", correct:false},
+    {label:":% s/linux/linux$/", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>치환 명령 기본 문법</h4>
+    <pre>:[범위] s/찾을문자열/바꿀문자열/</pre>
+    <p><code>:</code>는 ex 명령 시작, <code>%</code>는 파일 전체(모든 줄), <code>s</code>는 substitute(치환)를 의미한다.</p>
+
+    <h4>핵심은 $ 기호</h4>
+    <p>정규표현식에서 <code>$</code>는 <span class="key">줄의 끝(End of Line)</span>을 의미한다. 즉 <code>linux$</code>는 "줄의 마지막이 정확히 linux로 끝나는 경우"만 뜻한다. <code>hello linux</code>는 매칭되지만, <code>linux good</code>은 linux 뒤에 문자가 더 있으므로 매칭되지 않는다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① :% s/linux./linux$/</div>
+        <p>"linux." → "linux$"로 바꾸라는 뜻으로, 문제 요구와 완전히 반대다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② :% s/linux$/linux./</div>
+        <p>줄 끝의 linux를 linux.으로 바꾼다. 문제에서 요구한 그대로다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ :% s/linux/linux./</div>
+        <p>줄 위치와 상관없이 linux가 나오는 모든 곳을 바꿔버린다. 예를 들어 <code>linux good</code>도 <code>linux. good</code>이 되어버려 "linux로 끝나는 줄"이라는 조건을 만족하지 못한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ :% s/linux/linux$/</div>
+        <p>linux라는 문자를 문자 그대로 "linux$"라는 텍스트로 바꾸는 것일 뿐, 줄 끝 조건과는 무관하다.</p>
+      </div>
+    </div>
+
+    <h4>실제 예시</h4>
+    <pre>원본
+hello linux
+linux is good
+ubuntu linux
+
+명령: :%s/linux$/linux./
+
+결과
+hello linux.
+linux is good
+ubuntu linux.</pre>
+
+    <h4>시험에 꼭 나오는 정규표현식 기호</h4>
+    <table class="ref">
+      <tr><th>기호</th><th>의미</th></tr>
+      <tr><td class="mono">^</td><td>줄의 시작</td></tr>
+      <tr><td class="mono">$</td><td>줄의 끝</td></tr>
+      <tr><td class="mono">.</td><td>임의의 문자 1개</td></tr>
+      <tr><td class="mono">*</td><td>0개 이상 반복</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> ^ → 시작(Start), $ → 끝(End). vi 치환 명령은 항상 <code>:[범위] s/찾을문자열/바꿀문자열/</code> 형태. 이 문제의 ^ , $ 개념은 grep · sed · awk 문제에서도 그대로 재사용된다.</div>
+  `
+},
+{
+  num: "18",
+  keyword: "편집기 개발자 — vi·Emacs·Vim",
+  rate: "정답률 80%",
+  title: "editor_authors.q",
+  question: "다음 중 emacs 편집기를 개발한 인물로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"빌 조이", correct:false},
+    {label:"리처드 스톨만", correct:true},
+    {label:"브람 브레나르", correct:false},
+    {label:"귀도 반 로섬", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>시험에서는 <span class="key">편집기와 개발자를 연결</span>해 자주 출제한다. 꼭 외워야 할 3명은 다음과 같다.</p>
+    <table class="ref">
+      <tr><th>편집기</th><th>개발자</th></tr>
+      <tr><td class="mono">vi</td><td>빌 조이 (Bill Joy)</td></tr>
+      <tr><td class="mono">Emacs</td><td>리처드 스톨만 (Richard Stallman)</td></tr>
+      <tr><td class="mono">Vim</td><td>브람 브레나르 (Bram Moolenaar)</td></tr>
+    </table>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① 빌 조이</div>
+        <p>UNIX에서 가장 오래되고 유명한 편집기 중 하나인 <code>vi</code>를 만든 사람이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② 리처드 스톨만</div>
+        <p>GNU 프로젝트를 시작하고 자유 소프트웨어 운동(Free Software Movement)을 창시했으며, <b>Emacs</b> 편집기를 만들었다. "GNU/Linux"의 GNU를 만든 사람이 바로 이 인물이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ 브람 브레나르</div>
+        <p>vi를 개선한 <b>Vim(Vi Improved)</b>을 만든 사람이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ 귀도 반 로섬</div>
+        <p><b>Python</b> 언어를 만든 사람으로, 편집기와는 관계가 없다.</p>
+      </div>
+    </div>
+
+    <h4>시험에 꼭 나오는 인물-업적 매칭</h4>
+    <table class="ref">
+      <tr><th>인물</th><th>업적</th></tr>
+      <tr><td>리누스 토르발스</td><td>Linux 커널</td></tr>
+      <tr><td>리처드 스톨만</td><td>Emacs, GNU 프로젝트</td></tr>
+      <tr><td>빌 조이</td><td>vi 편집기</td></tr>
+      <tr><td>브람 브레나르</td><td>Vim 편집기</td></tr>
+      <tr><td>귀도 반 로섬</td><td>Python</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 이 다섯 명(리누스 토르발스·리처드 스톨만·빌 조이·브람 브레나르·귀도 반 로섬)만 정확히 구분해도 인물 관련 문제는 대부분 해결된다.</div>
+  `
+},
+{
+  num: "21",
+  keyword: "kill %job — Job 번호 vs PID",
+  rate: "정답률 70%",
+  title: "kill_job_number.q",
+  question: "다음 중 작업번호가 2번인 백그라운드 프로세스를 종료시키는 명령으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"kill 2", correct:false},
+    {label:"kill %2", correct:true},
+    {label:"kill -j 2", correct:false},
+    {label:"kill -b 2", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>이 문제는 <span class="key">PID(Process ID)</span>와 <span class="key">Job 번호</span>를 구분할 줄 아는지 묻는다. 백그라운드로 실행하면(<code>sleep 100 &amp;</code>) <code>[1] 12345</code>처럼 출력되는데, <code>[1]</code>은 Job 번호, <code>12345</code>는 PID다.</p>
+
+    <h4>Job 번호 확인 vs 종료</h4>
+    <pre>jobs 명령으로 확인
+[1]- Running sleep 100 &
+[2]+ Running vim &</pre>
+    <p>PID를 종료할 땐 그냥 <code>kill 12345</code>처럼 숫자만 쓰지만, Job 번호를 종료할 땐 반드시 <code>%</code>를 붙여 <code>kill %2</code>처럼 써야 한다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① kill 2</div>
+        <p>PID가 2인 프로세스를 종료하라는 뜻이다. Job 번호가 아니다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② kill %2</div>
+        <p><code>%</code>는 Job 번호를 의미한다. Job 번호가 2인 백그라운드 작업을 종료한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ kill -j 2</div>
+        <p>존재하지 않는 옵션이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ kill -b 2</div>
+        <p>존재하지 않는 옵션이다.</p>
+      </div>
+    </div>
+
+    <h4>같이 외우면 좋은 명령어</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>기능</th></tr>
+      <tr><td class="mono">jobs</td><td>Job 번호 확인</td></tr>
+      <tr><td class="mono">bg</td><td>백그라운드 실행</td></tr>
+      <tr><td class="mono">fg</td><td>포그라운드 실행</td></tr>
+      <tr><td class="mono">kill PID</td><td>PID 종료</td></tr>
+      <tr><td class="mono">kill %Job번호</td><td>Job 종료</td></tr>
+    </table>
+
+    <p>Job 번호는 <b>현재 터미널에서 실행한 백그라운드 작업</b>에만 존재하는 번호이고, PID는 컴퓨터 전체에서 유일한 번호라는 점도 함께 기억해두면 좋다.</p>
+
+    <div class="tip-box"><b>암기 팁 —</b> 숫자만 쓰면 PID, <code>%</code>를 붙이면 Job 번호. "작업번호(Job 번호)"라는 표현이 나오면 반드시 <code>%</code>를 떠올릴 것.</div>
+  `
+},
+{
+  num: "28",
+  keyword: "jobs vs ps — 백그라운드 목록 확인",
+  rate: null,
+  title: "jobs_command.q",
+  question: "다음 중 사용자가 본인이 실행한 백그라운드 프로세스 목록을 확인하는 명령어로 가장 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"ps", correct:false},
+    {label:"bg", correct:false},
+    {label:"jobs", correct:true},
+    {label:"exec", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">본인이 실행한 백그라운드 프로세스 목록</span> — 여기서 중요한 단어는 "백그라운드(Background)"다. <code>sleep 100 &amp;</code>처럼 끝에 <code>&amp;</code>를 붙이면 백그라운드에서 실행되고 <code>[1] 12345</code>처럼 Job 번호와 PID가 함께 출력된다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① ps</div>
+        <p>Process Status의 줄임말로 프로세스 정보를 보여준다. <code>ps</code>는 현재 실행 중인 프로세스, <code>ps -ef</code>는 시스템 전체 프로세스를 보여주지만 <b>Job 목록을 확인하는 명령은 아니다.</b></p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② bg</div>
+        <p>Background의 줄임말로, <code>Ctrl+Z</code>로 멈춰 있는 작업을 다시 백그라운드에서 실행시키는 명령이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ jobs</div>
+        <p>현재 쉘(Bash)에서 실행한 백그라운드 작업 목록을 보여준다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ exec</div>
+        <p>현재 쉘을 다른 프로그램으로 교체하는 명령으로, 백그라운드 목록과는 무관하다.</p>
+      </div>
+    </div>
+
+    <h4>ps vs jobs</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>보여주는 대상</th></tr>
+      <tr><td class="mono">ps</td><td>프로세스(PID) 전반</td></tr>
+      <tr><td class="mono">jobs</td><td>현재 쉘의 백그라운드 작업(Job)</td></tr>
+    </table>
+
+    <h4>bg / fg / jobs 세트로 기억하기</h4>
+    <pre>sleep 100 실행 중
+  → Ctrl+Z (멈춤)
+  → bg (백그라운드로 재실행)
+  → fg (다시 화면 앞으로 가져오기)</pre>
+
+    <div class="tip-box"><b>암기 팁 —</b> Process를 보고 싶으면 <code>ps</code>, Job을 보고 싶으면 <code>jobs</code>. 문제에 "백그라운드 작업(Job)"이라는 표현이 나오면 거의 항상 <code>jobs</code>를 떠올리기.</div>
+  `
+},
+{
+  num: "29",
+  keyword: "시그널 번호 순서 — INT·KILL·TERM·TSTP",
+  rate: null,
+  title: "signal_order.q",
+  question: "다음 보기의 시그널을 번호값이 낮은 순부터 높은 순으로 정렬했을 때 세 번째에 해당하는 시그널 이름으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"SIGTSTP", correct:false},
+    {label:"SIGKILL", correct:false},
+    {label:"SIGINT", correct:false},
+    {label:"SIGTERM", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>먼저 시그널(Signal)이란?</h4>
+    <p>시그널은 <span class="key">프로세스에게 보내는 신호</span>다. 예를 들어 <code>kill 1234</code>를 실행하면 실제로는 "1234번 프로세스야, 종료해"라는 신호를 보내는 것이다.</p>
+
+    <h4>시험에 자주 나오는 시그널 번호</h4>
+    <table class="ref">
+      <tr><th>번호</th><th>시그널</th><th>의미</th></tr>
+      <tr><td class="mono">2</td><td>SIGINT</td><td>인터럽트 (Ctrl+C)</td></tr>
+      <tr><td class="mono">9</td><td>SIGKILL</td><td>강제 종료</td></tr>
+      <tr><td class="mono">15</td><td>SIGTERM</td><td>정상 종료 요청</td></tr>
+      <tr><td class="mono">20</td><td>SIGTSTP</td><td>일시정지 (Ctrl+Z)</td></tr>
+    </table>
+
+    <h4>번호 순으로 정렬</h4>
+    <pre>① SIGINT   (2)
+② SIGKILL  (9)
+③ SIGTERM  (15)  ← 세 번째, 정답
+④ SIGTSTP  (20)</pre>
+
+    <h4>각 시그널의 의미</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">2번</span> SIGINT (Interrupt)</div>
+        <p><code>Ctrl+C</code>를 누르면 발생하며, 프로그램에게 "중단해"라고 요청한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">9번</span> SIGKILL</div>
+        <p><code>kill -9 PID</code>로 보내는 강제 종료 신호. 프로그램이 거부할 수 없는 <b>무조건 종료</b>다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">15번 · 정답</span> SIGTERM (Terminate)</div>
+        <p><code>kill PID</code>는 사실 <code>kill -15 PID</code>와 같다. "정상적으로 종료해"라고 요청하는 것으로, 프로그램이 로그 저장·파일 정리 등을 마치고 종료할 시간을 준다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">20번</span> SIGTSTP (Terminal Stop)</div>
+        <p><code>Ctrl+Z</code>를 누르면 발생하며, 프로세스를 종료하는 게 아니라 <b>잠깐 멈춘다.</b></p>
+      </div>
+    </div>
+
+    <h4>SIGTERM vs SIGKILL</h4>
+    <pre>SIGTERM: "정리하고 종료해" → 로그 저장 → 파일 닫기 → 종료
+SIGKILL: "지금 당장 죽어"   → 즉시 종료 (정리할 시간 없음)</pre>
+
+    <h4>Ctrl+C vs Ctrl+Z</h4>
+    <table class="ref">
+      <tr><th>키</th><th>시그널</th><th>결과</th></tr>
+      <tr><td class="mono">Ctrl+C</td><td>SIGINT</td><td>종료</td></tr>
+      <tr><td class="mono">Ctrl+Z</td><td>SIGTSTP</td><td>일시정지</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> <code>kill PID</code> = SIGTERM(15) 전송, <code>kill -9 PID</code> = SIGKILL(9) 전송. 그리고 Ctrl+C → SIGINT, Ctrl+Z → SIGTSTP도 함께 기억해두기.</div>
+  `
+},
+{
+  num: "40",
+  keyword: "fstab 첫 번째 필드 — 장치 vs 마운트포인트",
+  rate: "정답률 60%",
+  title: "fstab_field.q",
+  question: "다음 중 /etc/fstab 파일의 첫 번째 필드에 설정할 수 있는 값으로 틀린 것은?",
+  quote: null,
+  options: [
+    {label:"UUID", correct:false},
+    {label:"LABEL", correct:false},
+    {label:"마운트 포인트", correct:true},
+    {label:"장치 파일명", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>/etc/fstab 구조 — 6개 필드</h4>
+    <pre>장치정보   마운트포인트   파일시스템   옵션   dump   fsck</pre>
+    <table class="ref">
+      <tr><th>필드</th><th>의미</th></tr>
+      <tr><td class="mono">1</td><td>장치(Device) — UUID, LABEL, /dev/sda1</td></tr>
+      <tr><td class="mono">2</td><td>마운트 포인트 — /, /home, /boot</td></tr>
+      <tr><td class="mono">3</td><td>파일 시스템 종류 — ext4, xfs 등</td></tr>
+      <tr><td class="mono">4</td><td>마운트 옵션 — defaults, ro, rw 등</td></tr>
+      <tr><td class="mono">5</td><td>dump 백업 여부</td></tr>
+      <tr><td class="mono">6</td><td>fsck 검사 순서</td></tr>
+    </table>
+
+    <h4>예시</h4>
+    <pre>UUID=1234-5678   /data   ext4   defaults   0   2</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">가능</span> ① UUID</div>
+        <p><code>UUID=1234-5678</code> 형태로 첫 번째 필드에 올 수 있으며, 실무에서 가장 많이 사용하는 방법이다. 장치 이름(<code>/dev/sda1</code> 등)이 바뀌어도 UUID는 디스크 고유값이라 그대로 유지된다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">가능</span> ② LABEL</div>
+        <p><code>LABEL=DATA</code>처럼 디스크에 이름을 붙여 사용하는 방법으로, 첫 번째 필드에 올 수 있다. UUID가 너무 길어서 사람이 알아보기 쉽게 이름을 붙이는 용도다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ 마운트 포인트</div>
+        <p><code>/boot</code>, <code>/home</code>, <code>/data</code> 같은 마운트 포인트는 <b>두 번째 필드</b>에 들어가는 값이다. 첫 번째 필드에는 올 수 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">가능</span> ④ 장치 파일명</div>
+        <p><code>/dev/sda1</code>처럼 장치 파일명을 직접 지정하는 방법으로, 첫 번째 필드에 올 수 있다.</p>
+      </div>
+    </div>
+
+    <div class="tip-box"><b>암기 팁 —</b> 1번째 필드 = "무엇을(Device) 마운트할 것인가?" (UUID, LABEL, /dev/sda1) / 2번째 필드 = "어디에(Mount Point) 마운트할 것인가?" (/, /home, /boot). 실무에서는 장치 파일명보다 UUID를 가장 많이 사용한다.</div>
+  `
+},
+{
+  num: "43",
+  keyword: "blkid — UUID·TYPE 확인 명령",
+  rate: "정답률 59%",
+  title: "blkid_command.q",
+  question: "다음 결과에 해당하는 명령어로 알맞은 것은?",
+  quote: "/dev/sda1: UUID=\"7e14520d-725e-424b-917e-ccdac407276f\" TYPE=\"xfs\"\n/dev/sda2: UUID=\"06dc516e-68cd-401f-af90-d72576003484\" TYPE=\"swap\"",
+  quoteCode: true,
+  options: [
+    {label:"lsblk", correct:false},
+    {label:"blkid", correct:true},
+    {label:"fdisk", correct:false},
+    {label:"uuid", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>출력 결과에서 잡아야 할 핵심은 <span class="key">UUID</span>와 <span class="key">TYPE</span> 두 가지다. 이 정보를 출력하는 대표 명령어가 <code>blkid</code>(Block ID)이며, 블록 장치(HDD, SSD, USB 등)의 식별 정보를 보여준다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① lsblk</div>
+        <p>List Block Devices. 디스크 구조를 트리 형태로 보여주지만 UUID는 기본적으로 출력되지 않는다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② blkid</div>
+        <p>UUID와 파일 시스템(TYPE)을 함께 확인할 수 있는 명령이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ fdisk</div>
+        <p>파티션 생성·삭제를 담당하는 명령으로, UUID 출력 명령이 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ uuid</div>
+        <p>존재하지 않는 명령이다.</p>
+      </div>
+    </div>
+
+    <h4>blkid vs lsblk</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>확인 대상</th></tr>
+      <tr><td class="mono">blkid</td><td>UUID, LABEL, TYPE (식별 정보 중심)</td></tr>
+      <tr><td class="mono">lsblk</td><td>디스크 및 파티션 구조 (트리 형태)</td></tr>
+      <tr><td class="mono">fdisk</td><td>파티션 생성/삭제</td></tr>
+    </table>
+
+    <h4>fstab과의 연결</h4>
+    <p><code>/etc/fstab</code>에 <code>UUID=xxxx</code>를 적을 때, 그 UUID 값을 확인하는 명령이 바로 <code>blkid</code>다. 즉 <code>blkid</code>로 UUID를 확인한 뒤 <code>fstab</code>에 작성하는 흐름이다.</p>
+
+    <h4>자주 나오는 파일 시스템 TYPE</h4>
+    <table class="ref">
+      <tr><th>파일 시스템</th><th>설명</th></tr>
+      <tr><td class="mono">ext4</td><td>가장 많이 사용하는 Linux 파일 시스템</td></tr>
+      <tr><td class="mono">xfs</td><td>대용량 파일 처리에 강함 (RHEL/CentOS 기본)</td></tr>
+      <tr><td class="mono">swap</td><td>가상 메모리(Swap 영역)</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> <code>blkid</code> = Block ID = UUID 확인, <code>lsblk</code> = List Block = 디스크 구조 확인. UUID는 <code>/etc/fstab</code>에서 디스크를 지정할 때 가장 많이 사용된다.</div>
+  `
+},
+{
+  num: "44",
+  keyword: "repquota — 전체 사용자 Quota 보고서",
+  rate: "정답률 49%",
+  title: "repquota_command.q",
+  question: "다음 그림에 해당하는 명령어로 알맞은 것은?",
+  quote: "Block grace time: 7days; Inode grace time: 7days\n\nUser     used  soft  hard  grace   used  soft  hard  grace\nroot       --     0     0     0       3     0     0\nalim       --    12 102400 112640     7     0     0\njoon2      --    12     0     0       7     0     0",
+  quoteCode: true,
+  options: [
+    {label:"quota", correct:false},
+    {label:"edquota", correct:false},
+    {label:"repquota", correct:true},
+    {label:"xfs_quota", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>그림에 <span class="key">여러 사용자(root, alim, joon2)</span>의 Quota 현황이 표 형태로 나열되어 있다. 이런 보고서를 출력하는 명령이 <code>repquota</code>(Report Quota)다.</p>
+
+    <h4>Quota란?</h4>
+    <p>사용자마다 디스크 사용량을 제한하는 기능이다. 예를 들어 학생 100명이 서버를 함께 쓸 때 한 명당 최대 2GB로 제한을 두는 식이다.</p>
+
+    <h4>그림에 나오는 항목</h4>
+    <table class="ref">
+      <tr><th>항목</th><th>의미</th></tr>
+      <tr><td class="mono">used</td><td>현재 사용량</td></tr>
+      <tr><td class="mono">soft</td><td>소프트 제한 — 넘을 수 있지만 유예기간(grace) 있음</td></tr>
+      <tr><td class="mono">hard</td><td>하드 제한 — 절대 초과 불가</td></tr>
+      <tr><td class="mono">grace</td><td>유예기간 — 이 기간 안엔 soft limit 초과 허용</td></tr>
+    </table>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① quota</div>
+        <p>현재 사용자 <b>본인</b>의 Quota만 확인한다. 여러 사용자를 한 번에 보여주지 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② edquota</div>
+        <p>Quota를 <b>설정(Edit)</b>하는 명령이다. 예: <code>edquota jinkyung</code></p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ repquota</div>
+        <p><b>모든 사용자</b>의 Quota 현황을 보고서(Report) 형태로 출력한다. rep = Report의 줄임말이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ xfs_quota</div>
+        <p>XFS 파일 시스템 전용 Quota 관리 명령이다.</p>
+      </div>
+    </div>
+
+    <h4>Quota 관련 명령 정리</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>기능</th></tr>
+      <tr><td class="mono">quota</td><td>현재 사용자 Quota 조회</td></tr>
+      <tr><td class="mono">edquota</td><td>Quota 설정/수정</td></tr>
+      <tr><td class="mono">repquota</td><td>전체 사용자 Quota 보고서 출력</td></tr>
+      <tr><td class="mono">quotaon</td><td>Quota 활성화</td></tr>
+      <tr><td class="mono">quotaoff</td><td>Quota 비활성화</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> quota = 내 것만, edquota = Edit(수정), repquota = Report(전체 보고서). Soft는 유예기간이 있고, Hard는 절대 초과할 수 없다는 점도 함께 기억하기.</div>
+  `
+},
+{
+  num: "45",
+  keyword: "umask 계산 — 666/777에서 빼기",
+  rate: "정답률 69%",
+  title: "umask_calc.q",
+  question: "다음 중 설정된 umask 값이 0022일 경우 생성되는 파일의 허가권 값으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"-rw-r--r--", correct:true},
+    {label:"-rw-rw-r--", correct:false},
+    {label:"-rwxr-xr-x", correct:false},
+    {label:"-rwxrwxr-x", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>umask란?</h4>
+    <p><span class="key">기본 권한에서 빼는(Mask) 값</span>. 새 파일이나 디렉터리를 만들 때 어떤 권한을 제거할지 결정한다.</p>
+
+    <h4>기본 권한은 항상 정해져 있다</h4>
+    <table class="ref">
+      <tr><th>생성 대상</th><th>기본 권한</th><th>이유</th></tr>
+      <tr><td>파일(File)</td><td class="mono">666 (rw-rw-rw-)</td><td>처음부터 실행(x) 권한은 필요 없음</td></tr>
+      <tr><td>디렉터리(Directory)</td><td class="mono">777 (rwxrwxrwx)</td><td>실행(x) 권한이 있어야 안으로 들어갈 수 있음</td></tr>
+    </table>
+
+    <h4>계산: 기본 권한 − umask</h4>
+    <pre>  666
+- 022
+-----
+  644</pre>
+    <p>644를 숫자→문자로 바꾸면 <code>6→rw-</code>, <code>4→r--</code>, <code>4→r--</code> 이므로 <b>-rw-r--r--</b>가 된다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① -rw-r--r-- (644)</div>
+        <p>666 − 022 = 644. 문제에서 요구한 그대로다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② -rw-rw-r-- (664)</div>
+        <p>umask 002일 때 나오는 값이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ -rwxr-xr-x (755)</div>
+        <p>디렉터리에 umask 022를 적용했을 때(777−022) 나오는 값이다. 파일이 아니라 디렉터리의 결과다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ -rwxrwxr-x (775)</div>
+        <p>umask 002를 디렉터리에 적용했을 때 나오는 값이다.</p>
+      </div>
+    </div>
+
+    <h4>숫자 ↔ 권한 변환표</h4>
+    <table class="ref">
+      <tr><th>숫자</th><th>권한</th></tr>
+      <tr><td class="mono">7</td><td>rwx</td></tr>
+      <tr><td class="mono">6</td><td>rw-</td></tr>
+      <tr><td class="mono">5</td><td>r-x</td></tr>
+      <tr><td class="mono">4</td><td>r--</td></tr>
+      <tr><td class="mono">3</td><td>-wx</td></tr>
+      <tr><td class="mono">2</td><td>-w-</td></tr>
+      <tr><td class="mono">1</td><td>--x</td></tr>
+      <tr><td class="mono">0</td><td>---</td></tr>
+    </table>
+
+    <h4>자주 출제되는 umask 조합</h4>
+    <table class="ref">
+      <tr><th>umask</th><th>파일</th><th>디렉터리</th></tr>
+      <tr><td class="mono">022</td><td>644</td><td>755</td></tr>
+      <tr><td class="mono">002</td><td>664</td><td>775</td></tr>
+      <tr><td class="mono">027</td><td>640</td><td>750</td></tr>
+      <tr><td class="mono">077</td><td>600</td><td>700</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 파일은 666에서, 디렉터리는 777에서 시작. umask는 권한을 더하는 게 아니라 "빼는" 값이다. 시험에서는 <b>umask 022</b>가 가장 자주 나온다 (파일 644, 디렉터리 755).</div>
+  `
+},
+{
+  num: "46",
+  keyword: "특수 권한 — SetUID·SetGID·Sticky",
+  rate: "정답률 60%",
+  title: "special_permission.q",
+  question: "project 그룹에 속한 사용자들이 /project 디렉터리에서 파일 생성은 자유로우나 삭제는 본인이 생성한 파일만 가능하도록, 또한 파일 생성 시 자동으로 그룹 소유권이 project로 부여되도록 설정하려고 한다. 알맞은 명령은?",
+  quote: null,
+  options: [
+    {label:"chmod 1770 /project", correct:false},
+    {label:"chmod 2770 /project", correct:false},
+    {label:"chmod 3770 /project", correct:true},
+    {label:"chmod 5770 /project", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>문제를 두 조건으로 나누기</h4>
+    <p>문제 지문의 두 문장이 각각 다른 특수 권한을 가리킨다.</p>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head">"본인이 생성한 파일만 삭제 가능"</div>
+        <p>→ <span class="key">Sticky Bit</span> (숫자 1)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head">"파일 생성 시 자동으로 그룹 소유권이 project로 부여"</div>
+        <p>→ <span class="key">SetGID</span> (숫자 2)</p>
+      </div>
+    </div>
+    <p>따라서 이 문제는 Sticky Bit + SetGID를 동시에 설정해야 하며, <code>1 + 2 = 3</code>이므로 <b>3770</b>이 된다.</p>
+
+    <h4>Sticky Bit란?</h4>
+    <p>여러 사람이 함께 쓰는 폴더에서, Sticky Bit가 없으면 다른 사람의 파일도 삭제할 수 있다. Sticky Bit를 설정하면 <b>자기 파일만 삭제 가능</b>해진다. 대표 예시가 <code>/tmp</code>이며 <code>ls -ld /tmp</code>를 하면 맨 끝에 <code>t</code>가 붙은 <code>drwxrwxrwt</code>를 볼 수 있다.</p>
+
+    <h4>SetGID란?</h4>
+    <p>디렉터리에 SetGID를 설정하면, 그 안에 새 파일을 만들 때 <b>디렉터리의 그룹을 자동으로 상속</b>받는다. 예를 들어 철수의 기본 그룹이 staff여도, SetGID가 걸린 /project 안에서 파일을 만들면 그룹이 자동으로 project가 된다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① 1770 — Sticky만</div>
+        <p>Sticky Bit는 있지만 SetGID가 없어 그룹 자동 상속 조건을 만족하지 못한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② 2770 — SetGID만</div>
+        <p>SetGID는 있지만 Sticky Bit가 없어 "본인 파일만 삭제" 조건을 만족하지 못한다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ 3770 — Sticky + SetGID</div>
+        <p>두 조건을 모두 만족한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ 5770 — SetUID + Sticky</div>
+        <p>SetUID(4)와 Sticky(1)의 조합이다. SetUID는 디렉터리에서는 거의 사용하지 않으며, 그룹 자동 상속 기능도 없다.</p>
+      </div>
+    </div>
+
+    <h4>특수 권한 숫자</h4>
+    <table class="ref">
+      <tr><th>숫자</th><th>이름</th><th>핵심 기능</th></tr>
+      <tr><td class="mono">4</td><td>SetUID</td><td>실행 시 파일 소유자 권한으로 실행 (예: passwd)</td></tr>
+      <tr><td class="mono">2</td><td>SetGID</td><td>디렉터리에서 새 파일의 그룹 자동 상속</td></tr>
+      <tr><td class="mono">1</td><td>Sticky Bit</td><td>디렉터리에서 자기 파일만 삭제 가능 (예: /tmp)</td></tr>
+    </table>
+
+    <h4>조합 예시</h4>
+    <table class="ref">
+      <tr><th>권한</th><th>의미</th></tr>
+      <tr><td class="mono">1777</td><td>Sticky</td></tr>
+      <tr><td class="mono">2775</td><td>SetGID</td></tr>
+      <tr><td class="mono">3770</td><td>Sticky + SetGID</td></tr>
+      <tr><td class="mono">4755</td><td>SetUID</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> "자기 파일만 삭제 가능" → Sticky(1), "새 파일의 그룹 자동 상속" → SetGID(2). 둘 다 필요하면 3xxx를 떠올리기.</div>
+  `
+},
+{
+  num: "47",
+  keyword: "chmod g=r — 기호 방식(=)은 덮어쓰기",
+  rate: "정답률 76%",
+  title: "chmod_symbolic.q",
+  question: "다음 명령의 결과로 설정되는 lin.txt 파일의 허가권 값으로 알맞은 것은?",
+  quote: "[posein@www ~]$ ls -l lin.txt\n-rw-rw-r--. 1 posein posein 81 Jun 28 17:09 lin.txt\n\n[posein@www ~]$ chmod g=r lin.txt",
+  quoteCode: true,
+  options: [
+    {label:"----r-----", correct:false},
+    {label:"-r--r--r--", correct:false},
+    {label:"-rw-r--r--", correct:true},
+    {label:"-rw-rw----", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드: = 연산자</h4>
+    <p><code>chmod</code>의 기호(Symbolic) 방식에서 <span class="key">=</span>는 <b>권한을 새로 지정(덮어쓰기)</b>한다는 뜻이다. <code>+</code>나 <code>-</code>처럼 기존 권한에 더하거나 빼는 게 아니라, 지정한 권한으로 완전히 교체한다.</p>
+
+    <h4>현재 권한 확인</h4>
+    <pre>-rw-rw-r--
+   ↑    ↑    ↑
+ 소유자  그룹  기타
+  rw-   rw-   r--</pre>
+    <p>숫자로는 <code>664</code>이며, 그룹(g)의 현재 권한은 <code>rw-</code>이다.</p>
+
+    <h4>명령 분석: chmod g=r</h4>
+    <table class="ref">
+      <tr><th>구성 요소</th><th>의미</th></tr>
+      <tr><td class="mono">g</td><td>Group(그룹)을 대상으로</td></tr>
+      <tr><td class="mono">=</td><td>권한을 새로 지정 (기존 권한 완전 대체)</td></tr>
+      <tr><td class="mono">r</td><td>읽기(Read)만 허용</td></tr>
+    </table>
+    <p>즉 그룹의 기존 권한 <code>rw-</code>가 <code>r--</code>로 바뀐다 — 쓰기(w) 권한이 사라진다. 소유자와 기타 권한은 명령에서 언급되지 않았으므로 그대로 유지된다.</p>
+
+    <h4>최종 결과</h4>
+    <pre>소유자: rw- (그대로)
+그룹  : rw- → r--  (쓰기 제거)
+기타  : r-- (그대로)
+
+결과: -rw-r--r--  (644)</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① ----r-----</div>
+        <p>소유자 권한까지 사라진 전혀 다른 권한이다. 명령에서 소유자(u)는 건드리지 않았다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② -r--r--r--</div>
+        <p>소유자의 쓰기 권한까지 없어졌다. <code>chmod g=r</code>은 그룹만 대상으로 하므로 소유자 권한은 <code>rw-</code> 그대로 유지돼야 한다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ -rw-r--r--</div>
+        <p>소유자는 그대로 rw-, 그룹은 rw-→r--로 변경, 기타는 그대로 r--. 정확히 일치한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ -rw-rw----</div>
+        <p>기타(o)의 읽기 권한이 사라졌다. 명령은 그룹(g)만 대상으로 했으므로 기타 권한은 변하지 않아야 한다.</p>
+      </div>
+    </div>
+
+    <h4>chmod 기호 방식 — 연산자 3종</h4>
+    <table class="ref">
+      <tr><th>연산자</th><th>의미</th><th>예시</th></tr>
+      <tr><td class="mono">+</td><td>권한 추가</td><td><code>chmod g+w file</code> → 그룹에 쓰기 추가</td></tr>
+      <tr><td class="mono">-</td><td>권한 제거</td><td><code>chmod o-r file</code> → 기타의 읽기 제거</td></tr>
+      <tr><td class="mono">=</td><td>권한을 새로 지정 (덮어쓰기)</td><td><code>chmod g=r file</code> → 그룹은 읽기만 남음</td></tr>
+    </table>
+
+    <h4>대상 문자</h4>
+    <table class="ref">
+      <tr><th>문자</th><th>의미</th></tr>
+      <tr><td class="mono">u</td><td>User (소유자)</td></tr>
+      <tr><td class="mono">g</td><td>Group (그룹)</td></tr>
+      <tr><td class="mono">o</td><td>Others (기타 사용자)</td></tr>
+      <tr><td class="mono">a</td><td>All (모두)</td></tr>
+    </table>
+
+    <h4>추가 예시</h4>
+    <pre>현재: -rwxrwxrwx
+
+chmod g=r   → -rwxr--rwx   (그룹은 읽기만)
+chmod o=    → -rwxrwx---   (기타 권한 전부 제거)
+chmod u=rw  → -rw-rwxrwx   (소유자는 읽기/쓰기만, 실행 제거)</pre>
+
+    <div class="tip-box"><b>암기 팁 —</b> <code>+</code> = 추가, <code>-</code> = 제거, <code>=</code> = 기존 권한을 모두 지우고 새 권한으로 설정. 시험에서 <code>=</code> 연산자를 <code>+</code>처럼 "더하는" 것으로 착각하는 실수가 가장 많으니 주의할 것.</div>
+  `
+},
+{
+  num: "49",
+  keyword: "IaaS·PaaS·SaaS — 사용자 관리 범위 순서",
+  rate: "정답률 63%",
+  title: "cloud_service_layers.q",
+  question: "다음 중 클라우드 서비스에서 이용자의 설정이 많은 순서로 나열된 것은?",
+  quote: null,
+  options: [
+    {label:"SaaS ＞ PaaS ＞ IaaS", correct:false},
+    {label:"PaaS ＞ SaaS ＞ IaaS", correct:false},
+    {label:"IaaS ＞ PaaS ＞ SaaS", correct:true},
+    {label:"IaaS ＞ SaaS ＞ PaaS", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 질문: "사용자가 얼마나 관리해야 하는가?"</h4>
+    <p>클라우드 서비스는 크게 <span class="key">IaaS → PaaS → SaaS</span> 순으로 갈수록 사용자가 직접 관리해야 하는 것이 줄어든다.</p>
+
+    <h4>① IaaS (Infrastructure as a Service)</h4>
+    <p>서버(인프라)만 빌려준다. 이후 OS 설치, 웹서버 설치, DB 설치, 프로그램 배포까지 전부 사용자가 직접 해야 한다. 대표: AWS EC2, Azure VM. <b>사용자가 설정할 것이 가장 많다.</b></p>
+
+    <h4>② PaaS (Platform as a Service)</h4>
+    <p>운영체제 설치나 웹 서버 준비 없이 실행 환경까지 제공된다. 사용자는 자신의 프로그램만 개발해서 올리면 된다. 대표: Heroku, Google App Engine.</p>
+
+    <h4>③ SaaS (Software as a Service)</h4>
+    <p>완성된 프로그램을 제공한다. 로그인해서 바로 사용하면 끝이며, 설정할 것이 거의 없다. 대표: Gmail, Google Docs, Microsoft 365.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① SaaS ＞ PaaS ＞ IaaS</div>
+        <p>순서가 정반대다. SaaS는 사용자가 관리할 것이 가장 적다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② PaaS ＞ SaaS ＞ IaaS</div>
+        <p>사용자 관리 범위가 가장 큰 것은 IaaS인데 빠져 있다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ IaaS ＞ PaaS ＞ SaaS</div>
+        <p>인프라만 제공(IaaS) → 플랫폼까지 제공(PaaS) → 완성된 소프트웨어 제공(SaaS) 순으로 사용자가 할 일이 줄어든다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ IaaS ＞ SaaS ＞ PaaS</div>
+        <p>PaaS와 SaaS의 순서가 바뀌었다. PaaS가 SaaS보다 사용자가 관리할 것이 더 많다.</p>
+      </div>
+    </div>
+
+    <h4>실생활 비유</h4>
+    <table class="ref">
+      <tr><th>서비스</th><th>비유</th></tr>
+      <tr><td class="mono">IaaS</td><td>집을 지을 땅만 빌려줌 — 집은 직접 지어야 함</td></tr>
+      <tr><td class="mono">PaaS</td><td>기초공사가 끝난 집 제공 — 가구만 넣으면 됨</td></tr>
+      <tr><td class="mono">SaaS</td><td>호텔 — 들어가서 바로 사용</td></tr>
+    </table>
+
+    <h4>대표 서비스 정리</h4>
+    <table class="ref">
+      <tr><th>종류</th><th>대표 서비스</th></tr>
+      <tr><td class="mono">IaaS</td><td>AWS EC2, Azure VM, Google Compute Engine</td></tr>
+      <tr><td class="mono">PaaS</td><td>Heroku, Google App Engine, AWS Elastic Beanstalk</td></tr>
+      <tr><td class="mono">SaaS</td><td>Gmail, Google Docs, Microsoft 365, Dropbox</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> "사용자가 설정할 것이 많은 순서" = IaaS → PaaS → SaaS. 반대로 "서비스 제공 범위가 넓은 순서"는 SaaS → PaaS → IaaS가 된다는 점도 함께 기억해두기.</div>
+  `
+},
+{
+  num: "51",
+  keyword: "Xen — CPU 반가상화(Paravirtualization)",
+  rate: "정답률 59%",
+  title: "xen_paravirtualization.q",
+  question: "다음 중 CPU 반가상화를 지원하는 가상화 기술로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"Xen", correct:true},
+    {label:"KVM", correct:false},
+    {label:"Docker", correct:false},
+    {label:"VirtualBox", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>가상화의 3가지 방식</h4>
+    <table class="ref">
+      <tr><th>방식</th><th>설명</th><th>대표 기술</th></tr>
+      <tr><td>완전 가상화</td><td>실제 컴퓨터처럼 완전히 흉내 냄</td><td>KVM, VirtualBox, VMware</td></tr>
+      <tr><td>반가상화</td><td>OS를 약간 수정해 가상화 성능을 높임</td><td class="mono">Xen</td></tr>
+      <tr><td>컨테이너 가상화</td><td>커널을 공유하고 프로세스만 분리</td><td>Docker</td></tr>
+    </table>
+
+    <h4>완전 가상화 vs 반가상화</h4>
+    <p>완전 가상화는 운영체제가 <span class="key">자신이 진짜 컴퓨터에서 실행 중이라고 착각</span>하도록 하드웨어를 그대로 흉내 낸다. OS를 수정할 필요는 없지만 하드웨어 에뮬레이션 때문에 성능 손실이 있다.</p>
+    <p>반가상화는 운영체제가 <span class="key">자신이 가상머신에서 실행 중임을 알고 있도록</span> 커널을 수정한 방식이다. CPU나 메모리에 직접 접근하지 않고 Hypervisor에게 요청(Hypercall)하기 때문에 불필요한 에뮬레이션이 줄어 성능이 향상된다.</p>
+    <pre>완전 가상화: OS → CPU 명령 실행 → Hypervisor가 중간에서 가로채 처리
+반가상화  : OS → 처음부터 Hypervisor에 Hypercall로 요청</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① Xen</div>
+        <p>대표적인 반가상화 하이퍼바이저다. 초기 Xen은 운영체제를 수정해 사용하는 반가상화 방식으로 유명했다. (현재는 하드웨어 가상화도 지원하지만 시험에서는 "반가상화=Xen"으로 기억하면 된다.)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② KVM</div>
+        <p>Kernel-based Virtual Machine. Linux 커널에 포함된 하이퍼바이저로, 운영체제를 수정하지 않는 <b>완전 가상화</b> 방식이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ Docker</div>
+        <p>가상머신이 아니라 <b>컨테이너</b> 기술이다. 호스트 커널을 공유하며 프로세스만 분리한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ VirtualBox</div>
+        <p>대표적인 <b>완전 가상화</b> 프로그램으로, 운영체제를 수정하지 않고 그대로 실행한다.</p>
+      </div>
+    </div>
+
+    <h4>가상화 기술 분류 정리</h4>
+    <table class="ref">
+      <tr><th>키워드</th><th>분류</th></tr>
+      <tr><td class="mono">Xen</td><td>반가상화</td></tr>
+      <tr><td class="mono">KVM</td><td>완전 가상화</td></tr>
+      <tr><td class="mono">VirtualBox</td><td>완전 가상화</td></tr>
+      <tr><td class="mono">VMware</td><td>완전 가상화</td></tr>
+      <tr><td class="mono">Docker</td><td>컨테이너 가상화</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 반가상화 = Xen, 완전가상화 = KVM·VMware·VirtualBox, 컨테이너 = Docker. 이 정도만 정확히 구분해도 관련 문제는 대부분 해결된다.</div>
+  `
+},
+{
+  num: "52",
+  keyword: "고가용성(HA) 클러스터 — 로드 밸런서",
+  rate: "정답률 71%",
+  title: "ha_cluster.q",
+  question: "다수의 웹 서버를 운영하는 환경으로 하나의 로드 밸런서 시스템으로 부하를 분산하는 중이다. 다음 상황에 적합한 클러스터링 기술로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"고계산용 클러스터", correct:false},
+    {label:"베어울프 클러스터", correct:false},
+    {label:"고가용성 클러스터", correct:true},
+    {label:"HPC 클러스터", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>지문의 결정적 단서는 <span class="key">웹 서버 여러 대</span>와 <span class="key">로드 밸런서(Load Balancer)로 부하 분산</span>이다.</p>
+    <pre>          사용자
+             │
+      Load Balancer
+     ┌─────┼─────┐
+     │     │     │
+  Web1   Web2   Web3</pre>
+    <p>로드 밸런서가 요청을 여러 서버에 나눠 처리해 과부하를 막고, 한 대가 장애가 나도 다른 서버가 서비스를 계속하도록 하는 것이 <b>고가용성(HA, High Availability) 클러스터</b>의 목적이다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① 고계산용 클러스터</div>
+        <p>기상 예측, AI 학습, 과학 계산, 영상 렌더링처럼 복잡한 계산을 빠르게 수행하기 위한 클러스터로, 웹 서버와는 관계가 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② 베어울프 클러스터</div>
+        <p>리눅스 PC 여러 대를 연결해 하나의 슈퍼컴퓨터처럼 병렬 계산에 사용하는 방식으로, 고계산용 클러스터의 대표적인 구현 방식이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ 고가용성 클러스터</div>
+        <p>서비스가 끊기지 않도록 하는 것이 목적이며, 로드 밸런서 뒤에 여러 웹/DB 서버를 두는 구성이 대표적이다. "로드 밸런서"라는 단어가 가장 큰 힌트다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ HPC 클러스터</div>
+        <p>High Performance Computing. 슈퍼컴퓨터·대규모 연산·병렬 처리를 위한 클러스터로, 웹 서버 부하 분산과는 관계가 없다.</p>
+      </div>
+    </div>
+
+    <h4>베어울프와 HPC의 관계</h4>
+    <p>HPC는 고성능 계산을 위한 클러스터라는 <b>목적</b>이고, 베어울프는 그 HPC를 구현하는 대표적인 리눅스 클러스터 <b>구현 방식</b>이다. 즉 베어울프 ⊂ HPC 관계로 이해하면 된다.</p>
+
+    <h4>시험 암기 포인트</h4>
+    <table class="ref">
+      <tr><th>키워드</th><th>떠올릴 것</th></tr>
+      <tr><td>로드 밸런서 / 웹 서버 여러 대 / 서비스 중단 방지</td><td>고가용성(HA)</td></tr>
+      <tr><td>병렬 계산 / 슈퍼컴퓨터</td><td>HPC</td></tr>
+      <tr><td>리눅스 PC 여러 대</td><td>베어울프</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 로드밸런서 + 웹 서버 = 고가용성(HA), 과학 계산 + 병렬 처리 = HPC, 리눅스 PC 클러스터 = 베어울프.</div>
+  `
+},
+{
+  num: "54",
+  keyword: "resolv.conf — search 도메인 자동완성",
+  rate: "정답률 50%",
+  title: "resolv_conf.q",
+  question: "다음 설명에 해당하는 파일명으로 알맞은 것은?",
+  quote: "kait라고 입력하면 ihd.or.kr 도메인이 자동으로 덧붙여지도록 특정 도메인을 등록해서 이름 호출 시 단축하려고 한다. 예를 들면 kait를 호출하면 kait.ihd.or.kr로 접속되도록 한다.",
+  options: [
+    {label:"/etc/hosts", correct:false},
+    {label:"/etc/resolv.conf", correct:true},
+    {label:"/etc/sysconfig/network", correct:false},
+    {label:"/etc/sysconfig/network-scripts", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">도메인을 자동으로 덧붙여서 이름을 완성</span>한다 — <code>kait</code>만 입력해도 <code>kait.ihd.or.kr</code>을 찾아주는 이 기능을 <b>DNS Search Domain(검색 도메인)</b>이라 하며, <code>/etc/resolv.conf</code>에서 설정한다.</p>
+
+    <h4>/etc/resolv.conf란?</h4>
+    <p>DNS 관련 설정 파일로, DNS 서버 주소(<code>nameserver</code>), 검색 도메인(<code>search</code>), 기본 도메인(<code>domain</code>)을 설정한다.</p>
+    <pre>search ihd.or.kr
+nameserver 8.8.8.8</pre>
+    <p>이렇게 설정되어 있으면 <code>ping kait</code> 입력 시 시스템이 먼저 <code>kait.ihd.or.kr</code>을 조회한다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① /etc/hosts</div>
+        <p>로컬 호스트 이름과 IP를 직접 매핑하는 파일이다. <code>192.168.0.10 kait</code>처럼 등록하면 DNS를 거치지 않고 바로 IP를 찾지만, 도메인을 자동으로 붙여주는 기능은 없다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② /etc/resolv.conf</div>
+        <p>DNS 설정 파일. <code>search</code> 또는 <code>domain</code>을 설정하면 짧은 이름 뒤에 자동으로 도메인이 붙어 조회된다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ /etc/sysconfig/network</div>
+        <p>시스템의 네트워크 기본 설정 파일. <code>HOSTNAME=server</code>, <code>NETWORKING=yes</code> 같은 내용을 담으며 DNS 검색 도메인과는 무관하다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ /etc/sysconfig/network-scripts</div>
+        <p>네트워크 인터페이스 설정 파일(<code>ifcfg-eth0</code> 등)이 위치한 디렉터리로, IP·Gateway 등을 설정하는 곳이지 DNS 검색 도메인을 담당하지 않는다.</p>
+      </div>
+    </div>
+
+    <h4>파일별 역할 정리</h4>
+    <table class="ref">
+      <tr><th>파일</th><th>역할</th></tr>
+      <tr><td class="mono">/etc/hosts</td><td>호스트명 ↔ IP 주소 직접 매핑</td></tr>
+      <tr><td class="mono">/etc/resolv.conf</td><td>DNS 서버, search/domain 설정</td></tr>
+      <tr><td class="mono">/etc/sysconfig/network</td><td>시스템 네트워크 기본 설정</td></tr>
+      <tr><td class="mono">/etc/sysconfig/network-scripts</td><td>네트워크 인터페이스(IP 등) 설정</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> hosts = IP를 직접 적는 곳, resolv.conf = DNS를 찾는 방법(search, nameserver)을 적는 곳. "도메인을 자동으로 붙여서 검색한다"는 표현이 나오면 반드시 resolv.conf를 떠올리기.</div>
+  `
+},
+{
+  num: "56",
+  keyword: "mii-tool — 랜선 물리 연결(Link) 확인",
+  rate: "정답률 60%",
+  title: "mii_tool.q",
+  question: "다음 중 네트워크 카드에 물리적으로 케이블이 연결되었는지를 점검할 때 사용하는 명령어로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"ifconfig", correct:false},
+    {label:"ss", correct:false},
+    {label:"netstat", correct:false},
+    {label:"mii-tool", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">물리적으로 케이블이 연결되었는가</span> — 랜선이 꽂혀 있는지, Link가 살아 있는지를 확인하는 명령이 <code>mii-tool</code>이다.</p>
+
+    <h4>mii-tool이란?</h4>
+    <p>MII(Media Independent Interface)는 네트워크 카드와 물리 계층(랜선)을 연결하는 인터페이스로, <code>mii-tool</code>은 이 물리 계층(Link) 상태를 확인하는 도구다.</p>
+    <pre>$ mii-tool
+eth0: negotiated 100baseTx-FD, link ok</pre>
+    <p><code>link ok</code>이면 랜선이 정상 연결된 상태, <code>no link</code>이면 케이블이 빠졌거나 스위치 연결에 문제가 있는 상태다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① ifconfig</div>
+        <p>IP 주소, MAC 주소, MTU, RX/TX 패킷 등 네트워크 인터페이스 정보를 확인·설정하지만 랜선이 꽂혀 있는지 여부를 확인하는 용도는 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② ss</div>
+        <p>소켓(Socket) 상태를 확인하는 명령. TCP/UDP 연결, LISTEN 포트 등을 보여주지만 랜선 연결 여부는 확인하지 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ netstat</div>
+        <p><code>ss</code>의 이전 세대 명령어로 포트·라우팅 테이블·연결 상태를 확인하지만, 물리적인 케이블 연결 여부와는 관계없다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ④ mii-tool</div>
+        <p>NIC의 Link 상태(물리 연결)를 <code>link ok</code> / <code>no link</code>로 보여주는 대표 명령이다.</p>
+      </div>
+    </div>
+
+    <h4>참고: 실무에서는 ethtool</h4>
+    <p>최근에는 <code>mii-tool</code>보다 <code>ethtool</code>을 더 많이 사용한다. <code>ethtool eth0</code> 결과에 <code>Link detected: yes/no</code>가 나온다. 하지만 리눅스마스터 2급에서는 <code>mii-tool</code>이 정답으로 자주 출제된다.</p>
+
+    <h4>명령어별 용도 정리</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>용도</th></tr>
+      <tr><td class="mono">ifconfig</td><td>IP 주소 및 인터페이스 설정</td></tr>
+      <tr><td class="mono">ss</td><td>소켓(TCP/UDP) 상태 확인</td></tr>
+      <tr><td class="mono">netstat</td><td>네트워크 연결, 포트, 라우팅 확인</td></tr>
+      <tr><td class="mono">mii-tool</td><td>랜선(물리 링크) 연결 상태 확인</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> ifconfig → IP 확인, ss/netstat → 연결 상태 확인, mii-tool → 랜선 꽂혔는지 확인(Link 상태). "물리적으로 케이블이 연결되었는가?"라는 표현이 나오면 mii-tool을 떠올리기.</div>
+  `
+},
+{
+  num: "57",
+  keyword: "게이트웨이 확인 — ethtool은 예외",
+  rate: "정답률 50%",
+  title: "gateway_check.q",
+  question: "다음 중 시스템에 설정된 게이트웨이 주소값을 확인하는 명령어로 틀린 것은?",
+  quote: null,
+  options: [
+    {label:"ip", correct:false},
+    {label:"route", correct:false},
+    {label:"netstat", correct:false},
+    {label:"ethtool", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>게이트웨이 주소는 <span class="key">라우팅 테이블(Routing Table)</span>에 저장되어 있으므로, 라우팅 정보를 확인하는 명령이면 모두 게이트웨이를 확인할 수 있다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">확인 가능</span> ① ip</div>
+        <p><code>ip route</code> 또는 <code>ip r</code>을 실행하면 <code>default via 192.168.0.1 dev eth0</code>처럼 출력되어 게이트웨이 주소를 확인할 수 있다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">확인 가능</span> ② route</div>
+        <p><code>route -n</code>을 실행하면 <code>0.0.0.0</code>의 Gateway 값으로 기본 게이트웨이를 확인할 수 있다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">확인 가능</span> ③ netstat</div>
+        <p><code>netstat -rn</code> 또는 <code>netstat -r</code>로도 라우팅 테이블과 게이트웨이를 확인할 수 있다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답(불가능)</span> ④ ethtool</div>
+        <p>네트워크 카드(NIC)의 속도, Duplex, Link 상태 등을 확인하는 명령이다. <code>ethtool eth0</code> 결과로 <code>Speed: 1000Mb/s</code>, <code>Link detected: yes</code> 같은 정보는 볼 수 있지만, <b>라우팅 정보나 게이트웨이 주소는 확인할 수 없다.</b></p>
+      </div>
+    </div>
+
+    <h4>명령어별 확인 내용 비교</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>확인 내용</th><th>게이트웨이 확인 가능?</th></tr>
+      <tr><td class="mono">ip route</td><td>라우팅 테이블</td><td>✅</td></tr>
+      <tr><td class="mono">route -n</td><td>라우팅 테이블</td><td>✅</td></tr>
+      <tr><td class="mono">netstat -rn</td><td>라우팅 테이블</td><td>✅</td></tr>
+      <tr><td class="mono">ethtool</td><td>NIC(랜카드) 정보</td><td>❌</td></tr>
+    </table>
+
+    <h4>함께 외우면 좋은 네트워크 명령어</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>대표 용도</th></tr>
+      <tr><td class="mono">ip</td><td>IP, 인터페이스, 라우팅 확인</td></tr>
+      <tr><td class="mono">route</td><td>라우팅 테이블 확인</td></tr>
+      <tr><td class="mono">netstat</td><td>연결 상태, 포트, 라우팅 확인</td></tr>
+      <tr><td class="mono">ss</td><td>소켓(TCP/UDP) 상태 확인</td></tr>
+      <tr><td class="mono">mii-tool</td><td>랜선 연결(Link) 확인</td></tr>
+      <tr><td class="mono">ethtool</td><td>랜카드 속도, Duplex, Link 상태 확인</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 게이트웨이 = 라우팅 테이블에서 확인 → ip / route / netstat. 랜카드 자체 정보(속도·Link) = ethtool. 56번(mii-tool=랜선 Link 확인)과 57번(ethtool=랜카드 정보, 게이트웨이는 불가)을 세트로 기억해두기.</div>
+  `
+},
+{
+  num: "58",
+  keyword: "서브넷 255.255.255.192 — 사용 가능 IP 개수",
+  rate: "정답률 55%",
+  title: "subnet_usable_ip.q",
+  question: "C 클래스 네트워크 주소 대역 1개를 할당받은 상태이고, 여러 부서가 존재하는 관계로 서브넷 마스크 값은 255.255.255.192로 설정할 예정이며, 인터넷 사용 없이 내부 통신망용으로 구축할 예정이다. 이때 사용 가능한 IP 주소의 개수로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"252", correct:false},
+    {label:"250", correct:false},
+    {label:"248", correct:true},
+    {label:"244", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>1단계 — C클래스는 원래 몇 개?</h4>
+    <p>C클래스 기본 서브넷 마스크는 <code>255.255.255.0</code>이며 IP는 <code>xxx.xxx.xxx.0 ~ xxx.xxx.xxx.255</code>까지 총 256개다. 첫 주소(네트워크 주소)와 마지막 주소(브로드캐스트 주소)는 사용할 수 없으므로 <code>256 − 2 = 254개</code>가 기본값이다.</p>
+
+    <h4>2단계 — 서브넷 마스크 255.255.255.192로 나누기</h4>
+    <p><code>192</code>를 이진수로 바꾸면 <code>11000000</code>이다. 앞의 <span class="key">11(2비트)</span> 때문에 <code>2² = 4개</code>의 서브넷으로 나뉜다.</p>
+
+    <h4>3단계 — 256개를 4등분</h4>
+    <pre>256 ÷ 4 = 64개씩
+
+부서1: 0~63
+부서2: 64~127
+부서3: 128~191
+부서4: 192~255</pre>
+
+    <h4>4단계 — 서브넷마다 네트워크·브로드캐스트 주소 제외</h4>
+    <p>각 부서(서브넷)마다 첫 번째(네트워크 주소)와 마지막(브로드캐스트 주소)을 뺀다.</p>
+    <pre>64개 − 2 = 62개 (부서당 사용 가능)</pre>
+
+    <h4>5단계 — 부서 4개를 곱하기</h4>
+    <pre>62 × 4 = 248개</pre>
+    <p>따라서 사용 가능한 IP 주소의 총 개수는 <b>248개</b>다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ① 252</div><p>네트워크·브로드캐스트 제외 계산이 잘못된 값이다.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ② 250</div><p>62×4=248이 맞으며, 250은 계산 오차값이다.</p></div>
+      <div class="bd-item right"><div class="bd-head"><span class="tag">정답</span> ③ 248</div><p>62개(부서당 사용 가능) × 4개 부서 = 248개.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ④ 244</div><p>62×4=248이 맞으며, 244는 계산 오차값이다.</p></div>
+    </div>
+
+    <h4>자주 나오는 서브넷 마스크 표 (통째로 암기)</h4>
+    <table class="ref">
+      <tr><th>서브넷 마스크</th><th>서브넷 수</th><th>서브넷당 사용 가능 IP</th></tr>
+      <tr><td class="mono">255.255.255.128</td><td>2개</td><td>126개</td></tr>
+      <tr><td class="mono">255.255.255.192</td><td>4개</td><td>62개</td></tr>
+      <tr><td class="mono">255.255.255.224</td><td>8개</td><td>30개</td></tr>
+      <tr><td class="mono">255.255.255.240</td><td>16개</td><td>14개</td></tr>
+    </table>
+
+    <div class="tip-box"><b>시험 꿀팁 —</b> 255.255.255.192만 보이면 바로 "4개로 나뉜다 → 64개씩 → 62개 사용" 을 떠올리기. 부서 수(4)를 곱해야 하는 문제인지, 서브넷 1개당 개수만 묻는 문제인지 지문을 꼭 확인할 것.</div>
+  `
+},
+{
+  num: "59",
+  keyword: "/26 브로드캐스트 주소 계산",
+  rate: "정답률 52%",
+  title: "broadcast_address.q",
+  question: "IP 주소 및 서브넷 마스크값이 192.168.5.189/26 일 때 설정되는 브로드캐스트 주소값으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"192.168.5.190", correct:false},
+    {label:"192.168.5.191", correct:true},
+    {label:"192.168.5.192", correct:false},
+    {label:"192.168.5.193", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>1단계 — /26을 서브넷 마스크로 변환</h4>
+    <p>/26은 앞에서부터 26비트가 네트워크 영역이라는 뜻이다.</p>
+    <pre>11111111.11111111.11111111.11000000
+→ 255.255.255.192</pre>
+
+    <h4>2단계 — 몇 개씩 나누는지 계산</h4>
+    <p>서브넷 마스크의 마지막 값이 <code>192</code>이므로 <code>256 − 192 = 64</code>, 즉 IP를 <span class="key">64개씩</span> 나눈다.</p>
+    <pre>0~63 / 64~127 / 128~191 / 192~255</pre>
+
+    <h4>3단계 — 문제의 IP(189)가 속한 구간 찾기</h4>
+    <p><code>189</code>는 <code>128~191</code> 구간에 포함되므로, 이 IP가 속한 서브넷은 <code>192.168.5.128 ~ 192.168.5.191</code>이다.</p>
+
+    <h4>4단계 — 브로드캐스트 주소 = 서브넷의 마지막 주소</h4>
+    <pre>192.168.5.128 ~ 192.168.5.191
+                          ↑
+                    브로드캐스트 주소</pre>
+    <p>따라서 브로드캐스트 주소는 <b>192.168.5.191</b>이다.</p>
+
+    <h4>이 서브넷의 주소 구성</h4>
+    <table class="ref">
+      <tr><th>구분</th><th>주소</th></tr>
+      <tr><td>네트워크 주소</td><td class="mono">192.168.5.128</td></tr>
+      <tr><td>사용 가능한 첫 IP</td><td class="mono">192.168.5.129</td></tr>
+      <tr><td>문제의 IP</td><td class="mono">192.168.5.189</td></tr>
+      <tr><td>사용 가능한 마지막 IP</td><td class="mono">192.168.5.190</td></tr>
+      <tr><td>브로드캐스트 주소</td><td class="mono">192.168.5.191</td></tr>
+    </table>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ① 192.168.5.190</div><p>사용 가능한 마지막 일반 호스트 주소다. 브로드캐스트 주소가 아니다.</p></div>
+      <div class="bd-item right"><div class="bd-head"><span class="tag">정답</span> ② 192.168.5.191</div><p>해당 서브넷의 마지막 주소로, 브로드캐스트 주소다.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ③ 192.168.5.192</div><p>다음 서브넷의 네트워크 주소다.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ④ 192.168.5.193</div><p>다음 서브넷에서 사용 가능한 첫 번째 호스트 주소다.</p></div>
+    </div>
+
+    <h4>시험용 풀이 순서 요약</h4>
+    <pre>/26 → 255.255.255.192 → 256−192=64 → 64개씩 구간 나누기
+→ 189는 128~191에 포함 → 마지막 주소 191이 브로드캐스트</pre>
+
+    <div class="tip-box"><b>암기 팁 —</b> 브로드캐스트 주소는 항상 "구간의 마지막 숫자"다. 58번(전체 사용 가능 IP 개수)과 59번(브로드캐스트 주소)은 같은 255.255.255.192(/26) 계산법을 공유하므로 함께 묶어서 외우면 효율적이다.</div>
+  `
+},
+{
+  num: "62",
+  keyword: "telnet -l — 로그인 계정 지정",
+  rate: "정답률 38%",
+  title: "telnet_login_option.q",
+  question: "다음은 원격지 텔넷 서버에 계정을 변경해서 접속하는 과정이다. (괄호) 안에 들어갈 옵션으로 알맞은 것은?",
+  quote: "[ihd@wwww ~]$ telnet ( 괄호 ) kaitman 192.168.5.13",
+  quoteCode: true,
+  options: [
+    {label:"-u", correct:false},
+    {label:"-n", correct:false},
+    {label:"-p", correct:false},
+    {label:"-l", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">계정을 변경해서 접속</span> — 원격 서버에 특정 사용자 계정으로 로그인하려는 것이다. telnet에서 사용자 이름을 지정할 때는 <code>-l</code> 옵션을 사용한다.</p>
+
+    <h4>명령 완성</h4>
+    <pre>telnet -l kaitman 192.168.5.13</pre>
+    <p>192.168.5.13 서버에 kaitman 계정으로 로그인한다는 뜻이다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① -u</div>
+        <p>telnet에는 사용자를 지정하는 <code>-u</code> 옵션이 없다. (FTP의 <code>user</code> 명령과 혼동하기 쉽다.)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② -n</div>
+        <p>telnet에서 사용자 계정을 지정하는 옵션이 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ -p</div>
+        <p>SSH의 <code>ssh -p 2222</code>와 혼동하기 쉽지만, telnet은 포트를 지정할 때 <code>-p</code>를 쓰지 않는다. 포트를 지정하려면 <code>telnet 192.168.5.13 2323</code>처럼 IP 뒤에 직접 포트 번호를 적는다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ④ -l</div>
+        <p>Login name(로그인 사용자)을 지정하는 옵션이다.</p>
+      </div>
+    </div>
+
+    <h4>SSH와 비교</h4>
+    <pre>ssh user@192.168.5.13
+ssh -l user 192.168.5.13     ← SSH도 -l 사용 가능
+
+telnet -l user IP            ← telnet도 동일한 형식</pre>
+
+    <div class="tip-box"><b>암기 팁 —</b> <code>telnet -l 사용자명 IP</code>, l = login. 텔넷/SSH 모두 <code>-l</code>로 로그인 계정을 지정한다는 점을 함께 기억하기.</div>
+  `
+},
+{
+  num: "64",
+  keyword: "SAMBA — 리눅스 ↔ 윈도우 파일/프린터 공유",
+  rate: "정답률 66%",
+  title: "samba_service.q",
+  question: "다음 설명에 해당하는 인터넷 서비스로 알맞은 것은?",
+  quote: "리눅스를 비롯한 유닉스 계열 운영체제와 윈도우 운영체제 간의 자료 및 하드웨어 공유를 지원한다.",
+  options: [
+    {label:"NFS", correct:false},
+    {label:"SAMBA", correct:true},
+    {label:"Gopher", correct:false},
+    {label:"FTP", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">리눅스(유닉스)와 윈도우 간의 자료 및 하드웨어 공유</span> — 리눅스에서 Windows의 파일 공유 방식(SMB/CIFS)을 사용할 수 있게 해주는 서비스가 <b>SAMBA</b>다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① NFS</div>
+        <p>리눅스(Unix)끼리 파일을 공유하는 서비스다. <b>NFS = Linux ↔ Linux</b>.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② SAMBA</div>
+        <p>Linux와 Windows 사이에서 파일 공유·프린터 공유를 지원한다. <b>SAMBA = Linux ↔ Windows</b>.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ Gopher</div>
+        <p>웹(WWW)이 보급되기 전에 사용되던 오래된 인터넷 정보 검색 서비스로, 파일 공유와는 관련이 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ FTP</div>
+        <p>파일 전송(File Transfer)을 위한 프로토콜이다. 업로드·다운로드에 사용하지만 공유 폴더처럼 쓰는 서비스는 아니다.</p>
+      </div>
+    </div>
+
+    <h4>서비스별 용도 비교</h4>
+    <table class="ref">
+      <tr><th>서비스</th><th>용도</th></tr>
+      <tr><td class="mono">NFS</td><td>Linux ↔ Linux 파일 공유</td></tr>
+      <tr><td class="mono">SAMBA</td><td>Linux ↔ Windows 파일/프린터 공유</td></tr>
+      <tr><td class="mono">FTP</td><td>파일 전송</td></tr>
+      <tr><td class="mono">Gopher</td><td>오래된 인터넷 정보 검색 서비스</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> NFS = 리눅스끼리 공유, SAMBA = 리눅스와 윈도우 공유. 문제에서 "윈도우"라는 단어가 나오면 거의 SAMBA를 떠올리면 된다.</div>
+  `
+},
+{
+  num: "69",
+  keyword: "OSI 전송 계층 PDU — Segment",
+  rate: "정답률 67%",
+  title: "osi_transport_pdu.q",
+  question: "다음 중 OSI 모델의 전송 계층에서 사용되는 프로토콜 데이터 단위로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"Packet", correct:false},
+    {label:"Segment", correct:true},
+    {label:"frame", correct:false},
+    {label:"bit", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>OSI 계층별 데이터 이름(PDU) — 통째로 암기</h4>
+    <table class="ref">
+      <tr><th>계층</th><th>데이터 이름(PDU)</th></tr>
+      <tr><td>응용 계층 (7~5계층)</td><td>Data</td></tr>
+      <tr><td><b>전송 계층 (4계층)</b></td><td><b>Segment</b></td></tr>
+      <tr><td>네트워크 계층 (3계층)</td><td>Packet</td></tr>
+      <tr><td>데이터 링크 계층 (2계층)</td><td>Frame</td></tr>
+      <tr><td>물리 계층 (1계층)</td><td>Bit</td></tr>
+    </table>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① Packet</div>
+        <p><b>네트워크 계층(L3)</b>의 데이터 이름이다. IP 주소를 이용해 목적지까지 데이터를 전달한다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② Segment</div>
+        <p><b>전송 계층(L4)</b>의 데이터 이름이다. 대표 프로토콜은 TCP·UDP이며, TCP가 데이터를 일정 크기로 나눈 단위를 Segment라 한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ Frame</div>
+        <p><b>데이터 링크 계층(L2)</b>의 데이터 이름이다. MAC 주소를 사용한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ Bit</div>
+        <p><b>물리 계층(L1)</b>의 데이터로, 실제 전기 신호(0, 1)로 전송되는 가장 작은 단위다.</p>
+      </div>
+    </div>
+
+    <h4>그림으로 이해하기</h4>
+    <pre>파일 → Data → Segment → Packet → Frame → Bit
+(응용)  (전송)   (네트워크)  (링크)   (물리)</pre>
+
+    <div class="tip-box"><b>암기 팁 —</b> D → S → P → F → B (Data → Segment → Packet → Frame → Bit). "전송 계층"이 보이면 바로 Segment를 선택하기.</div>
+  `
+},
+{
+  num: "70",
+  keyword: "ARP — IP 주소를 MAC 주소로 변환",
+  rate: "정답률 75%",
+  title: "arp_protocol.q",
+  question: "다음 설명에 해당하는 네트워크 프로토콜로 알맞은 것은?",
+  quote: "소프트웨어적으로 할당된 논리 주소인 IP 주소를 실제 물리 주소인 MAC 주소로 변환하는 역할을 수행한다.",
+  options: [
+    {label:"IP", correct:false},
+    {label:"ICMP", correct:false},
+    {label:"ARP", correct:true},
+    {label:"UDP", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">IP 주소 → MAC 주소 변환</span>. IP 주소(논리 주소)는 알고 있지만 실제 데이터 전송에는 MAC 주소(물리 주소)가 필요할 때, "이 IP의 MAC 주소가 뭐지?"라고 물어보는 역할을 <b>ARP(Address Resolution Protocol)</b>가 담당한다.</p>
+
+    <h4>동작 흐름</h4>
+    <pre>내 PC → ARP 요청: "192.168.5.20 누구야?"
+상대 PC → 응답: "나야! MAC 00:11:22:33:44:55"
+이후 IP → ARP → MAC → 데이터 전송</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① IP</div>
+        <p>논리 주소를 이용해 목적지를 찾는 프로토콜이다. 주소를 변환하지는 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② ICMP</div>
+        <p>오류 메시지나 네트워크 상태를 알려주는 프로토콜이다. 대표적으로 <code>ping</code>이 ICMP를 사용한다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ ARP</div>
+        <p>IP 주소 → MAC 주소 변환을 담당한다. 문제 설명과 정확히 일치한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ UDP</div>
+        <p>전송 계층(L4)의 통신 프로토콜로, 속도는 빠르지만 신뢰성은 보장하지 않는다. 주소 변환과는 무관하다.</p>
+      </div>
+    </div>
+
+    <h4>ARP vs RARP</h4>
+    <table class="ref">
+      <tr><th>프로토콜</th><th>역할</th></tr>
+      <tr><td class="mono">ARP</td><td>IP → MAC</td></tr>
+      <tr><td class="mono">RARP</td><td>MAC → IP</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> ARP = IP 주소를 MAC 주소로 바꿔준다. "IP 주소를 MAC 주소로 변환"이라는 문구가 나오면 무조건 ARP를 선택하기.</div>
+  `
+},
+{
+  num: "72",
+  keyword: "OSI 하위 계층 장비 순서 — Repeater·Bridge·Router",
+  rate: "정답률 67%",
+  title: "osi_layer_devices.q",
+  question: "다음 중 인터네트워킹 장비를 OSI 모델의 하위 계층부터 나열한 순서로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"Router-Bridge-Repeater", correct:false},
+    {label:"Router-Repeater-Bridge", correct:false},
+    {label:"Repeater-Bridge-Router", correct:true},
+    {label:"Bridge-Repeater-Router", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>각 장비가 동작하는 계층</h4>
+    <table class="ref">
+      <tr><th>장비</th><th>동작 계층</th></tr>
+      <tr><td class="mono">Repeater</td><td>1계층 (물리 계층) — 신호 증폭</td></tr>
+      <tr><td class="mono">Bridge</td><td>2계층 (데이터링크 계층) — MAC 주소로 필요한 곳만 전달</td></tr>
+      <tr><td class="mono">Router</td><td>3계층 (네트워크 계층) — IP 주소로 네트워크 간 연결</td></tr>
+    </table>
+    <p>문제는 <span class="key">하위 계층부터</span> 나열하라고 했으므로 1계층 → 2계층 → 3계층 순, 즉 Repeater → Bridge → Router가 된다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ① Router-Bridge-Repeater</div><p>3계층→2계층→1계층. 순서가 거꾸로다.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ② Router-Repeater-Bridge</div><p>3계층→1계층→2계층. 순서가 틀렸다.</p></div>
+      <div class="bd-item right"><div class="bd-head"><span class="tag">정답</span> ③ Repeater-Bridge-Router</div><p>1계층→2계층→3계층. 하위 계층부터 올바르게 나열했다.</p></div>
+      <div class="bd-item wrong"><div class="bd-head"><span class="tag">오답</span> ④ Bridge-Repeater-Router</div><p>2계층→1계층→3계층. 순서가 틀렸다.</p></div>
+    </div>
+
+    <div class="tip-box"><b>암기 팁 —</b> R → B → R (Repeater → Bridge → Router = 1계층 → 2계층 → 3계층). Repeater=신호 증폭, Bridge=MAC 주소, Router=IP 주소.</div>
+  `
+},
+{
+  num: "73",
+  keyword: "이미지 뷰어 아닌 것 — Totem(동영상)",
+  rate: "정답률 69%",
+  title: "image_viewer_program.q",
+  question: "다음 중 이미지 뷰어 프로그램으로 가장 거리가 먼 것은?",
+  quote: null,
+  options: [
+    {label:"totem", correct:true},
+    {label:"ImageMagicK", correct:false},
+    {label:"Eog", correct:false},
+    {label:"Gimp", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심: 이미지 관련 프로그램이 아닌 것 찾기</h4>
+    <p>각 프로그램의 용도를 구분하면 쉽게 풀린다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① Totem</div>
+        <p>GNOME 환경의 기본 <b>동영상·음악 재생 프로그램</b>이다. MP4, AVI, MKV, MP3 등을 재생하며, 이미지를 보는 프로그램이 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② ImageMagick</div>
+        <p>이미지 보기·변환·크기 변경·회전·포맷 변환을 수행하는 이미지 처리 프로그램이다. (<code>convert image.jpg image.png</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ Eog (Eye of GNOME)</div>
+        <p>GNOME 환경의 기본 <b>이미지 뷰어</b>다. JPG/PNG/GIF 보기, 확대/축소, 슬라이드 쇼 기능을 제공한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ Gimp</div>
+        <p>리눅스에서 가장 많이 쓰는 <b>이미지 편집 프로그램</b>(포토샵과 유사)이다. 이미지를 여는 기능도 있어 이미지 관련 프로그램으로 분류된다.</p>
+      </div>
+    </div>
+
+    <h4>프로그램별 용도 정리</h4>
+    <table class="ref">
+      <tr><th>프로그램</th><th>용도</th></tr>
+      <tr><td class="mono">Totem</td><td>동영상·음악 재생</td></tr>
+      <tr><td class="mono">ImageMagick</td><td>이미지 처리 및 변환</td></tr>
+      <tr><td class="mono">Eog</td><td>이미지 뷰어</td></tr>
+      <tr><td class="mono">Gimp</td><td>이미지 편집</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> Totem=동영상, Eog=이미지 보기, Gimp=이미지 편집, ImageMagick=이미지 변환. 이미지와 가장 관련 없는 것은 Totem이다.</div>
+  `
+},
+{
+  num: "75",
+  keyword: "DISPLAY — X 클라이언트 화면 출력 위치",
+  rate: "정답률 64%",
+  title: "display_env_variable.q",
+  question: "다음 중 X 클라이언트를 원격지로 전송하기 위해 변경하는 환경변수로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"VISUAL", correct:false},
+    {label:"DISPLAY", correct:true},
+    {label:"TERM", correct:false},
+    {label:"XTERM", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 질문</h4>
+    <p><span class="key">"X 윈도우 화면을 어디에 출력할 것인가?"</span>를 결정하는 환경변수가 <code>DISPLAY</code>다.</p>
+    <pre>$ echo $DISPLAY
+:0
+또는
+localhost:10.0</pre>
+    <p>A 서버에서 프로그램을 실행하고 화면은 B PC에서 볼 수도 있는데, 이때 화면을 어디로 보낼지 알려주는 것이 DISPLAY다.</p>
+    <pre>export DISPLAY=192.168.1.100:0.0</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① VISUAL</div>
+        <p>기본 편집기를 지정하는 환경변수다. (<code>export VISUAL=vim</code>) X Window와는 관계없다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② DISPLAY</div>
+        <p>X Window 화면을 어느 컴퓨터에 출력할지 지정하는 환경변수다. 원격 X 클라이언트 실행 시 반드시 사용된다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ TERM</div>
+        <p>현재 사용 중인 터미널 종류(xterm, vt100 등)를 나타내는 환경변수다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ XTERM</div>
+        <p>환경변수가 아니라 터미널 프로그램의 이름이다. TERM은 환경변수, xterm은 그 값(터미널 종류)이라는 점을 구분해야 한다.</p>
+      </div>
+    </div>
+
+    <h4>정리</h4>
+    <table class="ref">
+      <tr><th>항목</th><th>역할</th></tr>
+      <tr><td class="mono">DISPLAY</td><td>X Window 화면 출력 위치 지정</td></tr>
+      <tr><td class="mono">VISUAL</td><td>기본 편집기 지정</td></tr>
+      <tr><td class="mono">TERM</td><td>터미널 종류 지정</td></tr>
+      <tr><td class="mono">xterm</td><td>터미널 프로그램(또는 TERM 값)</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> DISPLAY = X Window 화면을 어디에 출력할지 지정. "원격 X 클라이언트", "GUI 화면 출력"이라는 키워드가 나오면 DISPLAY를 선택하기.</div>
+  `
+},
+{
+  num: "76",
+  keyword: "xhost — X 서버 접속 허가/차단",
+  rate: "정답률 53%",
+  title: "xhost_command.q",
+  question: "다음 중 X 서버에서 IP 주소가 192.168.12.22번인 X 클라이언트를 허가하는 명령으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"xhost 192.168.12.22", correct:true},
+    {label:"xhost * 192.168.12.22", correct:false},
+    {label:"xhost - 192.168.12.22", correct:false},
+    {label:"xhost add 192.168.12.22", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>xhost란?</h4>
+    <p><span class="key">X 서버의 접근 권한을 관리</span>하는 명령어로, "누가 내 화면을 사용할 수 있는지" 허락하거나 차단한다.</p>
+    <pre>xhost 192.168.12.22   → 해당 IP의 접속을 허용</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① xhost 192.168.12.22</div>
+        <p>특정 호스트의 X 서버 접근을 허용하는 가장 기본적인 형태다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② xhost * 192.168.12.22</div>
+        <p><code>*</code> 옵션은 존재하지 않는다. 잘못된 명령이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ xhost - 192.168.12.22</div>
+        <p><code>-</code>는 허용이 아니라 <b>제거(차단)</b>를 의미한다. (<code>xhost -192.168.12.22</code>는 해당 호스트 접근 권한 삭제)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ xhost add 192.168.12.22</div>
+        <p><code>add</code> 옵션은 없다. 잘못된 명령이다.</p>
+      </div>
+    </div>
+
+    <h4>xhost 명령 정리</h4>
+    <table class="ref">
+      <tr><th>명령</th><th>의미</th></tr>
+      <tr><td class="mono">xhost</td><td>현재 허용 목록 확인</td></tr>
+      <tr><td class="mono">xhost 192.168.12.22</td><td>해당 호스트 허용</td></tr>
+      <tr><td class="mono">xhost +</td><td>모든 호스트 허용 (보안상 매우 위험)</td></tr>
+      <tr><td class="mono">xhost -</td><td>모든 원격 접속 차단</td></tr>
+      <tr><td class="mono">xhost -192.168.12.22</td><td>특정 호스트 차단</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> xhost IP주소 = 허용, xhost -IP주소 = 차단, xhost + = 모두 허용, xhost - = 모두 차단. "X 클라이언트를 허가한다"는 문구가 나오면 xhost IP주소를 떠올리기.</div>
+  `
+},
+{
+  num: "77",
+  keyword: "윈도 매니저 아닌 것 — XFce(데스크톱 환경)",
+  rate: null,
+  title: "window_manager_vs_de.q",
+  question: "다음 중 윈도 매니저(Window Manager) 종류로 틀린 것은?",
+  quote: null,
+  options: [
+    {label:"Metacity", correct:false},
+    {label:"Enlightenment", correct:false},
+    {label:"Window Maker", correct:false},
+    {label:"XFce", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>윈도 매니저 vs 데스크톱 환경</h4>
+    <p><span class="key">윈도 매니저(Window Manager)</span>는 창의 이동·크기 조절·최소화·최대화·닫기 등 창 관리만 담당하는 프로그램이다. 반면 <span class="key">데스크톱 환경(Desktop Environment)</span>은 윈도 매니저뿐 아니라 파일 관리자, 패널, 메뉴, 아이콘, 설정 프로그램까지 포함하는 훨씬 큰 개념이다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">윈도 매니저</span> ① Metacity</div>
+        <p>GNOME에서 사용하던 윈도 매니저로, 창의 이동·크기 변경 등을 담당한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">윈도 매니저</span> ② Enlightenment</div>
+        <p>화려한 그래픽 효과로 유명한 대표적인 윈도 매니저다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">윈도 매니저</span> ③ Window Maker</div>
+        <p>NEXTSTEP 스타일의 인터페이스를 제공하는 윈도 매니저다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답 — 데스크톱 환경</span> ④ XFce</div>
+        <p>윈도 매니저가 아니라 <b>데스크톱 환경(DE)</b>이다. XFce 안에는 패널, 메뉴, 파일 관리자, 설정 프로그램은 물론 자체 윈도 매니저(Xfwm)까지 포함되어 있다.</p>
+      </div>
+    </div>
+
+    <h4>헷갈리기 쉬운 짝 — 데스크톱 환경과 그 안의 윈도 매니저</h4>
+    <table class="ref">
+      <tr><th>데스크톱 환경</th><th>포함된 윈도 매니저</th></tr>
+      <tr><td>GNOME</td><td>Metacity → Mutter</td></tr>
+      <tr><td>KDE</td><td>KWin</td></tr>
+      <tr><td>XFce</td><td>Xfwm</td></tr>
+      <tr><td>LXDE</td><td>Openbox</td></tr>
+    </table>
+
+    <h4>분류 정리</h4>
+    <table class="ref">
+      <tr><th>구분</th><th>예시</th></tr>
+      <tr><td>윈도 매니저</td><td>Metacity, Enlightenment, Window Maker, Openbox, Fluxbox</td></tr>
+      <tr><td>데스크톱 환경</td><td>GNOME, KDE, XFce, LXDE, Cinnamon</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> Metacity·Enlightenment·Window Maker = 윈도 매니저, XFce = 데스크톱 환경(DE). "윈도 매니저가 아닌 것"을 물으면 XFce를 떠올리기.</div>
+  `
+},
+{
+  num: "78",
+  keyword: "KDE — Qt·KWin (Metacity는 GNOME)",
+  rate: null,
+  title: "kde_description.q",
+  question: "다음 중 KDE에 대한 설명으로 틀린 것은?",
+  quote: null,
+  options: [
+    {label:"Metacity라는 윈도 매니저를 사용한다.", correct:true},
+    {label:"데스크톱 환경의 일종이다.", correct:false},
+    {label:"Qt 라이브러리를 기반으로 만들어졌다.", correct:false},
+    {label:"리눅스뿐만 아니라 FreeBSD, Solaris, OS X 등도 지원한다.", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심: KDE와 GNOME 구분</h4>
+    <p>시험에서 자주 나오는 세 가지 짝은 <span class="key">KDE → Qt</span>, <span class="key">GNOME → GTK</span>, <span class="key">Metacity → GNOME</span>이다.</p>
+
+    <h4>KDE란?</h4>
+    <p>K Desktop Environment의 줄임말로, 바탕화면·패널·파일 관리자·설정 프로그램·윈도 매니저를 모두 포함하는 데스크톱 환경(DE)이다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답 — 틀린 설명</span> ① Metacity라는 윈도 매니저를 사용한다.</div>
+        <p><b>Metacity는 GNOME의 윈도 매니저</b>다. KDE는 <b>KWin</b>이라는 윈도 매니저를 사용한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">맞는 설명</span> ② 데스크톱 환경의 일종이다.</div>
+        <p>KDE는 대표적인 데스크톱 환경(DE)이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">맞는 설명</span> ③ Qt 라이브러리를 기반으로 만들어졌다.</div>
+        <p>KDE는 Qt 라이브러리로 개발되었다. (반대로 GNOME은 GTK 라이브러리를 사용한다.)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">맞는 설명</span> ④ 리눅스뿐만 아니라 FreeBSD, Solaris, OS X 등도 지원한다.</div>
+        <p>KDE는 Linux 외에도 FreeBSD, Solaris, macOS(OS X) 등 다양한 운영체제에서 사용할 수 있다.</p>
+      </div>
+    </div>
+
+    <h4>KDE vs GNOME 비교</h4>
+    <table class="ref">
+      <tr><th>항목</th><th>KDE</th><th>GNOME</th></tr>
+      <tr><td>종류</td><td>데스크톱 환경</td><td>데스크톱 환경</td></tr>
+      <tr><td>라이브러리</td><td class="mono">Qt</td><td class="mono">GTK</td></tr>
+      <tr><td>윈도 매니저</td><td class="mono">KWin</td><td class="mono">Metacity (현재 Mutter)</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> KDE = K = KWin = Qt. GNOME = GTK = Metacity. "Metacity"라는 단어가 KDE 설명에 나오면 바로 틀린 문장임을 알아채기.</div>
+  `
+},
+{
+  num: "79",
+  keyword: "디스플레이 매니저 — 로그인·세션 관리",
+  rate: null,
+  title: "display_manager.q",
+  question: "다음 중 사용자 로그인 및 세션 관리 역할을 수행하는 X 윈도의 구성요소로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"디스플레이 매니저", correct:true},
+    {label:"데스크톱 환경", correct:false},
+    {label:"윈도 매니저", correct:false},
+    {label:"유저 인터페이스", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">사용자 로그인</span>과 <span class="key">세션 관리</span>를 담당하는 것은 <b>디스플레이 매니저(Display Manager)</b>다. 컴퓨터를 켰을 때 나타나는 그래픽 로그인 화면을 제공하며, 계정 선택·비밀번호 입력·데스크톱 환경 선택·세션 시작을 처리한다.</p>
+
+    <h4>작동 흐름</h4>
+    <pre>컴퓨터 부팅
+  ↓
+디스플레이 매니저 (로그인 화면 표시)
+  ↓
+아이디·비밀번호 확인
+  ↓
+사용자 세션 시작
+  ↓
+GNOME / KDE / XFce 실행</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① 디스플레이 매니저</div>
+        <p>로그인을 처리하고, 로그인 후 사용할 그래픽 세션을 시작·관리한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② 데스크톱 환경</div>
+        <p>로그인 후 사용하는 전체 그래픽 작업 환경(바탕화면, 패널, 메뉴, 파일 관리자 등)이다. 로그인 자체를 담당하지는 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ 윈도 매니저</div>
+        <p>화면에 나타난 창의 이동·크기 변경·최소화/최대화·배치를 관리한다. 로그인이나 세션 시작과는 무관하다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ 유저 인터페이스</div>
+        <p>GUI, CLI, 메뉴, 버튼 등 사용자와 시스템이 상호작용하는 방식을 가리키는 일반적인 개념일 뿐, 로그인·세션 관리를 담당하는 구체적인 구성요소는 아니다.</p>
+      </div>
+    </div>
+
+    <h4>대표적인 디스플레이 매니저</h4>
+    <table class="ref">
+      <tr><th>디스플레이 매니저</th><th>주로 관련된 환경</th></tr>
+      <tr><td class="mono">GDM</td><td>GNOME</td></tr>
+      <tr><td class="mono">KDM</td><td>KDE</td></tr>
+      <tr><td class="mono">XDM</td><td>기본 X 윈도</td></tr>
+      <tr><td class="mono">LightDM</td><td>여러 데스크톱 환경</td></tr>
+      <tr><td class="mono">SDDM</td><td>KDE Plasma</td></tr>
+    </table>
+
+    <h4>X 윈도 구성요소 비교</h4>
+    <table class="ref">
+      <tr><th>구성요소</th><th>핵심 역할</th></tr>
+      <tr><td>디스플레이 매니저</td><td>로그인 및 세션 관리</td></tr>
+      <tr><td>데스크톱 환경</td><td>바탕화면을 포함한 전체 GUI 환경</td></tr>
+      <tr><td>윈도 매니저</td><td>창의 이동·크기·배치 관리</td></tr>
+      <tr><td>유저 인터페이스</td><td>사용자와 시스템의 상호작용 방식</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 로그인 화면이 보이면 Display Manager. GNOME→GDM, KDE→KDM, 기본 X→XDM 연결도 함께 기억해두기.</div>
+  `
+},
+];
+
+const container = document.getElementById('cards');
+
+questions.forEach((q, idx) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = `q-${q.num}`;
+
+  const optionsHTML = q.options.map((o, i) => `
+    <div class="option ${o.correct ? 'correct' : ''}">
+      <span class="num">${i+1}.</span>
+      <span>${o.label}</span>
+      ${o.correct ? '<span class="mark">✓ 정답</span>' : ''}
+    </div>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="card-titlebar">
+      <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+      <span class="filename mono">${q.title}</span>
+      ${q.rate ? `<span class="rate">${q.rate}</span>` : ''}
+    </div>
+    <div class="card-body">
+      <span class="qnum">Q${q.num}</span>
+      <div class="question-text">
+        ${q.question}
+        ${q.quote ? `<span class="quote${q.quoteCode ? ' code' : ''}">${q.quote}</span>` : ''}
+      </div>
+      <div class="options">${optionsHTML}</div>
+      <div class="section-label"><span class="chevron">▸</span><span>$ cat 해설.md</span></div>
+      <div class="explain-inner">${q.explain}</div>
+    </div>
+  `;
+  container.appendChild(card);
+});
+
+const navList = document.getElementById('navList');
+questions.forEach((q) => {
+  const item = document.createElement('div');
+  item.className = 'nav-item';
+  item.innerHTML = `
+    <span class="nav-num">Q${q.num}</span>
+    <span class="nav-kw">${q.keyword}</span>
+  `;
+  item.addEventListener('click', () => {
+    const target = document.getElementById(`q-${q.num}`);
+    if(target){
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+  navList.appendChild(item);
+});
+
+
+</script>
+</body>
+</html>
