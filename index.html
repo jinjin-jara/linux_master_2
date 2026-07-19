@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -143,6 +142,30 @@
     border:1px solid var(--accent-dim);
     padding:3px 9px;
     border-radius:999px;
+  }
+  .card-titlebar .round-badge{
+    margin-left:auto;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    font-weight:600;
+    color:#8fd3ff;
+    background:rgba(143,211,255,0.1);
+    border:1px solid rgba(143,211,255,0.35);
+    padding:3px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .nav-item .nav-round{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    font-weight:600;
+    color:#8fd3ff;
+    background:rgba(143,211,255,0.1);
+    border:1px solid rgba(143,211,255,0.3);
+    padding:1px 6px;
+    border-radius:999px;
+    flex-shrink:0;
+    margin-top:2px;
   }
 
   .card-body{padding:26px 26px 24px;}
@@ -545,6 +568,15 @@
     color:#d3d9e5;
     line-height:1.45;
   }
+  .nav-item .nav-body{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    min-width:0;
+  }
+  .nav-item .nav-round{
+    align-self:flex-start;
+  }
   .side-nav-foot{
     margin-top:auto;
     padding:14px 20px 0;
@@ -585,7 +617,7 @@
   <h1><span class="hash">#</span> 리눅스마스터 오답노트</h1>
   <p class="sub">틀린 문제만 골라 핵심 키워드 → 보기 해설 → 암기 포인트 순으로 정리했습니다. 각 문제의 버튼을 눌러 해설을 펼쳐보세요.</p>
   <div class="stat-bar">
-    <span class="stat-chip">📄 총 <b>36</b>문제</span>
+    <span class="stat-chip">📄 총 <b>44</b>문제</span>
   </div>
 </div>
 
@@ -2704,6 +2736,555 @@ GNOME / KDE / XFce 실행</pre>
     <div class="tip-box"><b>암기 팁 —</b> 로그인 화면이 보이면 Display Manager. GNOME→GDM, KDE→KDM, 기본 X→XDM 연결도 함께 기억해두기.</div>
   `
 },
+{
+  num: "1",
+  round: "2회차",
+  keyword: "Sticky Bit — chmod o+t (자기 파일만 삭제)",
+  title: "sticky_bit.q",
+  question: "project 그룹에 속한 사용자들이 /project 디렉터리에서 파일 생성은 자유로우나, 삭제는 본인이 생성한 파일만 가능하도록 설정하려고 한다. /project 디렉터리의 정보가 다음과 같을 때 관련 명령으로 알맞은 것은?",
+  quote: "drwxr-x--- 2 root project ... /project",
+  quoteCode: true,
+  options: [
+    {label:"chmod g+s /project", correct:false},
+    {label:"chmod g+t /project", correct:false},
+    {label:"chmod o+s /project", correct:false},
+    {label:"chmod o+t /project", correct:true},
+  ],
+  answerIndex: 3,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>지문의 결정적 단서는 <span class="key">여러 사용자가 함께 쓰는 디렉터리</span>, <span class="key">파일 생성은 자유</span>, <span class="key">삭제는 본인이 만든 파일만 가능</span>이다. 이 기능을 제공하는 것이 <b>Sticky Bit(스티키 비트)</b>다.</p>
+
+    <h4>Sticky Bit란?</h4>
+    <p>공유 디렉터리에서 다른 사람이 만든 파일을 삭제하지 못하도록 하는 특수 권한이다.</p>
+    <pre>/project
+├── user1이 만든 a.txt
+├── user2가 만든 b.txt
+└── user3가 만든 c.txt
+
+Sticky Bit 설정 시
+user1 → a.txt 삭제 가능 ✅
+user1 → b.txt 삭제 불가 ❌
+user1 → c.txt 삭제 불가 ❌</pre>
+    <p>즉 자신이 만든 파일만 삭제할 수 있다.</p>
+
+    <h4>왜 o+t를 사용할까?</h4>
+    <pre>chmod o+t /project
+또는
+chmod +t /project</pre>
+    <p>설정 후 권한은 <code>drwxrwxrwt</code>처럼 맨 끝에 <b>t</b>가 표시된다. 가장 대표적인 예가 <code>/tmp</code>로, 모든 사용자가 파일을 만들 수 있지만 다른 사람이 만든 파일은 삭제할 수 없다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① chmod g+s /project</div>
+        <p><code>g+s</code>는 SGID(Set Group ID)다. 디렉터리에 SGID를 설정하면 새로 생성되는 파일의 그룹이 디렉터리의 그룹(project)을 자동으로 상속받지만, 파일 삭제를 제한하는 기능은 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② chmod g+t /project</div>
+        <p>틀린 명령이다. Sticky Bit는 group(g)이 아니라 <b>other 영역(o+t)</b>으로 설정한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ chmod o+s /project</div>
+        <p><code>o+s</code>는 존재하지 않는 특수 권한이다. 특수 권한은 <code>u+s</code>(SetUID), <code>g+s</code>(SetGID), <code>o+t</code>(Sticky Bit) 세 조합만 기억하면 된다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ④ chmod o+t /project</div>
+        <p>Sticky Bit를 설정하여 공유 디렉터리에서 자기 파일만 삭제 가능하도록 한다. 문제의 조건과 정확히 일치한다.</p>
+      </div>
+    </div>
+
+    <h4>참고: 현재 권한으로 실제로는 파일 생성도 안 된다</h4>
+    <p>문제의 현재 권한 <code>drwxr-x---</code>을 나눠보면 다음과 같다.</p>
+    <table class="ref">
+      <tr><th>대상</th><th>권한</th></tr>
+      <tr><td>owner</td><td class="mono">rwx</td></tr>
+      <tr><td>group</td><td class="mono">r-x</td></tr>
+      <tr><td>other</td><td class="mono">---</td></tr>
+    </table>
+    <p>엄밀히는 그룹에 쓰기 권한(w)이 없어 파일 생성도 안 되는 상태다. 실제 운영 환경이라면 <code>chmod g+w,o+t /project</code>처럼 설정해야 하지만, 이 문제는 Sticky Bit 자체를 묻는 문제이므로 정답은 ④번이다.</p>
+
+    <h4>특수 권한 3가지 정리</h4>
+    <table class="ref">
+      <tr><th>권한</th><th>명령</th><th>역할</th></tr>
+      <tr><td>SetUID</td><td class="mono">chmod u+s</td><td>파일 소유자 권한으로 실행</td></tr>
+      <tr><td>SetGID</td><td class="mono">chmod g+s</td><td>디렉터리 그룹 상속</td></tr>
+      <tr><td>Sticky Bit</td><td class="mono">chmod o+t</td><td>자기 파일만 삭제 가능</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> 공유 디렉터리에서 남의 파일 삭제 금지 = Sticky Bit = chmod o+t. 46번 문제(3770 = Sticky+SetGID)와 함께 묶어서 기억하면 좋다.</div>
+  `
+},
+{
+  num: "2",
+  round: "2회차",
+  keyword: "edquota — vi로 쿼터 편집",
+  title: "edquota_command.q",
+  question: "다음 설명에 해당하는 명령어로 알맞은 것은?",
+  quote: "사용자나 그룹에 쿼터를 설정할 때 사용하는 명령으로 실행시키면 vi 편집기를 이용해서 관련 값을 지정해야 한다.",
+  options: [
+    {label:"quota", correct:false},
+    {label:"edquota", correct:true},
+    {label:"setquota", correct:false},
+    {label:"xfs_quota", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">vi 편집기를 이용해서 관련 값을 지정한다</span> — 이 문장이 나오면 바로 <code>edquota</code>를 떠올리면 된다.</p>
+
+    <h4>edquota란?</h4>
+    <p>사용자 또는 그룹의 디스크 쿼터를 편집(Edit)하는 명령이다. <code>ed + quota</code> = <b>Edit Quota</b>, 실행하면 자동으로 vi 편집기가 열린다.</p>
+    <pre>$ edquota user1
+
+Filesystem      blocks  soft  hard  inodes  soft  hard
+/dev/sda1       5000    6000  7000  120      150   200</pre>
+    <p>이 화면이 vi 편집기로 열리고, 그 안에서 soft limit·hard limit 값을 직접 수정한다.</p>
+
+    <h4>쿼터(Quota)란?</h4>
+    <p>사용자가 사용할 수 있는 디스크 용량을 제한하는 기능이다. 예를 들어 학생 A는 최대 1GB, 학생 B는 최대 2GB처럼 사용자마다 저장 공간을 제한할 수 있다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① quota</div>
+        <p>현재 설정된 쿼터 정보를 <b>조회</b>하는 명령이다. (<code>quota</code> 또는 <code>quota user1</code>) 조회만 가능하고 수정은 하지 않는다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② edquota</div>
+        <p>사용자 또는 그룹의 쿼터를 편집(Edit)하는 명령. 실행하면 vi 편집기가 열리며 soft limit·hard limit 등을 수정할 수 있다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ setquota</div>
+        <p>쿼터를 명령행에서 직접 설정하는 명령이다. (<code>setquota user1 10000 12000 1000 1200 /home</code>) vi 편집기를 열지 않으므로, "vi 편집기를 이용한다"는 조건과 맞지 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ xfs_quota</div>
+        <p>XFS 파일 시스템 전용 쿼터 관리 명령이다. 일반적인 리눅스 쿼터 편집 명령을 묻는 이 문제의 정답은 아니다.</p>
+      </div>
+    </div>
+
+    <h4>명령어 비교</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>역할</th></tr>
+      <tr><td class="mono">quota</td><td>현재 쿼터 조회</td></tr>
+      <tr><td class="mono">edquota</td><td>쿼터 편집 (vi 실행)</td></tr>
+      <tr><td class="mono">setquota</td><td>명령행에서 쿼터 설정</td></tr>
+      <tr><td class="mono">xfs_quota</td><td>XFS 파일 시스템의 쿼터 관리</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> quota = 조회, edquota = vi로 수정, setquota = 명령어로 설정. "vi 편집기가 열린다"는 문장이 나오면 edquota를 선택하기. (1회차 44번 repquota와 헷갈리지 않도록 함께 비교해두면 좋다.)</div>
+  `
+},
+{
+  num: "3",
+  round: "2회차",
+  keyword: "mount -o remount,rw — 재마운트 옵션 변경",
+  title: "mount_remount.q",
+  question: "다음 (괄호) 안에 들어갈 명령어로 알맞은 것은?",
+  quote: "# (      ) -o remount,rw /home",
+  quoteCode: true,
+  options: [
+    {label:"quota", correct:false},
+    {label:"mount", correct:true},
+    {label:"umount", correct:false},
+    {label:"fdisk", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p>문제에서 가장 중요한 부분은 <span class="key">-o remount,rw</span>다. <code>remount</code>는 <b>이미 마운트되어 있는 파일 시스템을 다시 마운트한다</b>는 뜻으로, 기존 마운트는 유지한 채 옵션만 변경하는 기능이다.</p>
+
+    <h4>remount란?</h4>
+    <p>보통 마운트는 <code>mount /dev/sdb1 /home</code>처럼 한다. 이미 <code>/home</code>이 읽기 전용(ro)으로 마운트되어 있다면, 다시 마운트하면서 읽기/쓰기(rw)로 바꿀 수 있다.</p>
+    <pre>mount -o remount,rw /home
+
+→ 이미 마운트된 /home을
+  다시(remount) 읽기/쓰기(rw) 모드로 변경</pre>
+
+    <h4>ro vs rw</h4>
+    <table class="ref">
+      <tr><th>옵션</th><th>의미</th></tr>
+      <tr><td class="mono">ro</td><td>읽기 전용 (Read Only)</td></tr>
+      <tr><td class="mono">rw</td><td>읽기/쓰기 (Read Write)</td></tr>
+    </table>
+    <pre>mount -o remount,ro /home   → /home을 읽기 전용으로 변경
+mount -o remount,rw /home   → /home을 읽기/쓰기 가능하도록 변경</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① quota</div>
+        <p>사용자의 디스크 사용량과 할당량을 조회하는 명령이다. 마운트와는 관련이 없다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② mount</div>
+        <p>파일 시스템을 마운트하거나, 이미 마운트된 파일 시스템의 옵션을 변경하는 명령이다. <code>mount -o remount,rw /home</code>은 /home을 다시 마운트하면서 읽기/쓰기 모드로 바꾼다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ umount</div>
+        <p>마운트를 <b>해제</b>하는 명령이다. (<code>umount /home</code>) remount 기능은 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ fdisk</div>
+        <p>디스크 파티션을 생성·삭제·수정하는 명령이다. (<code>fdisk /dev/sda</code>) 마운트와는 관련이 없다.</p>
+      </div>
+    </div>
+
+    <h4>mount vs umount 비교</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>역할</th></tr>
+      <tr><td class="mono">mount</td><td>파일 시스템 연결(마운트)</td></tr>
+      <tr><td class="mono">mount -o remount</td><td>기존 마운트 옵션 변경</td></tr>
+      <tr><td class="mono">umount</td><td>파일 시스템 연결 해제</td></tr>
+    </table>
+
+    <h4>자주 사용하는 mount 옵션</h4>
+    <table class="ref">
+      <tr><th>옵션</th><th>의미</th></tr>
+      <tr><td class="mono">ro</td><td>읽기 전용</td></tr>
+      <tr><td class="mono">rw</td><td>읽기/쓰기</td></tr>
+      <tr><td class="mono">remount</td><td>다시 마운트</td></tr>
+      <tr><td class="mono">defaults</td><td>기본 옵션 사용</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> mount = 마운트, mount -o remount = 다시 마운트, rw = 읽기/쓰기, ro = 읽기 전용. "-o remount,rw"가 보이면 mount 명령어를 떠올리기.</div>
+  `
+},
+{
+  num: "4",
+  round: "2회차",
+  keyword: "mkfs.xfs — XFS 파일 시스템 포맷",
+  title: "mkfs_xfs.q",
+  question: "다음은 /dev/sdb1을 XFS 파일 시스템으로 포맷하는 과정이다. (괄호) 안에 들어갈 명령어로 알맞은 것은?",
+  quote: "# (      ) /dev/sdb1",
+  quoteCode: true,
+  options: [
+    {label:"xfs.mkfs", correct:false},
+    {label:"mkfs.xfs", correct:true},
+    {label:"mke2fs -j xfs", correct:false},
+    {label:"mke2fs -t xfs", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">XFS 파일 시스템으로 포맷</span> — 리눅스에서 XFS 파일 시스템을 생성(포맷)할 때 사용하는 명령은 <code>mkfs.xfs</code>다.</p>
+
+    <h4>mkfs란?</h4>
+    <p>Make File System의 약자로, 디스크나 파티션에 파일 시스템을 생성(포맷)하는 명령이다. 파일 시스템 종류에 따라 뒤에 붙는 이름만 달라진다.</p>
+    <pre>mkfs.ext4 /dev/sdb1   → ext4 파일 시스템 생성
+mkfs.xfs  /dev/sdb1   → XFS 파일 시스템 생성</pre>
+
+    <h4>XFS란?</h4>
+    <p>대용량 파일과 대용량 디스크를 효율적으로 처리하기 위해 개발된 고성능 파일 시스템이다. 대용량 파일 처리에 강하고, 성능이 우수하며, 저널링(Journaling)을 지원한다. RHEL, CentOS 등에서 많이 사용된다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① xfs.mkfs</div>
+        <p>명령어의 순서가 잘못되었다. 올바른 명령은 <code>mkfs.xfs</code>다. 시험에서 자주 나오는 함정이다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② mkfs.xfs</div>
+        <p>XFS 파일 시스템을 생성(포맷)하는 명령이다. (<code>mkfs.xfs /dev/sdb1</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ mke2fs -j xfs</div>
+        <p><code>mke2fs</code>는 ext2/ext3/ext4 계열 파일 시스템을 만드는 명령이다. <code>-j</code> 옵션은 저널(Journal)을 추가해 ext3를 생성할 때 쓰는 옵션으로, XFS와는 관련이 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ mke2fs -t xfs</div>
+        <p><code>mke2fs</code>는 ext 계열 전용 명령이라 XFS 파일 시스템은 생성할 수 없다.</p>
+      </div>
+    </div>
+
+    <h4>자주 사용하는 파일 시스템 생성 명령</h4>
+    <table class="ref">
+      <tr><th>파일 시스템</th><th>생성 명령</th></tr>
+      <tr><td>ext2</td><td class="mono">mkfs.ext2</td></tr>
+      <tr><td>ext3</td><td class="mono">mkfs.ext3</td></tr>
+      <tr><td>ext4</td><td class="mono">mkfs.ext4</td></tr>
+      <tr><td>XFS</td><td class="mono">mkfs.xfs</td></tr>
+      <tr><td>VFAT(FAT32)</td><td class="mono">mkfs.vfat</td></tr>
+    </table>
+
+    <h4>mkfs vs mke2fs</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>역할</th></tr>
+      <tr><td class="mono">mkfs.ext4</td><td>ext4 파일 시스템 생성</td></tr>
+      <tr><td class="mono">mkfs.xfs</td><td>XFS 파일 시스템 생성</td></tr>
+      <tr><td class="mono">mke2fs</td><td>ext 계열(ext2/3/4) 생성 전용</td></tr>
+    </table>
+    <p>즉 XFS → <code>mkfs.xfs</code>, ext 계열 → <code>mke2fs</code> 또는 <code>mkfs.ext4</code>로 기억하면 된다.</p>
+
+    <div class="tip-box"><b>암기 팁 —</b> mkfs = Make File System. XFS 포맷 = mkfs.xfs, ext 포맷 = mkfs.ext4. "XFS 파일 시스템으로 포맷"이라는 문구가 나오면 mkfs.xfs를 선택하기.</div>
+  `
+},
+{
+  num: "5",
+  round: "2회차",
+  keyword: "echo $SHELL — 로그인 셸 (현재 셸 아님)",
+  title: "echo_shell_var.q",
+  question: "다음 명령의 결과에 대한 설명으로 가장 알맞은 것은?",
+  quote: "$ echo $SHELL",
+  quoteCode: true,
+  options: [
+    {label:"사용자가 로그인 시에 부여받은 셸 정보가 출력된다.", correct:true},
+    {label:"사용자가 현재 사용하고 있는 셸 정보가 출력된다.", correct:false},
+    {label:"사용자가 변경할 수 있는 셸 정보가 출력된다.", correct:false},
+    {label:"화면에 어떠한 결과도 출력되지 않는다.", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><code>$SHELL</code>은 <span class="key">로그인 시 사용자에게 지정된 기본 로그인 셸(Login Shell)</span>을 저장하고 있는 환경 변수다.</p>
+    <p>※ 참고: 일부 문제집에서는 ②(현재 사용 중인 셸)를 정답으로 표기하기도 하지만, 리눅스마스터 시험에서는 <b>①</b>이 정답으로 출제된다.</p>
+
+    <h4>$SHELL이란?</h4>
+    <pre>$ echo $SHELL
+/bin/bash</pre>
+    <p>로그인 시 부여받은 기본 셸의 경로를 알려주는 환경 변수다.</p>
+
+    <h4>현재 사용하는 셸과는 다를 수도 있다</h4>
+    <p>로그인은 Bash로 했지만, 이후 <code>sh</code> 같은 다른 셸을 실행하면 현재 실행 중인 셸은 바뀐다. 하지만 <code>echo $SHELL</code>은 여전히 로그인 당시의 <code>/bin/bash</code>를 출력한다. 즉 <b>현재 실행 중인 셸이 아니라 로그인 셸을 출력</b>하는 것이다.</p>
+    <pre>로그인 → /bin/bash (= $SHELL)
+  ↓
+sh 실행 → 현재 셸은 sh로 바뀜
+  ↓
+echo $SHELL → 여전히 /bin/bash (로그인 셸은 그대로 유지)
+echo $0     → sh (현재 셸)</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① 로그인 시에 부여받은 셸 정보가 출력된다.</div>
+        <p><code>$SHELL</code>은 로그인 시 지정된 기본 셸의 경로를 저장하는 환경 변수다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② 현재 사용하고 있는 셸 정보가 출력된다.</div>
+        <p>헷갈리기 쉬운 보기다. 현재 실행 중인 셸은 로그인 셸과 다를 수 있다. 현재 셸을 확인하려면 <code>echo $0</code>이나 <code>ps</code>를 사용해야 한다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ 변경할 수 있는 셸 정보가 출력된다.</div>
+        <p>셸을 변경하는 명령은 <code>chsh</code>다. <code>echo $SHELL</code>은 변경 가능한 셸 목록을 보여주지 않는다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ 화면에 어떠한 결과도 출력되지 않는다.</div>
+        <p><code>$SHELL</code> 환경 변수가 설정되어 있다면 셸의 경로가 정상적으로 출력된다.</p>
+      </div>
+    </div>
+
+    <h4>$SHELL vs $0 비교</h4>
+    <table class="ref">
+      <tr><th>명령어</th><th>의미</th></tr>
+      <tr><td class="mono">echo $SHELL</td><td>로그인 시 기본 셸</td></tr>
+      <tr><td class="mono">echo $0</td><td>현재 실행 중인 셸</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> echo $SHELL = 로그인할 때 지정된 기본 셸, echo $0 = 현재 실행 중인 셸. 시험에서 "echo $SHELL"이 나오면 "로그인 시 부여받은 셸"을 선택하기.</div>
+  `
+},
+{
+  num: "6",
+  round: "2회차",
+  keyword: "chsh -s — 로그인 셸 변경",
+  title: "chsh_option.q",
+  question: "다음은 ihd 사용자가 다른 셸로 변경하는 과정이다. (괄호) 안에 들어갈 내용으로 알맞은 것은?",
+  quote: "[ihd@www ~]$ chsh (      ) /bin/csh",
+  quoteCode: true,
+  options: [
+    {label:"-l", correct:false},
+    {label:"-u", correct:false},
+    {label:"-s", correct:true},
+    {label:"-c", correct:false},
+  ],
+  answerIndex: 2,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">다른 셸로 변경</span> — 로그인 셸(Login Shell)을 변경할 때 사용하는 명령은 <code>chsh</code>이며, 셸을 지정하는 옵션은 <code>-s</code>다.</p>
+
+    <h4>chsh란?</h4>
+    <p>Change Shell의 약자로, 사용자의 기본 로그인 셸을 변경하는 명령이다.</p>
+    <pre>chsh -s /bin/csh   → 기본 로그인 셸이 /bin/csh로 변경됨</pre>
+
+    <h4>-s 옵션이란?</h4>
+    <p><code>-s</code>는 Shell의 약자로, 새로운 로그인 셸을 지정할 때 사용한다.</p>
+    <pre>chsh -s /bin/bash   → 기본 셸을 Bash로 변경
+chsh -s /bin/zsh    → 기본 셸을 Zsh로 변경</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① -l</div>
+        <p>시스템에서 사용할 수 있는 로그인 셸 목록을 출력하는 옵션이다. (<code>chsh -l</code> → /bin/bash, /bin/sh, /bin/csh, /bin/tcsh 등) 셸을 변경하는 옵션은 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② -u</div>
+        <p><code>chsh</code> 명령에는 <code>-u</code> 옵션이 없다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ③ -s</div>
+        <p>사용자의 로그인 셸을 변경하는 옵션이다. (<code>chsh -s /bin/csh</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ -c</div>
+        <p><code>chsh</code>에서 사용하는 옵션이 아니다.</p>
+      </div>
+    </div>
+
+    <h4>자주 사용하는 chsh 옵션</h4>
+    <table class="ref">
+      <tr><th>옵션</th><th>역할</th></tr>
+      <tr><td class="mono">-s</td><td>로그인 셸 변경</td></tr>
+      <tr><td class="mono">-l</td><td>사용 가능한 셸 목록 출력</td></tr>
+    </table>
+
+    <h4>로그인 셸 확인하기</h4>
+    <p>현재 로그인 셸은 <code>echo $SHELL</code>로 확인할 수 있다. (5번 문제 참고) <code>/bin/bash</code>가 출력되면 기본 로그인 셸이 Bash라는 뜻이다.</p>
+
+    <div class="tip-box"><b>암기 팁 —</b> chsh = Change Shell, -s = Shell 변경, -l = Shell 목록(List). "로그인 셸을 변경한다"는 문장이 나오면 chsh -s를 떠올리기.</div>
+  `
+},
+{
+  num: "7",
+  round: "2회차",
+  keyword: "!?문자열 — 문자열 포함 명령 재실행",
+  title: "history_expansion.q",
+  question: "다음 중 최근에 실행한 명령 중에 'al'이라는 문자열을 포함한 명령을 찾아서 실행하는 명령으로 알맞은 것은?",
+  quote: null,
+  options: [
+    {label:"!?al", correct:true},
+    {label:"!!al", correct:false},
+    {label:"!*al", correct:false},
+    {label:"!-al", correct:false},
+  ],
+  answerIndex: 0,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">최근 실행 명령 중 문자열을 포함한 명령을 찾아 실행</span> — 히스토리(History) 확장 기능 중 <code>!?문자열</code>이 이 역할을 한다.</p>
+
+    <h4>!?문자열이란?</h4>
+    <p>최근 명령부터 거꾸로 찾으면서, 명령어 이름이 아니라 <b>명령 전체에서 문자열을 검색</b>해 가장 최근에 일치하는 명령을 다시 실행한다.</p>
+    <pre>ls
+pwd
+alias ll='ls -al'
+cal
+history
+
+!?al  →  최근 명령 중 'al'이 포함된 것(예: cal, ls -al 등)을 찾아 실행</pre>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ① !?al</div>
+        <p>최근 히스토리에서 'al'을 포함한 명령을 찾아 실행한다. 사용법: <code>!?문자열</code> (예: <code>!?ssh</code>, <code>!?grep</code>)</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ② !!al</div>
+        <p><code>!!</code>는 직전에 실행한 명령을 그대로 다시 실행하는 기능이다. <code>!!al</code>이라는 형태는 올바른 사용법이 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ !*al</div>
+        <p><code>!*</code>는 히스토리에서 사용하는 형식이 아니다. 올바른 명령이 아니다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ !-al</div>
+        <p><code>!-숫자</code>는 현재부터 n번째 이전 명령을 실행하는 형식이다. (예: <code>!-2</code> → 두 번째 이전 명령 실행) <code>!-al</code>은 숫자가 아니므로 사용할 수 없다.</p>
+      </div>
+    </div>
+
+    <h4>!문자열 vs !?문자열 — 시험에 자주 나오는 차이</h4>
+    <table class="ref">
+      <tr><th>형식</th><th>동작</th><th>예시</th></tr>
+      <tr><td class="mono">!문자열</td><td>명령어가 해당 문자열로 <b>시작</b>하는 최근 명령 실행</td><td><code>!vi</code> → vi memo.txt 실행</td></tr>
+      <tr><td class="mono">!?문자열</td><td>명령 안에 문자열이 <b>포함</b>되어 있으면 실행</td><td><code>!?al</code> → cal, ls -al 등에서 검색</td></tr>
+    </table>
+
+    <h4>자주 사용하는 히스토리 명령 정리</h4>
+    <table class="ref">
+      <tr><th>명령</th><th>의미</th></tr>
+      <tr><td class="mono">history</td><td>명령어 히스토리 출력</td></tr>
+      <tr><td class="mono">!!</td><td>직전 명령 다시 실행</td></tr>
+      <tr><td class="mono">!번호</td><td>해당 번호의 명령 실행</td></tr>
+      <tr><td class="mono">!-2</td><td>두 번째 이전 명령 실행</td></tr>
+      <tr><td class="mono">!ls</td><td>ls로 시작하는 최근 명령 실행</td></tr>
+      <tr><td class="mono">!?문자열</td><td>문자열이 포함된 최근 명령 실행</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> !! = 직전 명령, !번호 = 번호 실행, !문자열 = 문자열로 시작, !?문자열 = 문자열 포함. "○○ 문자열을 포함한 명령"이라고 나오면 !?문자열을 선택하기.</div>
+  `
+},
+{
+  num: "8",
+  round: "2회차",
+  keyword: "fork() — 명령 실행 시 자식 프로세스 생성",
+  title: "fork_process.q",
+  question: "다음 (괄호) 안에 들어갈 내용으로 알맞은 것은?",
+  quote: "사용자 시스템에 로그인하면 bash라는 프로세스를 할당받고, 사용자가 명령어를 실행하면 ( 괄호 ) 형태로 프로세스가 발생하면서 동작한다.",
+  options: [
+    {label:"exec", correct:false},
+    {label:"fork", correct:true},
+    {label:"init", correct:false},
+    {label:"systemd", correct:false},
+  ],
+  answerIndex: 1,
+  explain: `
+    <h4>핵심 키워드</h4>
+    <p><span class="key">명령어를 실행하면 프로세스가 발생한다</span> — 쉘(bash)은 사용자가 명령을 입력하면 먼저 <code>fork()</code>를 이용해 자식 프로세스를 생성한다. 새로운 프로세스를 만드는 과정이 바로 <b>fork</b>다.</p>
+
+    <h4>fork란?</h4>
+    <p>현재 프로세스를 복사하여 새로운 자식 프로세스를 생성하는 시스템 호출이다.</p>
+    <pre>bash (부모 프로세스)
+   │
+ fork()
+   │
+   ▼
+ls (자식 프로세스)</pre>
+    <p>명령 실행이 끝나면 자식 프로세스는 종료되고, 부모인 bash는 계속 실행된다.</p>
+
+    <h4>exec는 무엇이 다를까?</h4>
+    <p>fork()는 <b>새 프로세스를 만드는</b> 것이고, exec()는 <b>현재 프로세스를 다른 프로그램으로 교체</b>하는 것이다.</p>
+    <pre>bash → fork() → 자식 프로세스 → exec() → ls 프로그램으로 교체되어 실행</pre>
+    <p>실제로는 쉘이 fork()로 자식을 만든 뒤, 자식이 exec()를 호출해 ls 프로그램으로 바뀌는 방식으로 동작한다. 하지만 문제에서는 "프로세스가 발생한다"를 묻고 있으므로 정답은 fork다.</p>
+
+    <h4>보기 해설</h4>
+    <div class="breakdown">
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ① exec</div>
+        <p>현재 프로세스를 새 프로그램으로 교체한다. 새로운 프로세스를 생성하지는 않는다.</p>
+      </div>
+      <div class="bd-item right">
+        <div class="bd-head"><span class="tag">정답</span> ② fork</div>
+        <p>현재 프로세스를 복사하여 자식 프로세스를 생성한다. 쉘에서 명령을 실행할 때 가장 먼저 수행되는 과정이다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ③ init</div>
+        <p>과거 UNIX/Linux에서 PID 1을 가진 최초의 프로세스다. 현재 대부분의 리눅스에서는 systemd가 이를 대신한다. 명령 실행과는 관련이 없다.</p>
+      </div>
+      <div class="bd-item wrong">
+        <div class="bd-head"><span class="tag">오답</span> ④ systemd</div>
+        <p>현대 리눅스의 초기화 시스템(init 시스템)으로, 부팅과 서비스 관리를 담당한다. 사용자가 명령을 실행할 때 생성되는 프로세스와는 관련이 없다.</p>
+      </div>
+    </div>
+
+    <h4>fork와 exec의 관계 — 순서가 핵심</h4>
+    <pre>사용자 로그인 → bash 실행 → 명령 입력(ls)
+  → fork() → 자식 프로세스 생성
+  → exec() → ls 프로그램 실행</pre>
+    <p>fork가 먼저, exec가 나중이라는 순서를 기억해야 한다.</p>
+
+    <h4>시험 암기 포인트</h4>
+    <table class="ref">
+      <tr><th>용어</th><th>역할</th></tr>
+      <tr><td class="mono">fork()</td><td>자식 프로세스 생성</td></tr>
+      <tr><td class="mono">exec()</td><td>현재 프로세스를 새 프로그램으로 교체</td></tr>
+      <tr><td class="mono">init</td><td>예전 초기화 프로세스 (PID 1)</td></tr>
+      <tr><td class="mono">systemd</td><td>현재 대부분의 리눅스 초기화 시스템</td></tr>
+    </table>
+
+    <div class="tip-box"><b>암기 팁 —</b> fork = 프로세스를 만든다, exec = 프로그램을 바꾼다. "새로운 프로세스가 생성된다"는 표현이 나오면 fork를 선택하기.</div>
+  `
+},
 ];
 
 const container = document.getElementById('cards');
@@ -2725,7 +3306,7 @@ questions.forEach((q, idx) => {
     <div class="card-titlebar">
       <div class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
       <span class="filename mono">${q.title}</span>
-      ${q.rate ? `<span class="rate">${q.rate}</span>` : ''}
+      <span class="round-badge">${q.round || '1회차'}</span>
     </div>
     <div class="card-body">
       <span class="qnum">Q${q.num}</span>
@@ -2743,7 +3324,7 @@ questions.forEach((q, idx) => {
 
   const plainExplain = q.explain.replace(/<[^>]*>/g, ' ');
   const optionText = q.options.map(o => o.label).join(' ');
-  q._searchIndex = [q.num, q.keyword, q.question, q.quote || '', optionText, plainExplain]
+  q._searchIndex = [q.num, q.keyword, q.question, q.quote || '', optionText, plainExplain, q.round || '1회차']
     .join(' ')
     .toLowerCase();
 });
@@ -2780,7 +3361,10 @@ questions.forEach((q) => {
   item.className = 'nav-item';
   item.innerHTML = `
     <span class="nav-num">Q${q.num}</span>
-    <span class="nav-kw">${q.keyword}</span>
+    <div class="nav-body">
+      <span class="nav-kw">${q.keyword}</span>
+      <span class="nav-round">${q.round || '1회차'}</span>
+    </div>
   `;
   item.addEventListener('click', () => {
     const target = document.getElementById(`q-${q.num}`);
