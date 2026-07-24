@@ -2244,13 +2244,7 @@ Address: 211.202.42.101</span>
 
   // ---------- Thank you button ----------
   document.getElementById('thanksBtn').addEventListener('click', function(){
-    var subject = encodeURIComponent('[감사인사] 리눅스마스터 벼락치기 가이드 잘 봤어요!');
-    var body = encodeURIComponent(
-      '안녕하세요 jinjin-jara님,\n\n' +
-      '리눅스마스터 2급 벼락치기 가이드 잘 보고 있어요. 감사 인사 전하고 싶어서 메일 보내요!\n\n' +
-      '(여기에 하고 싶은 말을 자유롭게 적어주세요 :)\n\n'
-    );
-    window.location.href = 'mailto:jinjinjara0610@gmail.com?subject=' + subject + '&body=' + body;
+    window.open('https://jinnnkcoding.tistory.com/241', '_blank', 'noopener');
   });
 
   // ---------- Tabs (guide / exam / ox) ----------
