@@ -913,8 +913,8 @@ footer.page-footer a:hover{text-decoration:underline;}
           <div class="callout-title">🔖 북마크 기능 안내</div>
           각 챕터·섹션 제목 옆에 <span class="bm-demo"><svg viewBox="0 0 24 24"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></span> 아이콘이 있어요.
           시험 전에 자주 헷갈리는 개념이나 다시 보고 싶은 부분을 눌러서 표시해두면, 이 브라우저에 계속 저장됩니다.
-          페이지를 새로고침하거나 껐다 켜도 사라지지 않으니, 8월 1일 시험 직전까지 두고두고 복습용으로 써보세요.
-          (다른 기기·다른 브라우저와는 공유되지 않고, 이 브라우저에서만 저장됩니다)
+          페이지를 새로고침하거나 껐다 켜도 사라지지 않으니, 시험 전까지 두고두고 복습용으로 써보세요.
+          (자동으로 지워지지 않으니 다음 회차 시험 준비할 때도 그대로 남아있어요. 다른 기기·다른 브라우저와는 공유되지 않고, 이 브라우저에서만 저장됩니다)
         </div>
 
         <nav class="hero-toc" aria-label="빠른 이동">
@@ -2114,18 +2114,9 @@ Address: 211.202.42.101</span>
 
   // ---------- Bookmarks (localStorage) ----------
   var STORAGE_KEY = 'lm2-bookmarks-v1';
-  var EXPIRY_KEY = 'lm2-bookmarks-expiry-v1';
-  var EXPIRY_DATE = new Date('2026-08-02T00:00:00+09:00').getTime();
 
   function loadBookmarks(){
     try{
-      var storedExpiry = localStorage.getItem(EXPIRY_KEY);
-      if(storedExpiry && Date.now() > EXPIRY_DATE){
-        // exam has passed; quietly retire the old bookmark set
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(EXPIRY_KEY);
-        return {};
-      }
       var raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : {};
     }catch(e){ return {}; }
@@ -2133,7 +2124,6 @@ Address: 211.202.42.101</span>
   function saveBookmarks(obj){
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
-      localStorage.setItem(EXPIRY_KEY, String(EXPIRY_DATE));
     }catch(e){}
   }
 
@@ -2349,12 +2339,6 @@ Address: 211.202.42.101</span>
 
     function loadState(){
       try{
-        var storedExpiry = localStorage.getItem(cfg.expiryKey);
-        if(storedExpiry && Date.now() > EXPIRY_DATE){
-          localStorage.removeItem(cfg.storageKey);
-          localStorage.removeItem(cfg.expiryKey);
-          return { answers: {}, currentIndex: 0 };
-        }
         var raw = localStorage.getItem(cfg.storageKey);
         return raw ? JSON.parse(raw) : { answers: {}, currentIndex: 0 };
       }catch(e){ return { answers: {}, currentIndex: 0 }; }
@@ -2362,7 +2346,6 @@ Address: 211.202.42.101</span>
     function saveState(){
       try{
         localStorage.setItem(cfg.storageKey, JSON.stringify(state));
-        localStorage.setItem(cfg.expiryKey, String(EXPIRY_DATE));
       }catch(e){}
     }
 
@@ -2632,7 +2615,6 @@ Address: 211.202.42.101</span>
     root: document.getElementById('quizRoot'),
     data: QUIZ_DATA,
     storageKey: 'lm2-quiz-v1',
-    expiryKey: 'lm2-quiz-expiry-v1',
     categories: null,
     getCategory: null,
     choices: function(){
@@ -2659,7 +2641,6 @@ Address: 211.202.42.101</span>
     root: document.getElementById('examQuizRoot'),
     data: MCQ_DATA,
     storageKey: 'lm2-mcq-v1',
-    expiryKey: 'lm2-mcq-expiry-v1',
     categories: MCQ_CATEGORIES,
     getCategory: function(q){ return q.category; },
     choices: function(q){
