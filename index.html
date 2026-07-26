@@ -43,9 +43,10 @@ body{
   font-size:16px;
   line-height:1.7;
   -webkit-font-smoothing:antialiased;
-  touch-action:manipulation; /* 모바일 더블탭 확대 차단 (핀치 줌은 유지) */
 }
 ::selection{background:var(--accent);color:#fff;}
+/* 탭 요소만 더블탭 확대 차단 (본문 스크롤 방향고정은 유지) */
+button, a, input, label, .quiz-btn, .nav-link, .tab-btn, .bm-btn, .sidebar-tab-link, .quiz-cat-chip, .quiz-action-btn{touch-action:manipulation;}
 
 /* subtle paper texture on the background */
 body::before{
