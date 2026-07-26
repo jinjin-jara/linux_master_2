@@ -266,8 +266,6 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   margin-bottom:.6rem;
 }
 .sf-made .who{color:var(--accent); font-weight:600;}
-.sf-hits{margin-top:.7rem; font-family:var(--sans); font-size:.72rem; color:var(--text-muted); text-align:center;}
-.sf-hits b{color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; margin:0 .1rem;}
 .sf-links{display:flex; gap:.5rem; margin-bottom:.7rem;}
 .sf-link{
   flex:1;
@@ -880,7 +878,6 @@ footer.page-footer a:hover{text-decoration:underline;}
     </div>
     <button class="thanks-btn" id="thanksBtn">☕ 개발자에게 감사 인사 보내기</button>
     <div class="sf-note">이 가이드는 개인이 만든 비공식 정리 자료입니다. 잘못된 개념이나 오탈자를 발견하시면 위 메일로 알려주세요.</div>
-    <div class="sf-hits" id="visitorCounter" hidden aria-label="방문자 수">전체 방문자 <b id="visitorCount">…</b>명</div>
   </div>
 </aside>
 
@@ -2780,18 +2777,6 @@ Address: 211.202.42.101</span>
 })();
 </script>
 
-<script>
-/* GoatCounter 방문자 수 표시 */
-(function(){
-  var box = document.getElementById('visitorCounter');
-  var num = document.getElementById('visitorCount');
-  if(!box || !num) return;
-  fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json')
-    .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
-    .then(function(d){ num.textContent = d.count_unique; box.hidden = false; })
-    .catch(function(){ /* 카운터 접근 불가 시 조용히 숨김 */ });
-})();
-</script>
 
 </body>
 </html>
