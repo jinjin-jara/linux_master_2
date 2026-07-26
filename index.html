@@ -126,9 +126,9 @@ a{color:inherit;}
 }
 .sidebar.open{transform:translateX(0);}
 .sidebar-header{
-  padding:1.1rem 1.1rem .9rem;
+  padding:.85rem 1.1rem;
   border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center; gap:.55rem;
 }
 .sidebar-header .brand{
   font-family:var(--sans);
@@ -149,8 +149,7 @@ a{color:inherit;}
 
 .search-box-wrap{
   position:relative;
-  padding:.8rem 1.1rem .2rem;
-  border-bottom:1px solid var(--border);
+  flex:1; min-width:0;
 }
 .search-box{
   display:flex; align-items:center; gap:.5rem;
@@ -158,7 +157,6 @@ a{color:inherit;}
   background:var(--surface);
   border-radius:8px;
   padding:.5rem .6rem;
-  margin-bottom:.8rem;
   transition:border-color .12s;
 }
 .search-box:focus-within{border-color:var(--accent);}
@@ -175,7 +173,7 @@ a{color:inherit;}
 }
 .search-clear:hover{color:var(--text);}
 .search-results{
-  position:absolute; left:1.1rem; right:1.1rem; top:100%;
+  position:absolute; left:0; right:0; top:100%;
   background:var(--bg-elevated);
   border:1px solid var(--border);
   border-radius:9px;
@@ -183,7 +181,7 @@ a{color:inherit;}
   max-height:min(60vh, 420px);
   overflow-y:auto;
   z-index:60;
-  margin-top:-.4rem;
+  margin-top:.5rem;
   padding:.4rem;
 }
 .search-group-label{
@@ -268,14 +266,8 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   margin-bottom:.6rem;
 }
 .sf-made .who{color:var(--accent); font-weight:600;}
-.sf-hits{display:flex; align-items:center; justify-content:center; gap:.45rem; width:100%;
-  margin-bottom:.7rem; padding:.55rem .7rem;
-  font-family:var(--sans); font-size:.75rem; font-weight:500; color:var(--text-dim);
-  border:1px solid var(--accent-dim); border-radius:10px;
-  background:linear-gradient(180deg, #fff, var(--surface-2));
-  box-shadow:0 1px 2px rgba(40,87,158,.06);}
-.sf-hits .sf-hits-eye{font-size:.95rem; line-height:1;}
-.sf-hits b{color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; font-size:.85rem; margin:0 .1rem;}
+.sf-hits{margin-top:.7rem; font-family:var(--sans); font-size:.72rem; color:var(--text-muted); text-align:center;}
+.sf-hits b{color:var(--accent); font-weight:600; font-variant-numeric:tabular-nums; margin:0 .1rem;}
 .sf-links{display:flex; gap:.5rem; margin-bottom:.7rem;}
 .sf-link{
   flex:1;
@@ -852,18 +844,17 @@ footer.page-footer a:hover{text-decoration:underline;}
 
 <aside class="sidebar" id="sidebar" aria-label="목차">
   <div class="sidebar-header">
-    <div class="brand">$ ls chapters/</div>
+    <div class="search-box-wrap">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="grep '검색어' guide.md" autocomplete="off">
+        <button class="search-clear" id="searchClear" hidden aria-label="검색어 지우기">✕</button>
+      </div>
+      <div class="search-results" id="searchResults" hidden></div>
+    </div>
     <button class="sidebar-close" id="sidebarClose" aria-label="사이드바 닫기">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
-  </div>
-  <div class="search-box-wrap">
-    <div class="search-box">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" id="searchInput" class="search-input" placeholder="grep '검색어' guide.md" autocomplete="off">
-      <button class="search-clear" id="searchClear" hidden aria-label="검색어 지우기">✕</button>
-    </div>
-    <div class="search-results" id="searchResults" hidden></div>
   </div>
   <div class="sidebar-scroll" id="sidebarScroll">
     <div class="bm-quicklist" id="bmQuicklist" hidden>
@@ -876,10 +867,7 @@ footer.page-footer a:hover{text-decoration:underline;}
     <ul class="nav-list"><li class="nav-chapter"><a href="#sec-1" data-id="sec-1" class="nav-link nav-link-chapter"><span class="nav-dir">ch01/</span><span class="nav-label">리눅스란 무엇인가</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-2" data-id="sec-2" class="nav-link">1-1. 리눅스의 탄생 배경</a></li><li class="nav-sub-item"><a href="#sec-3" data-id="sec-3" class="nav-link">1-2. 리눅스의 특징 (시험에 "틀린 것 고르기"로 자주 나옴)</a></li><li class="nav-sub-item"><a href="#sec-4" data-id="sec-4" class="nav-link">1-3. GNU 프로젝트와 리처드 스톨만</a></li><li class="nav-sub-item"><a href="#sec-5" data-id="sec-5" class="nav-link">1-4. 오픈소스 라이선스 (누가 소스코드를 공개해야 하는가)</a></li><li class="nav-sub-item"><a href="#sec-6" data-id="sec-6" class="nav-link">1-5. 배포판(Distribution)이란?</a></li></ul></li><li class="nav-chapter"><a href="#sec-7" data-id="sec-7" class="nav-link nav-link-chapter"><span class="nav-dir">ch02/</span><span class="nav-label">리눅스의 집 구조 (디렉토리)</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-8" data-id="sec-8" class="nav-link">꼭 기억해야 할 디렉토리별 함정</a></li></ul></li><li class="nav-chapter"><a href="#sec-9" data-id="sec-9" class="nav-link nav-link-chapter"><span class="nav-dir">ch03/</span><span class="nav-label">하드디스크를 나누는 법 (파티션 · 파일시스템)</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-10" data-id="sec-10" class="nav-link">3-1. 파티션이 뭐예요?</a></li><li class="nav-sub-item"><a href="#sec-11" data-id="sec-11" class="nav-link">3-2. 파티션의 종류 (제일 헷갈리는 부분!)</a></li><li class="nav-sub-item"><a href="#sec-12" data-id="sec-12" class="nav-link">3-3. 파티션 분할 도구</a></li><li class="nav-sub-item"><a href="#sec-13" data-id="sec-13" class="nav-link">3-4. 어떤 디렉토리를 따로 파티션으로 나누는 게 좋을까?</a></li><li class="nav-sub-item"><a href="#sec-14" data-id="sec-14" class="nav-link">3-5. 장치 파일명 규칙 (IDE 디스크 기준)</a></li><li class="nav-sub-item"><a href="#sec-15" data-id="sec-15" class="nav-link">3-6. 스왑(Swap)</a></li><li class="nav-sub-item"><a href="#sec-16" data-id="sec-16" class="nav-link">3-7. 파일시스템 종류</a></li><li class="nav-sub-item"><a href="#sec-17" data-id="sec-17" class="nav-link">3-8. LVM과 RAID (둘 다 "여러 개를 하나처럼 묶는" 기술이라 항상 같이 출제됨)</a></li></ul></li><li class="nav-chapter"><a href="#sec-18" data-id="sec-18" class="nav-link nav-link-chapter"><span class="nav-dir">ch04/</span><span class="nav-label">컴퓨터를 켤 때 벌어지는 일 (부팅 · 부트로더 · 런레벨)</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-19" data-id="sec-19" class="nav-link">4-1. 부팅 순서 (외우세요!)</a></li><li class="nav-sub-item"><a href="#sec-20" data-id="sec-20" class="nav-link">4-2. 부트로더: LILO vs GRUB</a></li><li class="nav-sub-item"><a href="#sec-21" data-id="sec-21" class="nav-link">4-3. 런레벨(Run Level) — "지금 시스템이 어떤 모드로 켜져 있나"</a></li><li class="nav-sub-item"><a href="#sec-22" data-id="sec-22" class="nav-link">4-4. reboot / shutdown 명령</a></li></ul></li><li class="nav-chapter"><a href="#sec-23" data-id="sec-23" class="nav-link nav-link-chapter"><span class="nav-dir">ch05/</span><span class="nav-label">사용자와 권한 (계정 관리)</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-24" data-id="sec-24" class="nav-link">5-1. 계정 관련 명령어</a></li><li class="nav-sub-item"><a href="#sec-25" data-id="sec-25" class="nav-link">5-2. 계정 정보가 저장된 파일들</a></li><li class="nav-sub-item"><a href="#sec-26" data-id="sec-26" class="nav-link">5-3. 비밀번호 설정 규칙</a></li><li class="nav-sub-item"><a href="#sec-27" data-id="sec-27" class="nav-link">5-4. 로그인한 사용자 확인하기</a></li></ul></li><li class="nav-chapter"><a href="#sec-28" data-id="sec-28" class="nav-link nav-link-chapter"><span class="nav-dir">ch06/</span><span class="nav-label">진짜 많이 쓰는 명령어들</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-29" data-id="sec-29" class="nav-link">6-1. 파일 · 디렉토리 다루기</a></li><li class="nav-sub-item"><a href="#sec-30" data-id="sec-30" class="nav-link">6-2. 내용 보기 / 검색 / 비교</a></li><li class="nav-sub-item"><a href="#sec-31" data-id="sec-31" class="nav-link">6-3. 시스템 확인</a></li><li class="nav-sub-item"><a href="#sec-32" data-id="sec-32" class="nav-link">6-4. 입출력 방향 바꾸기 (리다이렉션)</a></li><li class="nav-sub-item"><a href="#sec-33" data-id="sec-33" class="nav-link">6-5. 내부 명령어 vs 외부 명령어</a></li></ul></li><li class="nav-chapter"><a href="#sec-34" data-id="sec-34" class="nav-link nav-link-chapter"><span class="nav-dir">ch07/</span><span class="nav-label">네트워크 명령어 + 시험 직전 함정 총정리</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-35" data-id="sec-35" class="nav-link">7-1. 네트워크 명령어</a></li><li class="nav-sub-item"><a href="#sec-36" data-id="sec-36" class="nav-link">7-2. DHCP — 명령어는 아니지만 자주 묻는 개념</a></li><li class="nav-sub-item"><a href="#sec-37" data-id="sec-37" class="nav-link">7-3. 마지막 점검! OX 문제로 감 잡기</a></li><li class="nav-sub-item"><a href="#sec-38" data-id="sec-38" class="nav-link">🎯 벼락치기 우선순위 (시간이 부족하다면 이 순서로!)</a></li></ul></li></ul>
   </div>
   <div class="sidebar-footer">
-    <div class="sf-made">made by <span class="who">jinjin-jara</span> 🐧<br>오탈자·오류 제보는 언제든 환영이에요</div>
-    <div class="sf-hits" id="visitorCounter" hidden aria-label="방문자 수">
-      <span class="sf-hits-eye">👀</span><span>전체 방문자 <b id="visitorCount">…</b>명</span>
-    </div>
+    <div class="sf-made">made by <span class="who">jinjin-jara</span> 🐧</div>
     <div class="sf-links">
       <a class="sf-link" href="https://github.com/jinjin-jara" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.77 10.77.57.1.78-.25.78-.55v-2.1c-3.16.69-3.83-1.36-3.83-1.36-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.52-.29-5.17-1.26-5.17-5.61 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.16a10.9 10.9 0 0 1 5.73 0c2.19-1.47 3.15-1.16 3.15-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.36-2.66 5.32-5.19 5.6.41.35.77 1.04.77 2.1v3.11c0 .3.2.66.79.55 4.51-1.5 7.76-5.75 7.76-10.77C23.25 5.48 18.27.5 12 .5Z"/></svg>
@@ -892,6 +880,7 @@ footer.page-footer a:hover{text-decoration:underline;}
     </div>
     <button class="thanks-btn" id="thanksBtn">☕ 개발자에게 감사 인사 보내기</button>
     <div class="sf-note">이 가이드는 개인이 만든 비공식 정리 자료입니다. 잘못된 개념이나 오탈자를 발견하시면 위 메일로 알려주세요.</div>
+    <div class="sf-hits" id="visitorCounter" hidden aria-label="방문자 수">전체 방문자 <b id="visitorCount">…</b>명</div>
   </div>
 </aside>
 
