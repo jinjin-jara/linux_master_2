@@ -268,9 +268,10 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   margin-bottom:.6rem;
 }
 .sf-made .who{color:var(--accent); font-weight:600;}
-.sf-hits{display:inline-flex; margin-bottom:.7rem; line-height:0; opacity:.9; transition:opacity .15s;}
-.sf-hits:hover{opacity:1;}
-.sf-hits img{height:20px; border-radius:5px;}
+.sf-hits{display:inline-flex; align-items:center; gap:.3rem; margin-bottom:.7rem; padding:.28rem .6rem;
+  font-family:var(--sans); font-size:.72rem; color:var(--text-muted);
+  border:1px solid var(--border); border-radius:8px; background:var(--surface-2);}
+.sf-hits b{color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums;}
 .sf-links{display:flex; gap:.5rem; margin-bottom:.7rem;}
 .sf-link{
   flex:1;
@@ -838,6 +839,8 @@ footer.page-footer a:hover{text-decoration:underline;}
 }
 .toast.show{opacity:1; transform:translate(-50%, 0);}
 </style>
+<script data-goatcounter="https://jinjinjara.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -870,9 +873,9 @@ footer.page-footer a:hover{text-decoration:underline;}
   </div>
   <div class="sidebar-footer">
     <div class="sf-made">made by <span class="who">jinjin-jara</span> 🐧<br>오탈자·오류 제보는 언제든 환영이에요</div>
-    <a class="sf-hits" href="https://hits.seeyoufarm.com" target="_blank" rel="noopener" aria-label="방문자 수">
-      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fjinjin-jara.github.io%2Flinux_master_2%2F&count_bg=%2328579E&title_bg=%23555555&icon=linux.svg&icon_color=%23E7E7E7&title=%EB%B0%A9%EB%AC%B8&edge_flat=false" alt="방문자 수" loading="lazy"/>
-    </a>
+    <div class="sf-hits" id="visitorCounter" hidden aria-label="방문자 수">
+      👀 방문 <b id="visitorCount">…</b>
+    </div>
     <div class="sf-links">
       <a class="sf-link" href="https://github.com/jinjin-jara" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.75 5.48.75 11.75c0 5.02 3.25 9.27 7.77 10.77.57.1.78-.25.78-.55v-2.1c-3.16.69-3.83-1.36-3.83-1.36-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.53-2.52-.29-5.17-1.26-5.17-5.61 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.15 1.16a10.9 10.9 0 0 1 5.73 0c2.19-1.47 3.15-1.16 3.15-1.16.62 1.57.23 2.73.11 3.02.73.79 1.17 1.8 1.17 3.04 0 4.36-2.66 5.32-5.19 5.6.41.35.77 1.04.77 2.1v3.11c0 .3.2.66.79.55 4.51-1.5 7.76-5.75 7.76-10.77C23.25 5.48 18.27.5 12 .5Z"/></svg>
@@ -2781,6 +2784,19 @@ Address: 211.202.42.101</span>
     });
     searchClear.addEventListener('click', clearSearch);
   }
+})();
+</script>
+
+<script>
+/* GoatCounter 방문자 수 표시 */
+(function(){
+  var box = document.getElementById('visitorCounter');
+  var num = document.getElementById('visitorCount');
+  if(!box || !num) return;
+  fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json')
+    .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+    .then(function(d){ num.textContent = d.count; box.hidden = false; })
+    .catch(function(){ /* 카운터 접근 불가 시 조용히 숨김 */ });
 })();
 </script>
 
