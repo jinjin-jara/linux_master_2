@@ -268,10 +268,14 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   margin-bottom:.6rem;
 }
 .sf-made .who{color:var(--accent); font-weight:600;}
-.sf-hits{display:inline-flex; align-items:center; gap:.3rem; margin-bottom:.7rem; padding:.28rem .6rem;
-  font-family:var(--sans); font-size:.72rem; color:var(--text-muted);
-  border:1px solid var(--border); border-radius:8px; background:var(--surface-2);}
-.sf-hits b{color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums;}
+.sf-hits{display:flex; align-items:center; justify-content:center; gap:.45rem; width:100%;
+  margin-bottom:.7rem; padding:.55rem .7rem;
+  font-family:var(--sans); font-size:.75rem; font-weight:500; color:var(--text-dim);
+  border:1px solid var(--accent-dim); border-radius:10px;
+  background:linear-gradient(180deg, #fff, var(--surface-2));
+  box-shadow:0 1px 2px rgba(40,87,158,.06);}
+.sf-hits .sf-hits-eye{font-size:.95rem; line-height:1;}
+.sf-hits b{color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; font-size:.85rem; margin:0 .1rem;}
 .sf-links{display:flex; gap:.5rem; margin-bottom:.7rem;}
 .sf-link{
   flex:1;
@@ -874,7 +878,7 @@ footer.page-footer a:hover{text-decoration:underline;}
   <div class="sidebar-footer">
     <div class="sf-made">made by <span class="who">jinjin-jara</span> 🐧<br>오탈자·오류 제보는 언제든 환영이에요</div>
     <div class="sf-hits" id="visitorCounter" hidden aria-label="방문자 수">
-      👀 방문 <b id="visitorCount">…</b>
+      <span class="sf-hits-eye">👀</span><span>전체 방문자 <b id="visitorCount">…</b>명</span>
     </div>
     <div class="sf-links">
       <a class="sf-link" href="https://github.com/jinjin-jara" target="_blank" rel="noopener">
@@ -2795,7 +2799,7 @@ Address: 211.202.42.101</span>
   if(!box || !num) return;
   fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json')
     .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
-    .then(function(d){ num.textContent = d.count; box.hidden = false; })
+    .then(function(d){ num.textContent = d.count_unique; box.hidden = false; })
     .catch(function(){ /* 카운터 접근 불가 시 조용히 숨김 */ });
 })();
 </script>
