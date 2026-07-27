@@ -298,6 +298,13 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
 }
 .thanks-btn:hover{background:rgba(40,87,158,.22);}
 .thanks-btn:active{transform:scale(.98);}
+.sf-visits{
+  margin-top:.55rem;
+  text-align:center;
+  font-size:.7rem;
+  color:var(--text-muted);
+  font-variant-numeric:tabular-nums;
+}
 .sf-note{
   margin-top:.7rem;
   font-size:.68rem;
@@ -908,6 +915,7 @@ footer.page-footer a:hover{text-decoration:underline;}
       </a>
     </div>
     <button class="thanks-btn" id="thanksBtn">💬 익명 댓글로 응원하기</button>
+    <div class="sf-visits" id="sfVisits" hidden></div>
     <div class="sf-note">이 가이드는 개인이 만든 비공식 정리 자료입니다. 잘못된 개념이나 오탈자를 발견하시면 위 메일로 알려주세요.</div>
   </div>
 </aside>
@@ -2345,6 +2353,21 @@ Address: 211.202.42.101</span>
   document.getElementById('thanksBtn').addEventListener('click', function(){
     window.open('https://jinnnkcoding.tistory.com/m/241', '_blank', 'noopener');
   });
+
+  // ---------- Visitor counter ----------
+  (function(){
+    var el = document.getElementById('sfVisits');
+    if (!el) return;
+    fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var n = d && (d.count_unique || d.count);
+        if (!n) return;
+        el.textContent = '총 방문자수 ' + n + '명';
+        el.hidden = false;
+      })
+      .catch(function(){});
+  })();
 
   // ---------- Tabs (guide / exam / ox) ----------
   var tabPanels = {
