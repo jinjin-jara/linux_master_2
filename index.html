@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>리눅스마스터 2급 1차 · 7일 벼락치기 가이드</title>
-<meta name="description" content="리눅스마스터 2급 1차 실기 벼락치기 가이드 — 초보자를 위한 개념 정리 + 기출 함정 총정리">
+<meta name="description" content="리눅스마스터 2급 1차 벼락치기 가이드 — 초보자를 위한 개념 정리 + 기출 족보 270제">
 <link rel="canonical" href="https://jinjin-jara.github.io/linux_master_2/">
 <meta name="robots" content="index, follow">
 
@@ -13,13 +13,19 @@
 <meta property="og:site_name" content="리눅스마스터 2급 벼락치기">
 <meta property="og:url" content="https://jinjin-jara.github.io/linux_master_2/">
 <meta property="og:title" content="리눅스마스터 2급 1차 · 7일 벼락치기 가이드">
-<meta property="og:description" content="초보자를 위한 개념 정리 + 기출 함정 총정리. 270제 문제풀이 포함.">
+<meta property="og:description" content="초보자를 위한 개념 정리 + 기출 족보 270제. 무료, 회원가입 없음.">
 <meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://jinjin-jara.github.io/linux_master_2/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="리눅스마스터 2급 1차 — 7일 벼락치기, 개념 정리 + 기출 족보 270제">
 
 <!-- Twitter -->
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jinjin-jara.github.io/linux_master_2/og-image.png">
 <meta name="twitter:title" content="리눅스마스터 2급 1차 · 7일 벼락치기 가이드">
-<meta name="twitter:description" content="초보자를 위한 개념 정리 + 기출 함정 총정리. 270제 문제풀이 포함.">
+<meta name="twitter:description" content="초보자를 위한 개념 정리 + 기출 족보 270제. 무료, 회원가입 없음.">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐧</text></svg>">
 
@@ -314,13 +320,6 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
 }
 .thanks-btn:hover{background:rgba(40,87,158,.22);}
 .thanks-btn:active{transform:scale(.98);}
-.sf-visits{
-  margin-top:.55rem;
-  text-align:center;
-  font-size:.7rem;
-  color:var(--text-muted);
-  font-variant-numeric:tabular-nums;
-}
 .sf-note{
   margin-top:.7rem;
   font-size:.68rem;
@@ -931,7 +930,6 @@ footer.page-footer a:hover{text-decoration:underline;}
       </a>
     </div>
     <button class="thanks-btn" id="thanksBtn">💬 익명 댓글로 응원하기</button>
-    <div class="sf-visits" id="sfVisits" hidden></div>
     <div class="sf-note">이 가이드는 개인이 만든 비공식 정리 자료입니다. 잘못된 개념이나 오탈자를 발견하시면 위 메일로 알려주세요.</div>
   </div>
 </aside>
@@ -2369,21 +2367,6 @@ Address: 211.202.42.101</span>
   document.getElementById('thanksBtn').addEventListener('click', function(){
     window.open('https://jinnnkcoding.tistory.com/m/241', '_blank', 'noopener');
   });
-
-  // ---------- Visitor counter ----------
-  (function(){
-    var el = document.getElementById('sfVisits');
-    if (!el) return;
-    fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json')
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        var n = d && (d.count_unique || d.count);
-        if (!n) return;
-        el.textContent = '총 방문자수 ' + n + '명';
-        el.hidden = false;
-      })
-      .catch(function(){});
-  })();
 
   // ---------- Tabs (guide / exam / ox) ----------
   var tabPanels = {
