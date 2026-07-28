@@ -364,6 +364,17 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   color:var(--text-muted);
   line-height:1.5;
 }
+/* 방문자수 — 값이 도착할 때까지 hidden이라 자리를 차지하지 않는다.
+   페이드는 두지 않는다. 배경 탭에서는 트랜지션이 진행되지 않아 투명한 채로
+   남을 수 있고, 그러면 숫자가 아예 보이지 않는다. */
+.sf-visits{
+  margin-top:.55rem;
+  text-align:center;
+  font-size:.7rem;
+  color:var(--text-muted);
+  font-variant-numeric:tabular-nums;
+}
+
 /* 버전 표기 — 사이드바에는 한 줄만, 이력은 모달로 */
 .sf-ver-btn{
   margin-top:.7rem;
@@ -1045,6 +1056,7 @@ footer.page-footer a:hover{text-decoration:underline;}
     </div>
     <button class="thanks-btn" id="thanksBtn">💬 익명 댓글로 응원하기</button>
     <div class="sf-note">이 가이드는 개인이 만든 비공식 정리 자료입니다. 잘못된 개념이나 오탈자를 발견하시면 위 메일로 알려주세요.</div>
+    <div class="sf-visits" id="sfVisits" hidden></div>
     <button class="sf-ver-btn" id="changelogBtn" aria-haspopup="dialog">
       <span class="ver-dot"></span><span class="ver-tag">2026.07.27</span> <u>업데이트 내역</u>
     </button>
@@ -2365,6 +2377,34 @@ Address: 211.202.42.101</span>
   });
   sidebarClose.addEventListener('click', closeSidebar);
   overlay.addEventListener('click', closeSidebar);
+
+  // ---------- 방문자수 ----------
+  // 전에는 이 요청이 첫 렌더와 겹쳐 느린 회선에서 눈에 띄게 걸렸다. 페이지가
+  // 한가해진 뒤에 요청하고, 3초를 넘기면 조용히 포기한다. 실패해도 자리를
+  // 차지하지 않으므로 레이아웃이 흔들리지 않는다.
+  (function(){
+    var el = document.getElementById('sfVisits');
+    if (!el || !window.fetch) return;
+
+    function load(){
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 3000);
+      fetch('https://jinjinjara.goatcounter.com/counter/TOTAL.json',
+            ctrl ? { signal: ctrl.signal } : undefined)
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){
+          clearTimeout(timer);
+          var n = d && (d.count_unique || d.count);
+          if (!n) return;
+          el.textContent = '누적 방문자 ' + Number(String(n).replace(/[^0-9]/g, '')).toLocaleString('ko-KR') + '명';
+          el.hidden = false;
+        })
+        .catch(function(){ clearTimeout(timer); });
+    }
+
+    if (window.requestIdleCallback) requestIdleCallback(load, { timeout: 2500 });
+    else setTimeout(load, 1200);
+  })();
 
   // ---------- 업데이트 내역 모달 ----------
   (function(){
