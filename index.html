@@ -105,7 +105,14 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 ::selection{background:var(--accent);color:#fff;}
-/* 탭 요소만 더블탭 확대 차단 (본문 스크롤 방향고정은 유지) */
+/* 터치 제스처는 세로 스크롤과 핀치 확대만 허용한다.
+   - 더블탭 확대는 touch-action이 auto가 아닌 순간 꺼진다. iOS Safari는
+     maximum-scale=1을 무시하므로 이 선언이 더블탭 확대를 막는 유일한 수단이다.
+   - pan-x를 빼서 손가락을 좌우로 끌어도 화면이 따라 움직이지 않는다.
+   - pinch-zoom은 남긴다. 확대 자체를 막으면 시력이 낮은 사용자가 볼 수 없다.
+   touch-action은 조상과 교집합으로 계산되므로 여기서 정하면 하위 전체에 걸린다. */
+html, body{touch-action:pan-y pinch-zoom;}
+/* 버튼·링크는 지연 없이 반응하도록 유지 (교집합이라 결과는 pan-y pinch-zoom) */
 button, a, input, label, .quiz-btn, .nav-link, .tab-btn, .bm-btn, .sidebar-tab-link, .quiz-cat-chip, .quiz-action-btn{touch-action:manipulation;}
 
 /* subtle paper texture on the background */
