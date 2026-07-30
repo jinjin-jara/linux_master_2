@@ -513,7 +513,7 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
 .notice-foot em{color:var(--text-dim); font-style:normal; font-weight:600;}
 .notice-actions{display:flex; gap:.45rem; flex-wrap:wrap;}
 .notice-btn{
-  flex:1; min-width:130px;
+  flex:1; min-width:120px;
   padding:.55rem .8rem;
   border-radius:var(--radius);
   font-family:var(--sans); font-size:.86rem; font-weight:600;
@@ -2640,8 +2640,7 @@ Address: 211.202.42.101</span>
     </div>
     <p class="notice-foot">파이프·리다이렉션, 네트워크 명령어는 1차 <em>기타 명령어</em>로 출제돼 남겨 두었습니다.</p>
     <div class="notice-actions">
-      <button type="button" class="notice-btn" id="noticeToday">오늘 그만 보기</button>
-      <button type="button" class="notice-btn notice-btn-primary" id="noticeNever">확인, 다시 보지 않기</button>
+      <button type="button" class="notice-btn notice-btn-primary" id="noticeOk">확인</button>
     </div>
   </div>
 </div>
@@ -4086,27 +4085,14 @@ Address: 211.202.42.101</span>
   }
 
   // ---------- 1차 시험 범위 안내 모달 ----------
-  // 페이지를 열 때 한 번만 띄운다. 저장값은 세 가지다.
-  //   'never'  — 다시 보지 않기. 영구히 안 뜬다.
-  //   날짜문자열 — 오늘 그만 보기. 그날 하루만 안 뜬다.
-  //   없음     — 아직 안 본 상태. 띄운다.
+  // 첫 방문 때 한 번만 띄운다. 확인을 누르면 다시 뜨지 않는다.
   // 그냥 닫기(배경 클릭·Esc)는 저장하지 않으므로 다음 방문에 다시 뜬다.
   // 저장이 막힌 환경(시크릿 모드 등)에서는 조용히 넘어간다.
   var NOTICE_KEY = 'lm2-notice-scope-v1';
   var noticeBackdrop = document.getElementById('noticeBackdrop');
 
-  function today(){
-    var d = new Date();
-    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
-  }
   function noticeMuted(){
-    try{
-      var v = localStorage.getItem(NOTICE_KEY);
-      return v === 'never' || v === today();
-    }catch(e){ return false; }
-  }
-  function muteNotice(value){
-    try{ localStorage.setItem(NOTICE_KEY, value); }catch(e){}
+    try{ return localStorage.getItem(NOTICE_KEY) === 'seen'; }catch(e){ return false; }
   }
   function closeNotice(){
     if(!noticeBackdrop) return;
@@ -4118,12 +4104,8 @@ Address: 211.202.42.101</span>
     noticeBackdrop.hidden = false;
     requestAnimationFrame(function(){ noticeBackdrop.classList.add('show'); });
 
-    document.getElementById('noticeNever').addEventListener('click', function(){
-      muteNotice('never');
-      closeNotice();
-    });
-    document.getElementById('noticeToday').addEventListener('click', function(){
-      muteNotice(today());
+    document.getElementById('noticeOk').addEventListener('click', function(){
+      try{ localStorage.setItem(NOTICE_KEY, 'seen'); }catch(e){}
       closeNotice();
     });
     noticeBackdrop.addEventListener('click', function(e){
