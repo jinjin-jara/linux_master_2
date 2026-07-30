@@ -940,6 +940,16 @@ hr{border:none; border-top:1px solid var(--border); margin:2.2rem 0;}
 .mock-verdict.fail{color:var(--danger);}
 .mock-score-sub{text-align:center; color:var(--text-muted); font-size:.85rem; margin-bottom:1.5rem;}
 
+/* 지문과 보기에는 줄바꿈이 들어 있고 긴 경로가 나오기도 한다. 줄바꿈을 살리고
+   끊을 자리가 없는 문자열은 강제로 접어 화면을 넘지 않게 한다. */
+.mock-review-q, .mock-review-ans, .mock-review-ex,
+.note-q, .note-ans, .note-ex,
+.quiz-wrong-item{
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
 /* 문항별 해설 */
 .mock-review{margin-top:1.7rem; border-top:1px solid var(--border); padding-top:1.2rem;}
 .mock-review-item{
