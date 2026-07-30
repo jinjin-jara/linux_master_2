@@ -863,20 +863,6 @@ hr{border:none; border-top:1px solid var(--border); margin:2.2rem 0;}
 .quiz-action-btn[disabled]{opacity:.4; cursor:default;}
 
 /* ---------- 실전모의고사 ---------- */
-.mock-intro{
-  font-size:.86rem; color:var(--text-dim); line-height:1.75;
-  margin:0 0 1.3rem;
-}
-.mock-rule{
-  display:flex; flex-wrap:wrap; gap:.4rem .55rem;
-  margin:0 0 1.5rem;
-}
-.mock-rule span{
-  font-size:.76rem; font-weight:600; color:var(--accent-2);
-  background:rgba(15,122,140,.08);
-  border:1px solid rgba(15,122,140,.22);
-  border-radius:999px; padding:.2rem .6rem;
-}
 /* 회차 목록 */
 .mock-round{
   display:flex; align-items:center; gap:.9rem;
@@ -2493,8 +2479,8 @@ Address: 211.202.42.101</span>
         <div class="hero-eyebrow">cat mock-exam.md</div>
         <h2 class="hero-title">실전모의고사<br><span class="exam-hero-sub">50문항 · 100점 만점</span></h2>
         <p class="hero-lead">
-          실제 시험과 같은 비중으로 50문항을 뽑아 둔 모의고사예요. 푸는 동안에는 정답을 알려주지 않고,
-          답안을 제출하면 점수와 합격 여부, 범위별 정답률, 문항별 해설이 한 번에 나옵니다.
+          실제 시험과 같은 비중으로 50문항을 뽑아 둔 모의고사예요. 문항당 2점씩 100점 만점이고 60점 이상이면 합격입니다.
+          푸는 동안에는 정답을 알려주지 않고, 답안을 제출하면 점수와 합격 여부, 범위별 정답률, 문항별 해설이 한 번에 나옵니다.
           시간 제한은 없고 중간에 나가도 이어서 풀 수 있어요.
         </p>
       </div>
@@ -3448,13 +3434,8 @@ Address: 211.202.42.101</span>
   var mockConfirming = false;
 
   function renderMockCover(){
-    var html =
-      '<p class="mock-intro">회차마다 문항 구성이 고정되어 있어요. 같은 회차를 다시 풀면 지난번 점수와 바로 견줄 수 있고, ' +
-      '세 회차에 겹치는 문항은 없습니다.</p>' +
-      '<div class="mock-rule">' +
-        '<span>50문항</span><span>문항당 ' + MOCK_POINT + '점</span>' +
-        '<span>' + MOCK_PASS + '점 이상 합격</span><span>시간 제한 없음</span>' +
-      '</div>';
+    // 회차 목록만 보여준다. 규칙 안내는 위쪽 히어로 문단에 이미 있다.
+    var html = '';
 
     MOCK_SETS.forEach(function(st){
       var prog = mockState.progress[st.no];
@@ -3467,8 +3448,9 @@ Address: 211.202.42.101</span>
                 (pass ? '합격' : '불합격') + '</span> · ' + res.at;
         btn = '<button class="mock-round-btn ghost" data-mock-view="' + st.no + '">결과 보기</button>';
         reset = '<button class="mock-reset" data-mock-reset="' + st.no + '">다시 풀기</button>';
-      } else if(prog){
-        var done = Object.keys(prog.answers || {}).length;
+      } else if(prog && Object.keys(prog.answers || {}).length > 0){
+        // 들어가기만 하고 답을 하나도 고르지 않았으면 진행 중으로 보지 않는다
+        var done = Object.keys(prog.answers).length;
         state = '<b>' + done + ' / ' + MOCK_TOTAL + '</b> 문항 진행 중';
         btn = '<button class="mock-round-btn" data-mock-start="' + st.no + '">이어서 풀기</button>';
         reset = '<button class="mock-reset" data-mock-reset="' + st.no + '">처음부터</button>';
@@ -3544,6 +3526,8 @@ Address: 211.202.42.101</span>
         '<span class="mock-pos">' + mockNo + '회차 · 문제 ' + (mockIdx + 1) + ' / ' + qs.length + '</span>' +
         '<span class="mock-left' + (left > 0 ? ' warn' : '') + '">' +
           (left > 0 ? '안 고른 문제 ' + left + '개' : '모두 골랐어요') +
+          // 답은 자동 저장되므로 언제든 목록으로 나갔다 돌아올 수 있다
+          ' · <button class="mock-reset" data-mock-tocover>회차 목록</button>' +
         '</span>' +
       '</div>' +
       '<div class="quiz-progress-bar"><span class="quiz-progress-fill" style="width:' +
@@ -3591,6 +3575,9 @@ Address: 211.202.42.101</span>
         if(mockIdx < qs.length - 1) mockIdx++;
         renderMock();
       });
+    });
+    mockRoot.querySelector('[data-mock-tocover]').addEventListener('click', function(){
+      mockView = 'cover'; mockConfirming = false; renderMock();
     });
     var prevBtn = mockRoot.querySelector('[data-mock-prev]');
     if(prevBtn) prevBtn.addEventListener('click', function(){
