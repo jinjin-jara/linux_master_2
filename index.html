@@ -475,48 +475,53 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
 }
 .notice-backdrop.show{opacity:1; pointer-events:auto;}
 .notice-modal{
-  width:100%; max-width:460px;
+  width:100%; max-width:420px;
   max-height:85vh; overflow-y:auto;
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:14px;
   box-shadow:0 18px 48px rgba(0,0,0,.22);
-  padding:1.5rem 1.4rem 1.2rem;
+  padding:1.15rem 1.15rem 1rem;
   transform:translateY(10px) scale(.98);
   transition:transform .2s;
 }
 .notice-backdrop.show .notice-modal{transform:none;}
 .notice-eyebrow{
-  font-family:var(--mono); font-size:.7rem; letter-spacing:.06em;
-  color:var(--accent-2); text-transform:uppercase; margin-bottom:.35rem;
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.06em;
+  color:var(--accent-2); text-transform:uppercase; margin-bottom:.25rem;
 }
-.notice-modal h2{
-  margin:0 0 .7rem; font-size:1.15rem; line-height:1.45;
-}
-.notice-modal p{margin:0 0 .8rem; font-size:.92rem; color:var(--text-dim);}
+.notice-modal h2{margin:0 0 .7rem; font-size:1.02rem; line-height:1.4;}
 .notice-scope{
   background:var(--surface-2);
   border:1px solid var(--border-soft);
   border-radius:var(--radius);
-  padding:.75rem .9rem; margin-bottom:.9rem;
+  padding:.6rem .8rem; margin-bottom:.6rem;
 }
-.notice-scope ul{margin:.3rem 0 0; padding-left:1.1rem; font-size:.88rem; color:var(--text-dim);}
-.notice-scope li{margin:.15rem 0;}
-.notice-scope-head{font-size:.82rem; font-weight:600; color:var(--text);}
-.notice-foot{font-size:.82rem; color:var(--text-muted); margin-bottom:1.1rem;}
-.notice-actions{display:flex; gap:.5rem; flex-wrap:wrap;}
+.notice-scope ul{margin:0; padding-left:1rem;}
+.notice-scope li{font-size:.82rem; line-height:1.5; color:var(--text-dim); margin:.1rem 0;}
+.notice-scope b{color:var(--text); font-weight:600;}
+.notice-diff{
+  border-left:3px solid var(--accent-2);
+  background:var(--bg-elevated);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:.55rem .75rem;
+  font-size:.82rem; line-height:1.55; color:var(--text-dim);
+  margin-bottom:.6rem;
+}
+.notice-diff b{color:var(--text);}
+.notice-foot{font-size:.76rem; color:var(--text-muted); line-height:1.5; margin:0 0 .95rem;}
+.notice-foot em{color:var(--text-dim); font-style:normal; font-weight:600;}
+.notice-actions{display:flex; gap:.45rem; flex-wrap:wrap;}
 .notice-btn{
   flex:1; min-width:130px;
-  padding:.6rem .9rem;
+  padding:.55rem .8rem;
   border-radius:var(--radius);
-  font-family:var(--sans); font-size:.9rem; font-weight:600;
+  font-family:var(--sans); font-size:.86rem; font-weight:600;
   cursor:pointer; border:1px solid var(--border);
   background:var(--surface-2); color:var(--text-dim);
 }
 .notice-btn:hover{background:var(--border-soft);}
-.notice-btn-primary{
-  background:var(--accent); border-color:var(--accent); color:#fff;
-}
+.notice-btn-primary{background:var(--accent); border-color:var(--accent); color:#fff;}
 .notice-btn-primary:hover{filter:brightness(1.08); background:var(--accent);}
 
 /* ---------- Main content ---------- */
@@ -2622,16 +2627,18 @@ Address: 211.202.42.101</span>
   <div class="notice-modal">
     <div class="notice-eyebrow">안내</div>
     <h2 id="noticeTitle">2급 1차는 <strong>리눅스 일반</strong>만 출제됩니다</h2>
-    <p>이 사이트의 문제와 정리는 모두 1차 출제 범위에 맞춰 두었어요. 아래 세 가지만 보시면 됩니다.</p>
     <div class="notice-scope">
-      <div class="notice-scope-head">리눅스 일반</div>
       <ul>
-        <li>리눅스의 이해 — 개요, 역사, 철학</li>
-        <li>리눅스 설치 — 설치 유형, 파티션과 파일 시스템, Boot Manager</li>
-        <li>기본 명령어 — 계정 관리, 디렉터리 및 파일, 기타 명령어</li>
+        <li><b>리눅스의 이해</b> — 개요·역사·철학</li>
+        <li><b>리눅스 설치</b> — 설치 유형, 파티션·파일 시스템, Boot Manager</li>
+        <li><b>기본 명령어</b> — 계정 관리, 디렉터리·파일, 기타 명령어</li>
       </ul>
     </div>
-    <p class="notice-foot">리눅스 운영 및 관리(에디터·소프트웨어 설치·프로세스 관리 등)와 리눅스 활용(X 윈도·인터넷 활용 등)은 2차 범위라 여기서는 다루지 않습니다.</p>
+    <div class="notice-diff">
+      <b>261제 → 248제</b> · 2차 범위 13문항을 뺐어요<br>
+      프로세스 4 · 셸 환경설정 7 · 마운트 2. 푼 기록은 그대로입니다.
+    </div>
+    <p class="notice-foot">파이프·리다이렉션, 네트워크 명령어는 1차 <em>기타 명령어</em>로 출제돼 남겨 두었습니다.</p>
     <div class="notice-actions">
       <button type="button" class="notice-btn" id="noticeToday">오늘 그만 보기</button>
       <button type="button" class="notice-btn notice-btn-primary" id="noticeNever">확인, 다시 보지 않기</button>
