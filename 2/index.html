@@ -479,6 +479,36 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   background:var(--surface-2); color:var(--text-muted);
   padding:.05rem .3rem; border-radius:4px; margin-left:.3rem;
 }
+.cross-card{
+  display:flex; align-items:center; gap:.55rem;
+  width:calc(100% - 1.2rem); margin:.5rem .6rem .55rem;
+  padding:.6rem .7rem; border-radius:9px;
+  border:1px solid var(--accent-dim);
+  background:linear-gradient(135deg, rgba(15,122,140,.10), rgba(40,87,158,.10));
+  text-decoration:none; color:var(--text);
+}
+.cross-card:hover{border-color:var(--accent-2); background:linear-gradient(135deg, rgba(15,122,140,.18), rgba(40,87,158,.16));}
+.cc-badge{
+  flex:0 0 auto; font-family:var(--mono); font-size:.66rem; font-weight:700;
+  background:var(--accent-2); color:#fff; padding:.16rem .34rem; border-radius:5px;
+}
+.cc-text{display:flex; flex-direction:column; line-height:1.35; min-width:0;}
+.cc-text b{font-size:.82rem; color:var(--accent-2);}
+.cc-text span{font-size:.7rem; color:var(--text-muted);}
+.cc-arrow{margin-left:auto; color:var(--accent-2); font-weight:700;}
+
+.topbar-cross{
+  display:inline-flex; align-items:center; gap:.25rem;
+  margin-right:.5rem; padding:.32rem .6rem;
+  border:1px solid var(--accent-dim); border-radius:999px;
+  background:rgba(15,122,140,.08);
+  color:var(--accent-2); font-size:.76rem; font-weight:700; text-decoration:none;
+  white-space:nowrap;
+}
+.topbar-cross:hover{background:rgba(15,122,140,.16);}
+.topbar-cross span{font-size:.8rem;}
+@media (max-width:640px){ .topbar-cross{display:none;} }
+
 .hot-badge{
   display:inline-block; margin-left:.45rem; vertical-align:2px;
   font-family:var(--mono); font-size:.62rem; font-weight:700; letter-spacing:.02em;
@@ -1265,6 +1295,11 @@ footer.page-footer a:hover{text-decoration:underline;}
       <div class="nav-eyebrow nav-eyebrow-bm">🔖 내 북마크</div>
       <ul class="bm-quicklist-ul" id="bmQuicklistUl"></ul>
     </div>
+    <a class="cross-card" href="../">
+      <span class="cc-badge">1차</span>
+      <span class="cc-text"><b>2급 1차 자료 보러 가기</b><span>기출 258제 · 모의고사 · OX 34제</span></span>
+      <span class="cc-arrow">→</span>
+    </a>
     <button class="sidebar-tab-link" id="sidebarExamLink" data-tab="exam">회차별 기출문제 (9회차)</button>
     <button class="sidebar-tab-link" id="sidebarMockLink" data-tab="mock">실전모의고사 (3회차)</button>
     <button class="sidebar-tab-link" id="sidebarNoteLink" data-tab="note" hidden>오답노트 (<span id="noteSideCount">0</span>)</button>
@@ -1300,6 +1335,7 @@ footer.page-footer a:hover{text-decoration:underline;}
       </button>
       <div class="topbar-title">리눅스마스터 2급 2차 · <strong>7일 벼락치기 가이드</strong></div>
       <div class="topbar-spacer"></div>
+      <a class="topbar-cross" href="../"><span>←</span> 1차 자료</a>
       <div class="dday" id="ddayBadge">D-day 계산 중…</div>
     </div>
 
