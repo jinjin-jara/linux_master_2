@@ -484,10 +484,17 @@ li.nav-sub-item .nav-link.active{color:var(--accent);}
   font-family:var(--mono); font-size:.62rem; font-weight:700; letter-spacing:.02em;
   padding:.12rem .38rem; border-radius:999px;
 }
-.hot-badge.hot{background:rgba(178,59,44,.1); color:var(--danger);}
-.hot-badge.warm{background:var(--surface-2); color:var(--text-muted);}
+.hot-badge.hot{
+  background:rgba(178,59,44,.12); color:var(--danger);
+  border:1px solid rgba(178,59,44,.28);
+}
+.hot-badge.warm{
+  background:rgba(15,122,140,.12); color:var(--accent-2);
+  border:1px solid rgba(15,122,140,.28);
+}
 .subsection.is-hot .subhead h3{color:var(--text);}
 .nav-hot{font-size:.7rem;}
+.nav-warm{font-size:.6rem; color:var(--accent-2); font-weight:700; letter-spacing:-.02em;}
 .q-pre{
   margin:.8rem 0 .2rem;
   background:var(--surface-2);
@@ -803,6 +810,18 @@ hr{border:none; border-top:1px solid var(--border); margin:2.2rem 0;}
 .tw-path{color:#5fb3e8;}
 .tw-cmd{color:#f2f2f2; font-weight:600;}
 .tw-out{color:#9aa4ab;}
+
+/* 본문 안의 짧은 터미널·도식 블록. 창 장식 없이 어두운 판만 쓴다. */
+pre.tw{
+  margin:.8rem 0;
+  background:#1b1f24;
+  border:1px solid #2b3138;
+  border-radius:var(--radius);
+  padding:.85rem 1rem;
+  font-family:var(--mono); font-size:.82rem; line-height:1.7;
+  color:#d6dbe0;
+  white-space:pre; overflow-x:auto;
+}
 .tw-comment{color:#39ff14; font-style:italic; font-weight:500;}
 
 .priority-list{
@@ -1250,7 +1269,7 @@ footer.page-footer a:hover{text-decoration:underline;}
     <button class="sidebar-tab-link" id="sidebarMockLink" data-tab="mock">실전모의고사 (3회차)</button>
     <button class="sidebar-tab-link" id="sidebarNoteLink" data-tab="note" hidden>오답노트 (<span id="noteSideCount">0</span>)</button>
     <div class="nav-eyebrow">목차</div>
-    <ul class="nav-list"><li class="nav-part">1과목 · 리눅스 운영 및 관리</li><li class="nav-chapter"><a href="#sec-1" data-id="sec-1" class="nav-link nav-link-chapter"><span class="nav-dir">ch01/</span><span class="nav-label">파일 시스템 관련 명령어</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-2" data-id="sec-2" class="nav-link">1-1. 소유권 — chown · chgrp</a></li><li class="nav-sub-item"><a href="#sec-3" data-id="sec-3" class="nav-link">1-2. 허가권 — chmod와 ls -l 읽기</a></li><li class="nav-sub-item"><a href="#sec-4" data-id="sec-4" class="nav-link">1-3. 특수 권한 — SetUID · SetGID · Sticky Bit</a></li><li class="nav-sub-item"><a href="#sec-5" data-id="sec-5" class="nav-link">1-4. umask — 새로 만들 때의 기본 권한</a></li><li class="nav-sub-item"><a href="#sec-6" data-id="sec-6" class="nav-link">1-5. 마운트와 파일 시스템 만들기 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-7" data-id="sec-7" class="nav-link">1-6. 점검·복구 — fsck 계열</a></li><li class="nav-sub-item"><a href="#sec-8" data-id="sec-8" class="nav-link">1-7. 용량 확인 — du · df</a></li><li class="nav-sub-item"><a href="#sec-9" data-id="sec-9" class="nav-link">1-8. 디스크 쿼터 (사용량 제한)</a></li><li class="nav-sub-item"><a href="#sec-10" data-id="sec-10" class="nav-link">1-9. 파일 시스템 정보가 담긴 파일들</a></li><li class="nav-sub-item"><a href="#sec-11" data-id="sec-11" class="nav-link">1-10. 파일 시스템 종류</a></li><li class="nav-sub-item"><a href="#sec-12" data-id="sec-12" class="nav-link">1-11. RAID와 LVM</a></li></ul></li><li class="nav-chapter"><a href="#sec-13" data-id="sec-13" class="nav-link nav-link-chapter"><span class="nav-dir">ch02/</span><span class="nav-label">Shell</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-14" data-id="sec-14" class="nav-link">2-1. 셸의 종류와 계열 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-15" data-id="sec-15" class="nav-link">2-2. 셸 확인과 변경</a></li><li class="nav-sub-item"><a href="#sec-16" data-id="sec-16" class="nav-link">2-3. 환경 변수 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-17" data-id="sec-17" class="nav-link">2-4. 환경 설정 파일</a></li><li class="nav-sub-item"><a href="#sec-18" data-id="sec-18" class="nav-link">2-5. history (명령 기록)</a></li></ul></li><li class="nav-chapter"><a href="#sec-19" data-id="sec-19" class="nav-link nav-link-chapter"><span class="nav-dir">ch03/</span><span class="nav-label">프로세스 관리</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-20" data-id="sec-20" class="nav-link">3-1. 프로세스 생성 방식 — fork와 exec</a></li><li class="nav-sub-item"><a href="#sec-21" data-id="sec-21" class="nav-link">3-2. 데몬 — standalone vs inetd</a></li><li class="nav-sub-item"><a href="#sec-22" data-id="sec-22" class="nav-link">3-3. 시그널</a></li><li class="nav-sub-item"><a href="#sec-23" data-id="sec-23" class="nav-link">3-4. ps · pstree · jobs</a></li><li class="nav-sub-item"><a href="#sec-24" data-id="sec-24" class="nav-link">3-5. 포그라운드 · 백그라운드 전환</a></li><li class="nav-sub-item"><a href="#sec-25" data-id="sec-25" class="nav-link">3-6. kill · killall</a></li><li class="nav-sub-item"><a href="#sec-26" data-id="sec-26" class="nav-link">3-7. 우선순위 — nice · renice</a></li><li class="nav-sub-item"><a href="#sec-27" data-id="sec-27" class="nav-link">3-8. top — 실시간 모니터링</a></li><li class="nav-sub-item"><a href="#sec-28" data-id="sec-28" class="nav-link">3-9. cron — 주기적 실행</a></li></ul></li><li class="nav-chapter"><a href="#sec-29" data-id="sec-29" class="nav-link nav-link-chapter"><span class="nav-dir">ch04/</span><span class="nav-label">에디터</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-30" data-id="sec-30" class="nav-link">4-1. 에디터 한눈에 비교 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-31" data-id="sec-31" class="nav-link">4-2. pico · nano · emacs 단축키</a></li><li class="nav-sub-item"><a href="#sec-32" data-id="sec-32" class="nav-link">4-3. vi — 세 가지 모드 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-33" data-id="sec-33" class="nav-link">4-4. vi 문자열 치환과 설정 파일</a></li></ul></li><li class="nav-chapter"><a href="#sec-34" data-id="sec-34" class="nav-link nav-link-chapter"><span class="nav-dir">ch05/</span><span class="nav-label">소프트웨어 설치</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-35" data-id="sec-35" class="nav-link">5-1. 배포판별 패키지 관리 도구</a></li><li class="nav-sub-item"><a href="#sec-36" data-id="sec-36" class="nav-link">5-2. rpm</a></li><li class="nav-sub-item"><a href="#sec-37" data-id="sec-37" class="nav-link">5-3. yum · dnf <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-38" data-id="sec-38" class="nav-link">5-4. dpkg · apt-get</a></li><li class="nav-sub-item"><a href="#sec-39" data-id="sec-39" class="nav-link">5-5. tar와 압축</a></li><li class="nav-sub-item"><a href="#sec-40" data-id="sec-40" class="nav-link">5-6. 소스 코드 컴파일 설치</a></li></ul></li><li class="nav-chapter"><a href="#sec-41" data-id="sec-41" class="nav-link nav-link-chapter"><span class="nav-dir">ch06/</span><span class="nav-label">장치 설정</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-42" data-id="sec-42" class="nav-link">6-1. 프린터 — 인쇄 시스템</a></li><li class="nav-sub-item"><a href="#sec-43" data-id="sec-43" class="nav-link">6-2. 프린터 명령어 — BSD vs System V</a></li><li class="nav-sub-item"><a href="#sec-44" data-id="sec-44" class="nav-link">6-3. 사운드 카드</a></li><li class="nav-sub-item"><a href="#sec-45" data-id="sec-45" class="nav-link">6-4. 스캐너</a></li><li class="nav-sub-item"><a href="#sec-46" data-id="sec-46" class="nav-link">6-5. 커널 모듈과 네트워크 설정 파일</a></li></ul></li><li class="nav-part">2과목 · 리눅스 활용</li><li class="nav-chapter"><a href="#sec-47" data-id="sec-47" class="nav-link nav-link-chapter"><span class="nav-dir">ch07/</span><span class="nav-label">X 윈도</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-48" data-id="sec-48" class="nav-link">7-1. X 윈도의 구조</a></li><li class="nav-sub-item"><a href="#sec-49" data-id="sec-49" class="nav-link">7-2. 윈도 매니저 · 데스크톱 환경 · 디스플레이 매니저</a></li><li class="nav-sub-item"><a href="#sec-50" data-id="sec-50" class="nav-link">7-3. DISPLAY 환경 변수와 원격 실행</a></li><li class="nav-sub-item"><a href="#sec-51" data-id="sec-51" class="nav-link">7-4. 부팅 모드 설정</a></li><li class="nav-sub-item"><a href="#sec-52" data-id="sec-52" class="nav-link">7-5. X 윈도 응용 프로그램</a></li></ul></li><li class="nav-chapter"><a href="#sec-53" data-id="sec-53" class="nav-link nav-link-chapter"><span class="nav-dir">ch08/</span><span class="nav-label">인터넷 활용</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-54" data-id="sec-54" class="nav-link">8-1. OSI 7계층 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-55" data-id="sec-55" class="nav-link">8-2. 포트 번호 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-56" data-id="sec-56" class="nav-link">8-3. IP 주소와 서브넷</a></li><li class="nav-sub-item"><a href="#sec-57" data-id="sec-57" class="nav-link">8-4. 네트워크 명령어 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-58" data-id="sec-58" class="nav-link">8-5. 네트워크 설정 파일</a></li><li class="nav-sub-item"><a href="#sec-59" data-id="sec-59" class="nav-link">8-6. 원격 접속과 파일 공유</a></li><li class="nav-sub-item"><a href="#sec-60" data-id="sec-60" class="nav-link">8-7. 인터넷 서비스와 국제 기구 <span class="nav-hot">🔥</span></a></li></ul></li><li class="nav-chapter"><a href="#sec-61" data-id="sec-61" class="nav-link nav-link-chapter"><span class="nav-dir">ch09/</span><span class="nav-label">응용분야</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-62" data-id="sec-62" class="nav-link">9-1. 클러스터</a></li><li class="nav-sub-item"><a href="#sec-63" data-id="sec-63" class="nav-link">9-2. 가상화</a></li><li class="nav-sub-item"><a href="#sec-64" data-id="sec-64" class="nav-link">9-3. 컨테이너와 관리 도구</a></li><li class="nav-sub-item"><a href="#sec-65" data-id="sec-65" class="nav-link">9-4. 클라우드 서비스</a></li><li class="nav-sub-item"><a href="#sec-66" data-id="sec-66" class="nav-link">9-5. 모바일·임베디드 · 빅데이터</a></li></ul></li></ul>
+    <ul class="nav-list"><li class="nav-part">1과목 · 리눅스 운영 및 관리</li><li class="nav-chapter"><a href="#sec-1" data-id="sec-1" class="nav-link nav-link-chapter"><span class="nav-dir">ch01/</span><span class="nav-label">파일 시스템 관련 명령어</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-2" data-id="sec-2" class="nav-link">1-1. 소유권 — chown · chgrp</a></li><li class="nav-sub-item"><a href="#sec-3" data-id="sec-3" class="nav-link">1-2. 허가권 — chmod와 ls -l 읽기 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-4" data-id="sec-4" class="nav-link">1-3. 특수 권한 — SetUID · SetGID · Sticky Bit</a></li><li class="nav-sub-item"><a href="#sec-5" data-id="sec-5" class="nav-link">1-4. umask — 새로 만들 때의 기본 권한</a></li><li class="nav-sub-item"><a href="#sec-6" data-id="sec-6" class="nav-link">1-5. 마운트와 파일 시스템 만들기 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-7" data-id="sec-7" class="nav-link">1-6. 점검·복구 — fsck 계열</a></li><li class="nav-sub-item"><a href="#sec-8" data-id="sec-8" class="nav-link">1-7. 용량 확인 — du · df</a></li><li class="nav-sub-item"><a href="#sec-9" data-id="sec-9" class="nav-link">1-8. 디스크 쿼터 (사용량 제한) <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-10" data-id="sec-10" class="nav-link">1-9. 파일 시스템 정보가 담긴 파일들 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-11" data-id="sec-11" class="nav-link">1-10. 파일 시스템 종류</a></li><li class="nav-sub-item"><a href="#sec-12" data-id="sec-12" class="nav-link">1-11. RAID와 LVM <span class="nav-warm">자주</span></a></li></ul></li><li class="nav-chapter"><a href="#sec-13" data-id="sec-13" class="nav-link nav-link-chapter"><span class="nav-dir">ch02/</span><span class="nav-label">Shell</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-14" data-id="sec-14" class="nav-link">2-1. 셸의 종류와 계열 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-15" data-id="sec-15" class="nav-link">2-2. 셸 확인과 변경 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-16" data-id="sec-16" class="nav-link">2-3. 환경 변수 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-17" data-id="sec-17" class="nav-link">2-4. 환경 설정 파일 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-18" data-id="sec-18" class="nav-link">2-5. history (명령 기록)</a></li></ul></li><li class="nav-chapter"><a href="#sec-19" data-id="sec-19" class="nav-link nav-link-chapter"><span class="nav-dir">ch03/</span><span class="nav-label">프로세스 관리</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-20" data-id="sec-20" class="nav-link">3-1. 프로세스 생성 방식 — fork와 exec <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-21" data-id="sec-21" class="nav-link">3-2. 데몬 — standalone vs inetd <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-22" data-id="sec-22" class="nav-link">3-3. 시그널</a></li><li class="nav-sub-item"><a href="#sec-23" data-id="sec-23" class="nav-link">3-4. ps · pstree · jobs <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-24" data-id="sec-24" class="nav-link">3-5. 포그라운드 · 백그라운드 전환 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-25" data-id="sec-25" class="nav-link">3-6. kill · killall</a></li><li class="nav-sub-item"><a href="#sec-26" data-id="sec-26" class="nav-link">3-7. 우선순위 — nice · renice <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-27" data-id="sec-27" class="nav-link">3-8. top — 실시간 모니터링</a></li><li class="nav-sub-item"><a href="#sec-28" data-id="sec-28" class="nav-link">3-9. cron — 주기적 실행</a></li></ul></li><li class="nav-chapter"><a href="#sec-29" data-id="sec-29" class="nav-link nav-link-chapter"><span class="nav-dir">ch04/</span><span class="nav-label">에디터</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-30" data-id="sec-30" class="nav-link">4-1. 에디터 한눈에 비교 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-31" data-id="sec-31" class="nav-link">4-2. pico · nano · emacs 단축키</a></li><li class="nav-sub-item"><a href="#sec-32" data-id="sec-32" class="nav-link">4-3. vi — 세 가지 모드 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-33" data-id="sec-33" class="nav-link">4-4. vi 문자열 치환과 설정 파일</a></li></ul></li><li class="nav-chapter"><a href="#sec-34" data-id="sec-34" class="nav-link nav-link-chapter"><span class="nav-dir">ch05/</span><span class="nav-label">소프트웨어 설치</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-35" data-id="sec-35" class="nav-link">5-1. 배포판별 패키지 관리 도구 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-36" data-id="sec-36" class="nav-link">5-2. rpm <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-37" data-id="sec-37" class="nav-link">5-3. yum · dnf <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-38" data-id="sec-38" class="nav-link">5-4. dpkg · apt-get <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-39" data-id="sec-39" class="nav-link">5-5. tar와 압축</a></li><li class="nav-sub-item"><a href="#sec-40" data-id="sec-40" class="nav-link">5-6. 소스 코드 컴파일 설치</a></li></ul></li><li class="nav-chapter"><a href="#sec-41" data-id="sec-41" class="nav-link nav-link-chapter"><span class="nav-dir">ch06/</span><span class="nav-label">장치 설정</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-42" data-id="sec-42" class="nav-link">6-1. 프린터 — 인쇄 시스템 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-43" data-id="sec-43" class="nav-link">6-2. 프린터 명령어 — BSD vs System V</a></li><li class="nav-sub-item"><a href="#sec-44" data-id="sec-44" class="nav-link">6-3. 사운드 카드 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-45" data-id="sec-45" class="nav-link">6-4. 스캐너 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-46" data-id="sec-46" class="nav-link">6-5. 커널 모듈과 네트워크 설정 파일</a></li></ul></li><li class="nav-part">2과목 · 리눅스 활용</li><li class="nav-chapter"><a href="#sec-47" data-id="sec-47" class="nav-link nav-link-chapter"><span class="nav-dir">ch07/</span><span class="nav-label">X 윈도</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-48" data-id="sec-48" class="nav-link">7-1. X 윈도의 구조 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-49" data-id="sec-49" class="nav-link">7-2. 윈도 매니저 · 데스크톱 환경 · 디스플레이 매니저 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-50" data-id="sec-50" class="nav-link">7-3. DISPLAY 환경 변수와 원격 실행</a></li><li class="nav-sub-item"><a href="#sec-51" data-id="sec-51" class="nav-link">7-4. 부팅 모드 설정</a></li><li class="nav-sub-item"><a href="#sec-52" data-id="sec-52" class="nav-link">7-5. X 윈도 응용 프로그램 <span class="nav-warm">자주</span></a></li></ul></li><li class="nav-chapter"><a href="#sec-53" data-id="sec-53" class="nav-link nav-link-chapter"><span class="nav-dir">ch08/</span><span class="nav-label">인터넷 활용</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-54" data-id="sec-54" class="nav-link">8-1. OSI 7계층 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-55" data-id="sec-55" class="nav-link">8-2. 포트 번호 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-56" data-id="sec-56" class="nav-link">8-3. IP 주소와 서브넷 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-57" data-id="sec-57" class="nav-link">8-4. 네트워크 명령어 <span class="nav-hot">🔥</span></a></li><li class="nav-sub-item"><a href="#sec-58" data-id="sec-58" class="nav-link">8-5. 네트워크 설정 파일</a></li><li class="nav-sub-item"><a href="#sec-59" data-id="sec-59" class="nav-link">8-6. 원격 접속과 파일 공유 <span class="nav-warm">자주</span></a></li><li class="nav-sub-item"><a href="#sec-60" data-id="sec-60" class="nav-link">8-7. 인터넷 서비스와 국제 기구 <span class="nav-hot">🔥</span></a></li></ul></li><li class="nav-chapter"><a href="#sec-61" data-id="sec-61" class="nav-link nav-link-chapter"><span class="nav-dir">ch09/</span><span class="nav-label">응용분야</span></a><ul class="nav-sub"><li class="nav-sub-item"><a href="#sec-62" data-id="sec-62" class="nav-link">9-1. 클러스터</a></li><li class="nav-sub-item"><a href="#sec-63" data-id="sec-63" class="nav-link">9-2. 가상화</a></li><li class="nav-sub-item"><a href="#sec-64" data-id="sec-64" class="nav-link">9-3. 컨테이너와 관리 도구</a></li><li class="nav-sub-item"><a href="#sec-65" data-id="sec-65" class="nav-link">9-4. 클라우드 서비스</a></li><li class="nav-sub-item"><a href="#sec-66" data-id="sec-66" class="nav-link">9-5. 모바일·임베디드 · 빅데이터</a></li></ul></li></ul>
   </div>
   <div class="sidebar-footer">
     <div class="sf-made">made by <span class="who">jinjin-jara</span> 🐧</div>
@@ -1303,7 +1322,7 @@ footer.page-footer a:hover{text-decoration:underline;}
 
         <div class="callout">
           <div class="callout-title">🔖 북마크 기능 안내</div>
-          각 챕터·섹션 제목 옆에 <span class="bm-demo"><svg viewBox="0 0 24 24"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></span> 아이콘이 있어요.
+          각 챕터·섹션 제목 옆에 <span class="bm-demo"><svg viewBox="0 0 24 24"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></span> 아이콘이 있어요.
           시험 전에 자주 헷갈리는 개념이나 다시 보고 싶은 부분을 눌러서 표시해두면, 이 브라우저에 계속 저장됩니다.
           페이지를 새로고침하거나 껐다 켜도 사라지지 않으니, 시험 전까지 두고두고 복습용으로 써보세요.
           (자동으로 지워지지 않으니 다음 회차 시험 준비할 때도 그대로 남아있어요. 다른 기기·다른 브라우저와는 공유되지 않고, 이 브라우저에서만 저장됩니다)
@@ -1313,8 +1332,8 @@ footer.page-footer a:hover{text-decoration:underline;}
       </div>
 
       <div class="content">
-        <section class="chapter" id="sec-1"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch01</span><span class="dollar">$</span> <span class="cmd">cat chapter-1.md</span></div><div class="chapter-title-row"><h2>🔐 파일 시스템 관련 명령어</h2><button class="bm-btn" data-id="sec-1" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-2"><div class="subhead"><h3>1-1. 소유권 — chown · chgrp</h3><button class="bm-btn" data-id="sec-2" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+        <section class="chapter" id="sec-1"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch01</span><span class="dollar">$</span> <span class="cmd">cat chapter-1.md</span></div><div class="chapter-title-row"><h2>🔐 파일 시스템 관련 명령어</h2><button class="bm-btn" data-id="sec-1" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection" id="sec-2"><div class="subhead"><h3>1-1. 소유권 — chown · chgrp</h3><button class="bm-btn" data-id="sec-2" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>파일에는 <strong>주인(소유자)</strong>과 <strong>소속(그룹)</strong>이 붙어 있습니다. 이걸 바꾸는 명령이 둘입니다.</p>
 <table>
 <thead><tr><th>명령</th><th>바꾸는 것</th><th>예시</th></tr></thead>
@@ -1329,7 +1348,7 @@ footer.page-footer a:hover{text-decoration:underline;}
 <li><code>-R</code> : 하위 디렉터리까지 전부 (recursive) — <code>chown -R root ihd</code></li>
 <li><code>chgrp -h</code> : 심볼릭 링크 파일 자체의 그룹 소유권을 변경</li>
 </ul></div>
-<div class="subsection" id="sec-3"><div class="subhead"><h3>1-2. 허가권 — chmod와 ls -l 읽기<span class="hot-badge warm">자주 22문항</span></h3><button class="bm-btn" data-id="sec-3" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-3"><div class="subhead"><h3>1-2. 허가권 — chmod와 ls -l 읽기<span class="hot-badge warm">자주 출제 22문항</span></h3><button class="bm-btn" data-id="sec-3" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><code>ls -l</code> 결과의 맨 앞 10글자가 <strong>파일 유형 1글자 + 권한 9글자</strong>입니다.</p>
 <pre class="tw"><span class="tw-out">-rwxr-xr-x  2 root project 4096 Apr  6 10:22 project</span>
 <span class="tw-comment"> │└┬┘└┬┘└┬┘
@@ -1372,7 +1391,7 @@ footer.page-footer a:hover{text-decoration:underline;}
 </div>
 <p>⚠️ 디렉터리에서 <code>x</code>는 "실행"이 아니라 <strong>그 디렉터리 안으로 들어갈 수 있는 권한</strong>입니다.
 <code>w</code>는 디렉터리 안에 파일을 만들거나 지울 수 있는 권한이고요.</p></div>
-<div class="subsection" id="sec-4"><div class="subhead"><h3>1-3. 특수 권한 — SetUID · SetGID · Sticky Bit</h3><button class="bm-btn" data-id="sec-4" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-4"><div class="subhead"><h3>1-3. 특수 권한 — SetUID · SetGID · Sticky Bit</h3><button class="bm-btn" data-id="sec-4" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>특수 권한</th><th>숫자</th><th>기호</th><th>의미</th></tr></thead>
 <tbody>
@@ -1402,7 +1421,7 @@ footer.page-footer a:hover{text-decoration:underline;}
 <li>뒤 <code>770</code> = 소유자 rwx, 그룹 rwx, 기타 사용자 없음</li>
 <li>결과: project 그룹원은 자유롭게 파일을 만들되 <strong>자기가 만든 파일만 삭제</strong>할 수 있고, 새로 만든 파일의 그룹은 자동으로 project가 됩니다.</li>
 </ul></div>
-<div class="subsection" id="sec-5"><div class="subhead"><h3>1-4. umask — 새로 만들 때의 기본 권한</h3><button class="bm-btn" data-id="sec-5" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-5"><div class="subhead"><h3>1-4. umask — 새로 만들 때의 기본 권한</h3><button class="bm-btn" data-id="sec-5" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li>기본 권한: <strong>파일 666</strong>, <strong>디렉터리 777</strong> (파일에 x가 기본으로 안 붙는 게 포인트)</li>
 <li>실제 권한 = 기본 권한 <strong>−</strong> umask 값</li>
@@ -1410,7 +1429,7 @@ footer.page-footer a:hover{text-decoration:underline;}
 <li><code>umask -S</code> → 숫자 대신 <code>u=rwx,g=rx,o=rx</code> 처럼 문자로 표시</li>
 <li>맨 앞자리 숫자는 특수 권한 자리입니다.</li>
 </ul></div>
-<div class="subsection is-hot" id="sec-6"><div class="subhead"><h3>1-5. 마운트와 파일 시스템 만들기<span class="hot-badge hot">🔥 빈출 29문항</span></h3><button class="bm-btn" data-id="sec-6" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-6"><div class="subhead"><h3>1-5. 마운트와 파일 시스템 만들기<span class="hot-badge hot">🔥 빈출 29문항</span></h3><button class="bm-btn" data-id="sec-6" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>명령</th><th>설명</th></tr></thead>
 <tbody>
@@ -1425,14 +1444,14 @@ footer.page-footer a:hover{text-decoration:underline;}
 <p><strong>작업 순서</strong>: <code>fdisk</code>로 파티션 나누기 → <code>mkfs</code>·<code>mke2fs</code>로 포맷 → <code>mount</code>로 연결</p>
 <p><strong>fdisk 파티션 타입 ID</strong> — Linux <code>83</code> / Swap <code>82</code> / LVM <code>8e</code> / RAID <code>fd</code></p>
 <p><code>mount -o remount,rw /home</code> — 이미 마운트된 /home을 읽기·쓰기 모드로 다시 마운트</p></div>
-<div class="subsection" id="sec-7"><div class="subhead"><h3>1-6. 점검·복구 — fsck 계열</h3><button class="bm-btn" data-id="sec-7" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-7"><div class="subhead"><h3>1-6. 점검·복구 — fsck 계열</h3><button class="bm-btn" data-id="sec-7" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li><code>fsck</code> — 파일 시스템 무결성 점검·복구. 손상된 파일은 <code>/lost+found</code>로 연결됩니다.</li>
 <li><code>e2fsck</code> — ext2/ext3/ext4 전용 점검·복구</li>
 <li><code>xfs_repair</code> — XFS 전용 점검·복구</li>
 </ul>
 <p>⚠️ <code>/lost+found</code>가 나오면 <strong>fsck</strong>를 떠올리세요.</p></div>
-<div class="subsection" id="sec-8"><div class="subhead"><h3>1-7. 용량 확인 — du · df</h3><button class="bm-btn" data-id="sec-8" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-8"><div class="subhead"><h3>1-7. 용량 확인 — du · df</h3><button class="bm-btn" data-id="sec-8" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>구분</th><th><code>du</code></th><th><code>df</code></th></tr></thead>
 <tbody>
@@ -1449,7 +1468,7 @@ tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm</span>
 <span class="tw-prompt">root@linux-master</span>:<span class="tw-path">~</span># <span class="tw-cmd">du -sh ~ihduser</span>  <span class="tw-comment"># 특정 홈 디렉터리 사용량 합계</span>
 <span class="tw-out">1.2G	/home/ihduser</span></pre>
 </div></div>
-<div class="subsection" id="sec-9"><div class="subhead"><h3>1-8. 디스크 쿼터 (사용량 제한)<span class="hot-badge warm">자주 16문항</span></h3><button class="bm-btn" data-id="sec-9" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-9"><div class="subhead"><h3>1-8. 디스크 쿼터 (사용량 제한)<span class="hot-badge warm">자주 출제 16문항</span></h3><button class="bm-btn" data-id="sec-9" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li><code>quota</code> — 사용자의 현재 사용량·제한 확인</li>
 <li><code>quotacheck</code> — 파일 시스템을 훑어 쿼터 파일 생성·확인·수정</li>
@@ -1462,7 +1481,7 @@ tmpfs          tmpfs     2.0G     0  2.0G   0% /dev/shm</span>
 <li><code>quotaon</code> / <code>quotaoff</code> — 쿼터 활성화·비활성화</li>
 </ul>
 <p>⚠️ edquota(편집기 사용) ↔ setquota(명령행 직접)의 대비가 자주 출제됩니다.</p></div>
-<div class="subsection" id="sec-10"><div class="subhead"><h3>1-9. 파일 시스템 정보가 담긴 파일들<span class="hot-badge warm">자주 18문항</span></h3><button class="bm-btn" data-id="sec-10" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-10"><div class="subhead"><h3>1-9. 파일 시스템 정보가 담긴 파일들<span class="hot-badge warm">자주 출제 18문항</span></h3><button class="bm-btn" data-id="sec-10" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>파일</th><th>내용</th></tr></thead>
 <tbody>
@@ -1493,7 +1512,7 @@ sda      8:0    0   50G  0 disk
 <span class="tw-out">/dev/sda1: UUID="a1b2c3d4-..." TYPE="xfs"
 /dev/sda2: UUID="e5f6a7b8-..." TYPE="swap"</span></pre>
 </div></div>
-<div class="subsection" id="sec-11"><div class="subhead"><h3>1-10. 파일 시스템 종류</h3><button class="bm-btn" data-id="sec-11" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-11"><div class="subhead"><h3>1-10. 파일 시스템 종류</h3><button class="bm-btn" data-id="sec-11" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>종류</th><th>특징</th></tr></thead>
 <tbody>
@@ -1507,7 +1526,7 @@ sda      8:0    0   50G  0 disk
 <tr><td>ISO9660 · UDF</td><td>CD / DVD 파일 시스템</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-12"><div class="subhead"><h3>1-11. RAID와 LVM<span class="hot-badge warm">자주 20문항</span></h3><button class="bm-btn" data-id="sec-12" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-12"><div class="subhead"><h3>1-11. RAID와 LVM<span class="hot-badge warm">자주 출제 20문항</span></h3><button class="bm-btn" data-id="sec-12" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>RAID</strong> — 디스크 여러 개를 묶어 성능이나 안정성을 얻는 기술</p>
 <table>
 <thead><tr><th>레벨</th><th>방식</th><th>최소 디스크</th><th>특징</th></tr></thead>
@@ -1530,8 +1549,8 @@ sda      8:0    0   50G  0 disk
 </tbody>
 </table>
 <p>구성 순서: <strong>PV → VG → LV</strong></p></div></section>
-<section class="chapter" id="sec-13"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch02</span><span class="dollar">$</span> <span class="cmd">cat chapter-2.md</span></div><div class="chapter-title-row"><h2>🐚 Shell</h2><button class="bm-btn" data-id="sec-13" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection is-hot" id="sec-14"><div class="subhead"><h3>2-1. 셸의 종류와 계열<span class="hot-badge hot">🔥 빈출 34문항</span></h3><button class="bm-btn" data-id="sec-14" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-13"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch02</span><span class="dollar">$</span> <span class="cmd">cat chapter-2.md</span></div><div class="chapter-title-row"><h2>🐚 Shell</h2><button class="bm-btn" data-id="sec-13" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-hot" id="sec-14"><div class="subhead"><h3>2-1. 셸의 종류와 계열<span class="hot-badge hot">🔥 빈출 34문항</span></h3><button class="bm-btn" data-id="sec-14" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>계열</th><th>셸</th><th>경로</th><th>만든 사람 · 특징</th></tr></thead>
 <tbody>
@@ -1544,7 +1563,7 @@ sda      8:0    0   50G  0 disk
 </tbody>
 </table>
 <p>bash = <strong>B</strong>ourne <strong>A</strong>gain <strong>SH</strong>ell. dash는 데비안에서 sh 대체용으로 씁니다.</p></div>
-<div class="subsection" id="sec-15"><div class="subhead"><h3>2-2. 셸 확인과 변경<span class="hot-badge warm">자주 20문항</span></h3><button class="bm-btn" data-id="sec-15" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-15"><div class="subhead"><h3>2-2. 셸 확인과 변경<span class="hot-badge warm">자주 출제 20문항</span></h3><button class="bm-btn" data-id="sec-15" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>방법</th><th>확인하는 내용</th></tr></thead>
 <tbody>
@@ -1574,7 +1593,7 @@ sda      8:0    0   50G  0 disk
 <span class="tw-out">ihd:x:1000:1000::/home/ihd:/bin/csh</span></pre>
 </div>
 <p><strong>usermod -s /bin/bash ihd</strong> — 관리자가 남의 계정 셸을 바꿀 때</p></div>
-<div class="subsection is-hot" id="sec-16"><div class="subhead"><h3>2-3. 환경 변수<span class="hot-badge hot">🔥 빈출 40문항</span></h3><button class="bm-btn" data-id="sec-16" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-16"><div class="subhead"><h3>2-3. 환경 변수<span class="hot-badge hot">🔥 빈출 40문항</span></h3><button class="bm-btn" data-id="sec-16" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>변수</th><th>의미</th></tr></thead>
 <tbody>
@@ -1606,7 +1625,7 @@ sda      8:0    0   50G  0 disk
 <tr><td><code>unset</code></td><td>변수·함수 해제</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-17"><div class="subhead"><h3>2-4. 환경 설정 파일<span class="hot-badge warm">자주 16문항</span></h3><button class="bm-btn" data-id="sec-17" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-17"><div class="subhead"><h3>2-4. 환경 설정 파일<span class="hot-badge warm">자주 출제 16문항</span></h3><button class="bm-btn" data-id="sec-17" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>파일</th><th>적용 범위</th><th>내용</th></tr></thead>
 <tbody>
@@ -1620,7 +1639,7 @@ sda      8:0    0   50G  0 disk
 </tbody>
 </table>
 <p>⚠️ 외우는 요령 — <strong>profile = 환경 변수</strong>, <strong>bashrc = 별칭·함수</strong>. 앞에 <code>/etc/</code>가 붙으면 전역, <code>~/</code>면 개인.</p></div>
-<div class="subsection" id="sec-18"><div class="subhead"><h3>2-5. history (명령 기록)</h3><button class="bm-btn" data-id="sec-18" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-18"><div class="subhead"><h3>2-5. history (명령 기록)</h3><button class="bm-btn" data-id="sec-18" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>표현</th><th>동작</th></tr></thead>
 <tbody>
@@ -1633,8 +1652,8 @@ sda      8:0    0   50G  0 disk
 <tr><td><code>!*</code></td><td>직전 명령의 <strong>모든 인자</strong></td></tr>
 </tbody>
 </table></div></section>
-<section class="chapter" id="sec-19"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch03</span><span class="dollar">$</span> <span class="cmd">cat chapter-3.md</span></div><div class="chapter-title-row"><h2>⚙️ 프로세스 관리</h2><button class="bm-btn" data-id="sec-19" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-20"><div class="subhead"><h3>3-1. 프로세스 생성 방식 — fork와 exec<span class="hot-badge warm">자주 24문항</span></h3><button class="bm-btn" data-id="sec-20" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-19"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch03</span><span class="dollar">$</span> <span class="cmd">cat chapter-3.md</span></div><div class="chapter-title-row"><h2>⚙️ 프로세스 관리</h2><button class="bm-btn" data-id="sec-19" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-warm" id="sec-20"><div class="subhead"><h3>3-1. 프로세스 생성 방식 — fork와 exec<span class="hot-badge warm">자주 출제 24문항</span></h3><button class="bm-btn" data-id="sec-20" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>구분</th><th>fork()</th><th>exec()</th></tr></thead>
 <tbody>
@@ -1645,7 +1664,7 @@ sda      8:0    0   50G  0 disk
 </table>
 <p>사용자가 로그인하면 bash를 받고, 명령을 입력하면 <strong>fork</strong>로 자식 프로세스가 생겨 실행됩니다.</p>
 <p><strong>최초 프로세스</strong> — CentOS 6까지는 <code>init</code>, CentOS 7부터는 <code>systemd</code>이며 <strong>PID는 1</strong>입니다.</p></div>
-<div class="subsection" id="sec-21"><div class="subhead"><h3>3-2. 데몬 — standalone vs inetd<span class="hot-badge warm">자주 17문항</span></h3><button class="bm-btn" data-id="sec-21" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-21"><div class="subhead"><h3>3-2. 데몬 — standalone vs inetd<span class="hot-badge warm">자주 출제 17문항</span></h3><button class="bm-btn" data-id="sec-21" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>구분</th><th>standalone</th><th>inetd (슈퍼 데몬)</th></tr></thead>
 <tbody>
@@ -1656,7 +1675,7 @@ sda      8:0    0   50G  0 disk
 </tbody>
 </table>
 <p>보안상의 이유로 커널 2.4부터는 <code>inetd</code> 대신 <strong>xinetd</strong>가 그 역할을 합니다.</p></div>
-<div class="subsection" id="sec-22"><div class="subhead"><h3>3-3. 시그널</h3><button class="bm-btn" data-id="sec-22" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-22"><div class="subhead"><h3>3-3. 시그널</h3><button class="bm-btn" data-id="sec-22" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>번호</th><th>이름</th><th>의미</th></tr></thead>
 <tbody>
@@ -1671,7 +1690,7 @@ sda      8:0    0   50G  0 disk
 </tbody>
 </table>
 <p>시그널 목록은 <code>kill -l</code>로 확인합니다. 2·9·15·20은 번호까지 외우세요.</p></div>
-<div class="subsection" id="sec-23"><div class="subhead"><h3>3-4. ps · pstree · jobs<span class="hot-badge warm">자주 23문항</span></h3><button class="bm-btn" data-id="sec-23" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-23"><div class="subhead"><h3>3-4. ps · pstree · jobs<span class="hot-badge warm">자주 출제 23문항</span></h3><button class="bm-btn" data-id="sec-23" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>ps</strong> — 실행 중인 프로세스 상태 출력</p>
 <ul>
 <li><code>a</code> 모든 프로세스 · <code>u</code> 사용자 정보 포함 · <code>x</code> 터미널 없는 프로세스까지</li>
@@ -1705,7 +1724,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li><code>jobs</code> — 현재 셸의 작업 목록 (중지·백그라운드 상태 표시)</li>
 <li><code>pgrep</code> — 이름으로 <strong>PID를 찾음</strong> · <code>pidof</code> — 프로세스 이름의 PID 출력 · <code>pkill</code> — 이름으로 종료</li>
 </ul></div>
-<div class="subsection" id="sec-24"><div class="subhead"><h3>3-5. 포그라운드 · 백그라운드 전환<span class="hot-badge warm">자주 24문항</span></h3><button class="bm-btn" data-id="sec-24" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-24"><div class="subhead"><h3>3-5. 포그라운드 · 백그라운드 전환<span class="hot-badge warm">자주 출제 24문항</span></h3><button class="bm-btn" data-id="sec-24" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>하고 싶은 것</th><th>방법</th></tr></thead>
 <tbody>
@@ -1729,7 +1748,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <span class="tw-out">nohup: ignoring input and appending output to ‘nohup.out’</span></pre>
 </div>
 <p>⚠️ 그냥 <code>&amp;</code>만 붙인 백그라운드는 로그아웃하면 죽습니다. 살려두려면 <strong>nohup</strong>.</p></div>
-<div class="subsection" id="sec-25"><div class="subhead"><h3>3-6. kill · killall</h3><button class="bm-btn" data-id="sec-25" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-25"><div class="subhead"><h3>3-6. kill · killall</h3><button class="bm-btn" data-id="sec-25" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li><code>kill</code>은 <strong>PID</strong>를 사용, <code>killall</code>은 <strong>프로세스 이름</strong>을 사용합니다.</li>
 <li><code>kill -l</code> — 시그널 종류 나열</li>
@@ -1737,7 +1756,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li><code>kill %2</code> — <strong>작업 번호</strong> 2번인 백그라운드 작업 종료 (%가 붙으면 작업 번호)</li>
 <li>옵션 없이 <code>kill PID</code>를 쓰면 기본 시그널 <strong>15(SIGTERM)</strong>가 전달됩니다.</li>
 </ul></div>
-<div class="subsection" id="sec-26"><div class="subhead"><h3>3-7. 우선순위 — nice · renice<span class="hot-badge warm">자주 19문항</span></h3><button class="bm-btn" data-id="sec-26" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-26"><div class="subhead"><h3>3-7. 우선순위 — nice · renice<span class="hot-badge warm">자주 출제 19문항</span></h3><button class="bm-btn" data-id="sec-26" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>구분</th><th>nice</th><th>renice</th></tr></thead>
 <tbody>
@@ -1760,7 +1779,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li>NI 값을 <strong>낮추는(높은 우선순위로 만드는) 건 root만</strong> 가능. 일반 사용자는 올리기만 가능</li>
 <li>기존 NI가 −5인 상태에서 <code>nice -10 bash</code> → 결과는 <strong>5</strong></li>
 </ul></div>
-<div class="subsection" id="sec-27"><div class="subhead"><h3>3-8. top — 실시간 모니터링</h3><button class="bm-btn" data-id="sec-27" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-27"><div class="subhead"><h3>3-8. top — 실시간 모니터링</h3><button class="bm-btn" data-id="sec-27" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li>CPU·메모리·부하 상태와 프로세스를 <strong>실시간</strong>으로 보여줍니다.</li>
 <li><code>%CPU</code>와 <code>%MEM</code>이 함께 보이면 top입니다 (<code>ps -l</code>에는 %MEM이 없습니다).</li>
@@ -1778,7 +1797,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <tr><td>q</td><td>종료</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-28"><div class="subhead"><h3>3-9. cron — 주기적 실행</h3><button class="bm-btn" data-id="sec-28" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-28"><div class="subhead"><h3>3-9. cron — 주기적 실행</h3><button class="bm-btn" data-id="sec-28" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li>데몬은 <code>crond</code>, 설정 파일은 <strong>/etc/crontab</strong></li>
 <li><code>crontab -e</code> 작성·수정 · <code>-l</code> 목록 · <code>-r</code> 삭제 · <code>-u</code> 특정 사용자 지정</li>
@@ -1791,8 +1810,8 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li>요일: <strong>0 또는 7 = 일요일</strong>, 1~6 = 월~토</li>
 <li>/etc/crontab에는 필드 사이에 <strong>실행할 사용자명</strong>이 하나 더 들어갑니다.</li>
 </ul></div></section>
-<section class="chapter" id="sec-29"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch04</span><span class="dollar">$</span> <span class="cmd">cat chapter-4.md</span></div><div class="chapter-title-row"><h2>📝 에디터</h2><button class="bm-btn" data-id="sec-29" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection is-hot" id="sec-30"><div class="subhead"><h3>4-1. 에디터 한눈에 비교<span class="hot-badge hot">🔥 빈출 53문항</span></h3><button class="bm-btn" data-id="sec-30" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-29"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch04</span><span class="dollar">$</span> <span class="cmd">cat chapter-4.md</span></div><div class="chapter-title-row"><h2>📝 에디터</h2><button class="bm-btn" data-id="sec-29" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-hot" id="sec-30"><div class="subhead"><h3>4-1. 에디터 한눈에 비교<span class="hot-badge hot">🔥 빈출 53문항</span></h3><button class="bm-btn" data-id="sec-30" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>에디터</th><th>만든 사람</th><th>특징</th></tr></thead>
 <tbody>
@@ -1809,7 +1828,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li>CUI(콘솔) 환경: nano, vi/vim, emacs</li>
 <li>X 윈도 환경: gedit, kwrite → <strong>telnet 접속 시에는 사용 불가</strong></li>
 </ul></div>
-<div class="subsection" id="sec-31"><div class="subhead"><h3>4-2. pico · nano · emacs 단축키</h3><button class="bm-btn" data-id="sec-31" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-31"><div class="subhead"><h3>4-2. pico · nano · emacs 단축키</h3><button class="bm-btn" data-id="sec-31" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>pico / nano</strong> (Ctrl 조합)</p>
 <table>
 <thead><tr><th>키</th><th>동작</th></tr></thead>
@@ -1832,7 +1851,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <tr><td>Ctrl+X Ctrl+C</td><td>편집 종료</td></tr>
 </tbody>
 </table></div>
-<div class="subsection is-hot" id="sec-32"><div class="subhead"><h3>4-3. vi — 세 가지 모드<span class="hot-badge hot">🔥 빈출 35문항</span></h3><button class="bm-btn" data-id="sec-32" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-32"><div class="subhead"><h3>4-3. vi — 세 가지 모드<span class="hot-badge hot">🔥 빈출 35문항</span></h3><button class="bm-btn" data-id="sec-32" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>vi는 <strong>명령 모드 · 입력 모드 · ex(라인) 명령 모드</strong>로 나뉩니다.</p>
 <p><strong>입력 모드로 전환</strong></p>
 <ul>
@@ -1867,7 +1886,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <tr><td><code>:set sm</code></td><td>괄호 자동 대응 표시</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-33"><div class="subhead"><h3>4-4. vi 문자열 치환과 설정 파일</h3><button class="bm-btn" data-id="sec-33" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-33"><div class="subhead"><h3>4-4. vi 문자열 치환과 설정 파일</h3><button class="bm-btn" data-id="sec-33" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <pre class="tw"><span class="tw-out">:%s/문자열/새문자열/g</span></pre>
 <ul>
 <li><code>%</code> — 첫 줄부터 끝 줄까지 (없으면 현재 줄만)</li>
@@ -1876,8 +1895,8 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 </ul>
 <p><strong>설정 파일</strong> — <code>.exrc</code>(vi), <code>.virc</code>·<code>.vimrc</code>(vim)에 환경 설정을 적어두면 실행할 때마다 적용됩니다.</p>
 <p><strong>복구 옵션</strong> — <code>vi -r 파일명</code>은 비정상 종료로 손상된 파일을 복구합니다.</p></div></section>
-<section class="chapter" id="sec-34"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch05</span><span class="dollar">$</span> <span class="cmd">cat chapter-5.md</span></div><div class="chapter-title-row"><h2>📦 소프트웨어 설치</h2><button class="bm-btn" data-id="sec-34" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-35"><div class="subhead"><h3>5-1. 배포판별 패키지 관리 도구<span class="hot-badge warm">자주 15문항</span></h3><button class="bm-btn" data-id="sec-35" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-34"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch05</span><span class="dollar">$</span> <span class="cmd">cat chapter-5.md</span></div><div class="chapter-title-row"><h2>📦 소프트웨어 설치</h2><button class="bm-btn" data-id="sec-34" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-warm" id="sec-35"><div class="subhead"><h3>5-1. 배포판별 패키지 관리 도구<span class="hot-badge warm">자주 출제 15문항</span></h3><button class="bm-btn" data-id="sec-35" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>배포판</th><th>오프라인(로컬)</th><th>온라인(의존성 해결)</th></tr></thead>
 <tbody>
@@ -1890,7 +1909,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 </table>
 <p><strong>alien</strong> — rpm 패키지를 deb로 변환해 주는 도구</p>
 <p><strong>dselect</strong> — 데비안에서 dpkg를 메뉴 방식으로 다루게 해 주는 프론트엔드</p></div>
-<div class="subsection" id="sec-36"><div class="subhead"><h3>5-2. rpm<span class="hot-badge warm">자주 19문항</span></h3><button class="bm-btn" data-id="sec-36" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-36"><div class="subhead"><h3>5-2. rpm<span class="hot-badge warm">자주 출제 19문항</span></h3><button class="bm-btn" data-id="sec-36" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>파일명 형식: <code>sendmail-8.14.3-5.fc11.i586.rpm</code> → 패키지명 - 버전 - 릴리즈 - 배포판 - 아키텍처</p>
 <table>
 <thead><tr><th>옵션</th><th>동작</th></tr></thead>
@@ -1921,7 +1940,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <span class="tw-out">passwd-0.79-6.el7.x86_64</span>
 <span class="tw-prompt">root@linux-master</span>:<span class="tw-path">~</span># <span class="tw-cmd">rpm -e nmap --nodeps</span>  <span class="tw-comment"># 의존성 무시하고 삭제</span></pre>
 </div></div>
-<div class="subsection is-hot" id="sec-37"><div class="subhead"><h3>5-3. yum · dnf<span class="hot-badge hot">🔥 빈출 25문항</span></h3><button class="bm-btn" data-id="sec-37" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-37"><div class="subhead"><h3>5-3. yum · dnf<span class="hot-badge hot">🔥 빈출 25문항</span></h3><button class="bm-btn" data-id="sec-37" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>rpm의 <strong>의존성 문제를 해결</strong>하려고 만든 온라인 도구입니다.</p>
 <table>
 <thead><tr><th>명령</th><th>동작</th></tr></thead>
@@ -1938,7 +1957,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <tr><td><code>yum history list</code></td><td>작업 이력 확인</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-38"><div class="subhead"><h3>5-4. dpkg · apt-get<span class="hot-badge warm">자주 16문항</span></h3><button class="bm-btn" data-id="sec-38" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-38"><div class="subhead"><h3>5-4. dpkg · apt-get<span class="hot-badge warm">자주 출제 16문항</span></h3><button class="bm-btn" data-id="sec-38" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>dpkg</strong> — 데비안의 저수준 도구. <code>.deb</code> 파일을 다룹니다. <strong>온라인 기능 없음</strong></p>
 <table>
 <thead><tr><th>옵션</th><th>동작</th></tr></thead>
@@ -1955,7 +1974,7 @@ ihd  2472  0.0  0.1 116232  3084 pts/0 Ss 09:10 0:00 bash</span>
 <li><code>apt-get install 패키지</code> · <code>apt-get remove 패키지</code></li>
 <li><code>apt-get purge 패키지</code> — 설정 파일까지 삭제</li>
 </ul></div>
-<div class="subsection" id="sec-39"><div class="subhead"><h3>5-5. tar와 압축</h3><button class="bm-btn" data-id="sec-39" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-39"><div class="subhead"><h3>5-5. tar와 압축</h3><button class="bm-btn" data-id="sec-39" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>tar</strong>는 여러 파일을 <strong>하나로 묶는</strong> 도구입니다. 압축은 별개 옵션으로 붙습니다.</p>
 <table>
 <thead><tr><th>옵션</th><th>동작</th></tr></thead>
@@ -1996,7 +2015,7 @@ util.c</span>
 </tbody>
 </table>
 <p><strong>압축률 순서</strong>: compress &lt; gzip &lt; bzip2 &lt; <strong>xz</strong> (xz가 가장 많이 줄어듦)</p></div>
-<div class="subsection" id="sec-40"><div class="subhead"><h3>5-6. 소스 코드 컴파일 설치</h3><button class="bm-btn" data-id="sec-40" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-40"><div class="subhead"><h3>5-6. 소스 코드 컴파일 설치</h3><button class="bm-btn" data-id="sec-40" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>순서를 그대로 외우세요.</p>
 <pre class="tw"><span class="tw-prompt">$</span> <span class="tw-cmd">./configure</span>  <span class="tw-comment"># 환경 검사 + Makefile 생성 (설치 경로 등 옵션 지정)</span>
 <span class="tw-prompt">$</span> <span class="tw-cmd">make</span>         <span class="tw-comment"># Makefile을 읽어 소스 컴파일</span>
@@ -2006,8 +2025,8 @@ util.c</span>
 <li><strong>CMake</strong> (Cross Platform Make) — make의 대체품. 윈도우 포함 멀티 플랫폼 지원. MySQL·KDE·LMMS가 사용</li>
 <li>configure/make를 쓰는 예: PHP, Apache HTTP, Nmap</li>
 </ul></div></section>
-<section class="chapter" id="sec-41"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch06</span><span class="dollar">$</span> <span class="cmd">cat chapter-6.md</span></div><div class="chapter-title-row"><h2>🖨️ 장치 설정</h2><button class="bm-btn" data-id="sec-41" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-42"><div class="subhead"><h3>6-1. 프린터 — 인쇄 시스템<span class="hot-badge warm">자주 15문항</span></h3><button class="bm-btn" data-id="sec-42" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-41"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch06</span><span class="dollar">$</span> <span class="cmd">cat chapter-6.md</span></div><div class="chapter-title-row"><h2>🖨️ 장치 설정</h2><button class="bm-btn" data-id="sec-41" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-warm" id="sec-42"><div class="subhead"><h3>6-1. 프린터 — 인쇄 시스템<span class="hot-badge warm">자주 출제 15문항</span></h3><button class="bm-btn" data-id="sec-42" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>시스템</th><th>설명</th></tr></thead>
 <tbody>
@@ -2016,7 +2035,7 @@ util.c</span>
 <tr><td><strong>IPP</strong></td><td>인터넷을 통해 원격 인쇄할 때 쓰는 <strong>프로토콜</strong>. CUPS가 이 위에서 동작</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-43"><div class="subhead"><h3>6-2. 프린터 명령어 — BSD vs System V</h3><button class="bm-btn" data-id="sec-43" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-43"><div class="subhead"><h3>6-2. 프린터 명령어 — BSD vs System V</h3><button class="bm-btn" data-id="sec-43" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>기능</th><th>BSD 계열</th><th>System V 계열</th></tr></thead>
 <tbody>
@@ -2030,7 +2049,7 @@ util.c</span>
 <p><strong>로컬 프린터 장치 파일</strong> — 병렬 포트 <code>/dev/lp0</code>, USB <code>/dev/usb/lp0</code></p>
 <p><strong>설정 도구</strong> — CentOS 7에서 X 윈도 기반 프린터 설정은 <strong><code>system-config-printer</code></strong>입니다.
 예전 레드햇에서 쓰던 <code>printtool</code>·<code>printconf</code>·<code>redhat-config-printer</code>는 지금은 쓰지 않습니다.</p></div>
-<div class="subsection" id="sec-44"><div class="subhead"><h3>6-3. 사운드 카드<span class="hot-badge warm">자주 17문항</span></h3><button class="bm-btn" data-id="sec-44" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-44"><div class="subhead"><h3>6-3. 사운드 카드<span class="hot-badge warm">자주 출제 17문항</span></h3><button class="bm-btn" data-id="sec-44" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>이름</th><th>설명</th></tr></thead>
 <tbody>
@@ -2039,7 +2058,7 @@ util.c</span>
 </tbody>
 </table>
 <p><strong>관련 명령</strong> — <code>alsactl</code>(제어), <code>alsamixer</code>(믹서), <code>cdparanoia</code>(오디오 CD 추출)</p></div>
-<div class="subsection" id="sec-45"><div class="subhead"><h3>6-4. 스캐너<span class="hot-badge warm">자주 15문항</span></h3><button class="bm-btn" data-id="sec-45" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-45"><div class="subhead"><h3>6-4. 스캐너<span class="hot-badge warm">자주 출제 15문항</span></h3><button class="bm-btn" data-id="sec-45" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>이름</th><th>설명</th></tr></thead>
 <tbody>
@@ -2054,7 +2073,7 @@ util.c</span>
 <li><code>scanadf</code> — 여러 장 연속 스캔</li>
 <li><code>xcam</code> — GUI 기반 스캔</li>
 </ul></div>
-<div class="subsection" id="sec-46"><div class="subhead"><h3>6-5. 커널 모듈과 네트워크 설정 파일</h3><button class="bm-btn" data-id="sec-46" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-46"><div class="subhead"><h3>6-5. 커널 모듈과 네트워크 설정 파일</h3><button class="bm-btn" data-id="sec-46" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li><code>lsmod</code> — 커널에 올라간 모듈 목록 확인</li>
 <li><code>modprobe</code> — 커널 모듈 추가·제거</li>
@@ -2062,8 +2081,8 @@ util.c</span>
 <li><code>system-config-network</code> — GUI 네트워크 설정 도구</li>
 <li>CentOS 7부터 이더넷 장치명이 <code>eth0</code>이 아닌 <code>enp0s3</code> 형식으로 바뀌었습니다.</li>
 </ul></div></section>
-<section class="chapter" id="sec-47"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch07</span><span class="dollar">$</span> <span class="cmd">cat chapter-7.md</span></div><div class="chapter-title-row"><h2>🪟 X 윈도</h2><button class="bm-btn" data-id="sec-47" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-48"><div class="subhead"><h3>7-1. X 윈도의 구조<span class="hot-badge warm">자주 21문항</span></h3><button class="bm-btn" data-id="sec-48" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-47"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch07</span><span class="dollar">$</span> <span class="cmd">cat chapter-7.md</span></div><div class="chapter-title-row"><h2>🪟 X 윈도</h2><button class="bm-btn" data-id="sec-47" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-warm" id="sec-48"><div class="subhead"><h3>7-1. X 윈도의 구조<span class="hot-badge warm">자주 출제 21문항</span></h3><button class="bm-btn" data-id="sec-48" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <ul>
 <li>X 윈도는 <strong>네트워크 프로토콜 기반의 클라이언트–서버 시스템</strong>입니다.</li>
 <li><strong>X 서버</strong> = 화면 출력과 입력 장치를 담당하는 쪽 (내 앞의 모니터·키보드)</li>
@@ -2082,7 +2101,7 @@ util.c</span>
 <tr><td>XFree86 / XF86Config</td><td>x86용 X 서버 구현체와 설정 파일</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-49"><div class="subhead"><h3>7-2. 윈도 매니저 · 데스크톱 환경 · 디스플레이 매니저<span class="hot-badge warm">자주 24문항</span></h3><button class="bm-btn" data-id="sec-49" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-49"><div class="subhead"><h3>7-2. 윈도 매니저 · 데스크톱 환경 · 디스플레이 매니저<span class="hot-badge warm">자주 출제 24문항</span></h3><button class="bm-btn" data-id="sec-49" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>구분</th><th>역할</th><th>종류</th></tr></thead>
 <tbody>
@@ -2098,7 +2117,7 @@ util.c</span>
 <li><strong>XFCE</strong> — 가벼운 환경. 자체 윈도 매니저 xfwm</li>
 <li><strong>KDE Plasma</strong> — KDE의 최신 데스크톱 셸 이름. 그놈에는 전통 방식으로 꾸민 <strong>그놈 클래식</strong>이 있습니다</li>
 </ul></div>
-<div class="subsection" id="sec-50"><div class="subhead"><h3>7-3. DISPLAY 환경 변수와 원격 실행</h3><button class="bm-btn" data-id="sec-50" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-50"><div class="subhead"><h3>7-3. DISPLAY 환경 변수와 원격 실행</h3><button class="bm-btn" data-id="sec-50" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <div class="term-window">
 <div class="term-window-bar"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="term-window-title">bash</span></div>
 <pre class="term-window-body"><span class="tw-prompt">root@linux-master</span>:<span class="tw-path">~</span># <span class="tw-cmd">xhost +192.168.0.20</span>  <span class="tw-comment"># X 서버에서 그 주소의 접근 허용</span>
@@ -2124,7 +2143,7 @@ util.c</span>
 <li><code>xauth list $DISPLAY</code> — 해당 디스플레이의 쿠키(권한 부여 정보) 확인</li>
 </ul>
 <p>⚠️ <strong>xhost는 IP 기반, xauth는 사용자(쿠키) 기반</strong>이라는 대비가 자주 나옵니다.</p></div>
-<div class="subsection" id="sec-51"><div class="subhead"><h3>7-4. 부팅 모드 설정</h3><button class="bm-btn" data-id="sec-51" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-51"><div class="subhead"><h3>7-4. 부팅 모드 설정</h3><button class="bm-btn" data-id="sec-51" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>모드</th><th>명령</th></tr></thead>
 <tbody>
@@ -2139,7 +2158,7 @@ util.c</span>
 <li><code>xrandr</code> — 터미널에서 <strong>해상도 변경</strong></li>
 <li><code>xset</code> — 키보드 반복 속도, 화면 보호기, 소리 같은 X 서버 환경 설정</li>
 </ul></div>
-<div class="subsection" id="sec-52"><div class="subhead"><h3>7-5. X 윈도 응용 프로그램<span class="hot-badge warm">자주 24문항</span></h3><button class="bm-btn" data-id="sec-52" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-52"><div class="subhead"><h3>7-5. X 윈도 응용 프로그램<span class="hot-badge warm">자주 출제 24문항</span></h3><button class="bm-btn" data-id="sec-52" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>분야</th><th>프로그램</th></tr></thead>
 <tbody>
@@ -2159,8 +2178,8 @@ util.c</span>
 <li>GUI — 크롬(구글), 파이어폭스(모질라 재단, <strong>게코</strong> 엔진), 오페라(노르웨이), 사파리</li>
 <li><strong>텍스트 기반</strong> — <strong>lynx, links</strong> → X 윈도가 없는 콘솔에서도 사용 가능</li>
 </ul></div></section>
-<section class="chapter" id="sec-53"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch08</span><span class="dollar">$</span> <span class="cmd">cat chapter-8.md</span></div><div class="chapter-title-row"><h2>🌐 인터넷 활용</h2><button class="bm-btn" data-id="sec-53" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection is-hot" id="sec-54"><div class="subhead"><h3>8-1. OSI 7계층<span class="hot-badge hot">🔥 빈출 34문항</span></h3><button class="bm-btn" data-id="sec-54" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-53"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch08</span><span class="dollar">$</span> <span class="cmd">cat chapter-8.md</span></div><div class="chapter-title-row"><h2>🌐 인터넷 활용</h2><button class="bm-btn" data-id="sec-53" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection is-hot" id="sec-54"><div class="subhead"><h3>8-1. OSI 7계층<span class="hot-badge hot">🔥 빈출 34문항</span></h3><button class="bm-btn" data-id="sec-54" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>계층</th><th>역할</th><th>전송 단위</th><th>장비</th></tr></thead>
 <tbody>
@@ -2181,7 +2200,7 @@ util.c</span>
 </ul>
 <p><strong>ARP</strong>는 IP → MAC, <strong>RARP</strong>는 MAC → IP 입니다.</p>
 <p><strong>프로토콜의 3요소</strong> — 구문(Syntax) · 의미(Semantics) · 순서(Timing)</p></div>
-<div class="subsection is-hot" id="sec-55"><div class="subhead"><h3>8-2. 포트 번호<span class="hot-badge hot">🔥 빈출 28문항</span></h3><button class="bm-btn" data-id="sec-55" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-55"><div class="subhead"><h3>8-2. 포트 번호<span class="hot-badge hot">🔥 빈출 28문항</span></h3><button class="bm-btn" data-id="sec-55" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>포트</th><th>서비스</th></tr></thead>
 <tbody>
@@ -2203,7 +2222,7 @@ util.c</span>
 <li><code>/etc/services</code> — 서비스 이름과 <strong>포트 번호</strong> 매핑</li>
 <li><code>/etc/protocols</code> — <strong>프로토콜 번호</strong> (포트 번호가 아닙니다!)</li>
 </ul></div>
-<div class="subsection" id="sec-56"><div class="subhead"><h3>8-3. IP 주소와 서브넷<span class="hot-badge warm">자주 20문항</span></h3><button class="bm-btn" data-id="sec-56" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-56"><div class="subhead"><h3>8-3. IP 주소와 서브넷<span class="hot-badge warm">자주 출제 20문항</span></h3><button class="bm-btn" data-id="sec-56" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>클래스</th><th>첫 비트</th><th>범위</th><th>기본 서브넷 마스크</th></tr></thead>
 <tbody>
@@ -2229,7 +2248,7 @@ util.c</span>
 </ul>
 <p><strong>비트 수</strong> — IPv4 32비트, <strong>IPv6 128비트</strong>, MAC 주소 48비트</p>
 <p><strong>IPv6 특징</strong> — 주소 공간 확장, <strong>클래스 구분 없음</strong>, 패킷 출처 인증·비밀 보장, 흐름 제어 지원</p></div>
-<div class="subsection is-hot" id="sec-57"><div class="subhead"><h3>8-4. 네트워크 명령어<span class="hot-badge hot">🔥 빈출 27문항</span></h3><button class="bm-btn" data-id="sec-57" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-57"><div class="subhead"><h3>8-4. 네트워크 명령어<span class="hot-badge hot">🔥 빈출 27문항</span></h3><button class="bm-btn" data-id="sec-57" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>명령</th><th>용도</th></tr></thead>
 <tbody>
@@ -2267,7 +2286,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 <li><strong>SYN_RECEIVED</strong> — 요청을 받아 응답했으나 아직 확인 전</li>
 <li><strong>ESTABLISHED</strong> — 3-way handshake 완료, 연결됨</li>
 </ul></div>
-<div class="subsection" id="sec-58"><div class="subhead"><h3>8-5. 네트워크 설정 파일</h3><button class="bm-btn" data-id="sec-58" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-58"><div class="subhead"><h3>8-5. 네트워크 설정 파일</h3><button class="bm-btn" data-id="sec-58" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>파일</th><th>내용</th></tr></thead>
 <tbody>
@@ -2279,7 +2298,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 </tbody>
 </table>
 <p>⚠️ <strong>IP ↔ 도메인이면 /etc/hosts, 네임서버 주소면 /etc/resolv.conf</strong>로 갈라서 외우세요.</p></div>
-<div class="subsection" id="sec-59"><div class="subhead"><h3>8-6. 원격 접속과 파일 공유<span class="hot-badge warm">자주 21문항</span></h3><button class="bm-btn" data-id="sec-59" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-warm" id="sec-59"><div class="subhead"><h3>8-6. 원격 접속과 파일 공유<span class="hot-badge warm">자주 출제 21문항</span></h3><button class="bm-btn" data-id="sec-59" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>서비스</th><th>설명</th></tr></thead>
 <tbody>
@@ -2304,7 +2323,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 <li><code>mget</code>·<code>mput</code> 여러 개 한꺼번에 · <code>hash</code> 진행 상태를 <strong>#</strong> 기호로 표시 · <code>bi</code> 바이너리 모드</li>
 </ul>
 <p><strong>포트 번호 구간</strong> — <strong>0~1023</strong> 잘 알려진 포트(well-known), 1024~49151 등록 포트, 49152~65535 동적 포트</p></div>
-<div class="subsection is-hot" id="sec-60"><div class="subhead"><h3>8-7. 인터넷 서비스와 국제 기구<span class="hot-badge hot">🔥 빈출 39문항</span></h3><button class="bm-btn" data-id="sec-60" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection is-hot" id="sec-60"><div class="subhead"><h3>8-7. 인터넷 서비스와 국제 기구<span class="hot-badge hot">🔥 빈출 39문항</span></h3><button class="bm-btn" data-id="sec-60" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p><strong>메일 프로토콜</strong></p>
 <ul>
 <li><strong>SMTP</strong> — 송신, 서버 간 메시지 교환 (25)</li>
@@ -2346,8 +2365,8 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 <li><strong>CSMA/CA</strong> — 무선 랜(Wi-Fi). 애초에 <strong>충돌을 피하도록</strong>(Avoidance) 대기 후 전송</li>
 </ul>
 <p><strong>교환 방식</strong> — 패킷 교환(X.25, 프레임 릴레이, ATM) / 회선 교환(HDLC, PPP)</p></div></section>
-<section class="chapter" id="sec-61"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch09</span><span class="dollar">$</span> <span class="cmd">cat chapter-9.md</span></div><div class="chapter-title-row"><h2>🚀 응용분야</h2><button class="bm-btn" data-id="sec-61" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div></div>
-<div class="subsection" id="sec-62"><div class="subhead"><h3>9-1. 클러스터</h3><button class="bm-btn" data-id="sec-62" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<section class="chapter" id="sec-61"><div class="chapter-head"><div class="term-line"><span class="prompt">guest@linux-master</span><span class="colon">:</span><span class="path">~/ch09</span><span class="dollar">$</span> <span class="cmd">cat chapter-9.md</span></div><div class="chapter-title-row"><h2>🚀 응용분야</h2><button class="bm-btn" data-id="sec-61" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div></div>
+<div class="subsection" id="sec-62"><div class="subhead"><h3>9-1. 클러스터</h3><button class="bm-btn" data-id="sec-62" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>종류</th><th>목적</th></tr></thead>
 <tbody>
@@ -2356,7 +2375,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 <tr><td><strong>LVS</strong> (Linux Virtual Server, 부하 분산)</td><td>트래픽을 여러 서버로 <strong>분산</strong>. 대규모 서비스용</td></tr>
 </tbody>
 </table></div>
-<div class="subsection" id="sec-63"><div class="subhead"><h3>9-2. 가상화</h3><button class="bm-btn" data-id="sec-63" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-63"><div class="subhead"><h3>9-2. 가상화</h3><button class="bm-btn" data-id="sec-63" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>하이퍼바이저</th><th>방식</th><th>비고</th></tr></thead>
 <tbody>
@@ -2369,7 +2388,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 </table>
 <p>통합 관리 플랫폼 — <strong>OpenStack, CloudStack, OpenNebula</strong></p>
 <p>⚠️ <strong>XEN = 반가상화, KVM = 전가상화</strong>로 짝지어 외우세요.</p></div>
-<div class="subsection" id="sec-64"><div class="subhead"><h3>9-3. 컨테이너와 관리 도구</h3><button class="bm-btn" data-id="sec-64" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-64"><div class="subhead"><h3>9-3. 컨테이너와 관리 도구</h3><button class="bm-btn" data-id="sec-64" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <p>가상 머신은 게스트 OS를 통째로 올리지만, <strong>컨테이너</strong>는 호스트 커널을 공유해서 훨씬 가볍습니다.</p>
 <table>
 <thead><tr><th>이름</th><th>하는 일</th></tr></thead>
@@ -2382,7 +2401,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 </tbody>
 </table>
 <p>⚠️ <strong>Docker = 컨테이너를 만드는 것, Kubernetes = 만든 컨테이너를 운영하는 것</strong>으로 갈라서 외우세요.</p></div>
-<div class="subsection" id="sec-65"><div class="subhead"><h3>9-4. 클라우드 서비스</h3><button class="bm-btn" data-id="sec-65" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-65"><div class="subhead"><h3>9-4. 클라우드 서비스</h3><button class="bm-btn" data-id="sec-65" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>모델</th><th>빌려주는 것</th></tr></thead>
 <tbody>
@@ -2394,7 +2413,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
 </tbody>
 </table>
 <p>이용자가 직접 설정할 부분이 많은 순서: <strong>IaaS &gt; PaaS &gt; SaaS</strong> (알파벳 I·P·S 순으로 기억)</p></div>
-<div class="subsection" id="sec-66"><div class="subhead"><h3>9-5. 모바일·임베디드 · 빅데이터</h3><button class="bm-btn" data-id="sec-66" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M6 3.5C6 2.67 6.67 2 7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-8-4.5-8 4.5v-18Z"/></svg></button></div>
+<div class="subsection" id="sec-66"><div class="subhead"><h3>9-5. 모바일·임베디드 · 빅데이터</h3><button class="bm-btn" data-id="sec-66" aria-label="북마크" title="북마크"><svg viewBox="0 0 24 24" class="bm-icon"><path d="M7.5 2h9c.83 0 1.5.67 1.5 1.5v18l-6-3.5-6 3.5v-18C6 2.67 6.67 2 7.5 2Z"/></svg></button></div>
 <table>
 <thead><tr><th>이름</th><th>설명</th></tr></thead>
 <tbody>
