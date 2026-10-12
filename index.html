@@ -159,16 +159,6 @@ a{color:inherit;}
 }
 .topbar-title strong{color:var(--accent); font-weight:600;}
 .topbar-spacer{flex:1;}
-.dday{
-  font-family:var(--sans);
-  font-size:.78rem;
-  padding:.35rem .6rem;
-  border:1px solid var(--border);
-  border-radius:999px;
-  color:var(--accent-2);
-  white-space:nowrap;
-  background:var(--surface);
-}
 
 /* ---------- Layout ---------- */
 .layout{
@@ -1266,7 +1256,6 @@ footer.page-footer a:hover{text-decoration:underline;}
       <div class="topbar-title">리눅스마스터 2급 1차 · <strong>7일 벼락치기 가이드</strong></div>
       <div class="topbar-spacer"></div>
       <a class="topbar-cross" href="2/">2차 자료 <span>→</span></a>
-      <div class="dday" id="ddayBadge">D-day 계산 중…</div>
     </div>
 
     <div class="tabbar">
@@ -2735,22 +2724,6 @@ Address: 211.202.42.101</span>
       if(window.innerWidth < 980) closeSidebar();
     });
   });
-
-  // ---------- D-day ----------
-  var examDate = new Date('2026-10-31T00:00:00+09:00');
-  var ddayEl = document.getElementById('ddayBadge');
-  function updateDday(){
-    var now = new Date();
-    var diff = Math.ceil((examDate - now) / (1000*60*60*24));
-    if(diff > 0){
-      ddayEl.textContent = 'D-' + diff + ' (10/31 시험)';
-    } else if(diff === 0){
-      ddayEl.textContent = 'D-DAY! 시험 화이팅 🍀';
-    } else {
-      ddayEl.textContent = '시험 종료 · 수고하셨습니다';
-    }
-  }
-  updateDday();
 
   // ---------- Bookmarks (localStorage) ----------
   var STORAGE_KEY = 'lm2-bookmarks-v1';
