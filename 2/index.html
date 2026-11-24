@@ -3251,6 +3251,13 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
   // ---------- 회차별 기출문제 (연습 모드) ----------
   // 답을 고르는 즉시 정답과 해설을 보여준다. 회차를 골라 그 회차만 풀 수도 있다.
   var MARKS = ['①','②','③','④'];
+  // 문제 밑에 붙는 코드 상자·그림. 기출 퀴즈와 실전모의고사가 함께 쓴다.
+  function qExtraHtml(q){
+    if(q.pre) return '<pre class="q-pre">' + esc(q.pre) + '</pre>';
+    if(q.img) return '<figure class="q-fig"><img src="' + q.img + '" alt="문제 그림" loading="lazy"></figure>';
+    if(q.fig) return '<div class="fig-note">📷 원본에 그림·화면이 함께 나오는 문항이에요.</div>';
+    return '';
+  }
   var SUBJECT_LABEL = { 1: '1과목 · 리눅스 운영 및 관리', 2: '2과목 · 리눅스 활용' };
   var EXAM_BY_ID = {};
   EXAM_DATA.forEach(function(q){ EXAM_BY_ID[q.id] = q; });
@@ -3279,12 +3286,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
     },
     coverDesc: '2021년 3월부터 2023년 12월까지 9회차, 회차당 80문항이에요. 답을 고르면 정답 여부와 해설이 바로 나옵니다.<br>회차를 골라 그 회차만 풀 수도 있고, 진행 상황은 이 브라우저에 자동 저장됩니다.',
     questionText: function(q){ return q.q; },
-    questionExtra: function(q){
-      if(q.pre) return '<pre class="q-pre">' + esc(q.pre) + '</pre>';
-      if(q.img) return '<figure class="q-fig"><img src="' + q.img + '" alt="문제 그림" loading="lazy"></figure>';
-      if(q.fig) return '<div class="fig-note">📷 원본에 그림·화면이 함께 나오는 문항이에요.</div>';
-      return '';
-    },
+    questionExtra: function(q){ return qExtraHtml(q); },
     explainText: function(q){ return q.explain; },
     formatAnswer: function(q){ return '정답: ' + MARKS[q.correct] + ' ' + q.options[q.correct]; },
     mainLabel: '문제',
@@ -3461,7 +3463,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
       '<div class="quiz-progress-bar"><span class="quiz-progress-fill" style="width:' +
         Math.round((answered / qs.length) * 100) + '%"></span></div>' +
       '<div class="quiz-card">' +
-        '<div class="quiz-question">' + fmt(q.q) + '</div>' +
+        '<div class="quiz-question">' + fmt(q.q) + '</div>' + qExtraHtml(q) +
         '<div class="quiz-buttons mcq">' + opts + '</div>' +
         '<div class="mock-nav">' +
           '<button class="quiz-action-btn" data-mock-prev' + (mockIdx === 0 ? ' disabled' : '') + '>← 이전</button>' +
@@ -3623,7 +3625,7 @@ default         192.168.0.1     0.0.0.0         UG    eth0</span>
       var ok = chosen !== undefined && Number(chosen) === q.correct;
       html += '<div class="mock-review-item">' +
                 '<div class="mock-review-q"><span class="mri-no">' + (i + 1) + '.</span>' +
-                  (ok ? '✅ ' : '❌ ') + fmt(q.q) + '</div>';
+                  (ok ? '✅ ' : '❌ ') + fmt(q.q) + '</div>' + qExtraHtml(q);
       if(!ok){
         html += '<div class="mock-review-ans">' +
                   '내 답 <span class="mine">' +
